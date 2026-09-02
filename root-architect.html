@@ -2,126 +2,123 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#EFEDE5; --panel:#FBFAF6; --sunk:#E2DFD3; --ink:#191C18; --ink2:#4E544A; --ink3:#7D8378;
+  --bg:#EFEDE5;--panel:#FBFAF6;--sunk:#E2DFD3;--ink:#191C18;--ink2:#4E544A;--ink3:#7D8378;
   --rule:#D3D2C4;
-  --water:#2E7FB8; --phos:#C2662A; --nitro:#3F7A46; --carbon:#8A5CB8;
-  --root:#B5842F; --soil1:#C3AA84; --soil2:#A08757; --soil3:#7F6941;
-  --good:#2F7D4F; --warn:#B8862A; --bad:#B23A48;
-  --cort:#DDCBA8; --cline:#A98F63; --aer:#F3F1E8; --stele:#8FA9BF;
+  --water:#2E7FB8;--phos:#C2662A;--nitro:#3F7A46;--carbon:#8A5CB8;
+  --soil1:#C3AA84;--soil2:#A08757;--soil3:#7F6941;--root:#B5842F;
+  --good:#2F7D4F;--warn:#B8862A;--bad:#B23A48;
+  --cort:#DDCBA8;--cline:#A98F63;--aer:#F3F1E8;--stele:#8FA9BF;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#121410; --panel:#1A1D18; --sunk:#0E100C; --ink:#EAEDE5; --ink2:#AAB2A5; --ink3:#79806F;
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121410;--panel:#1A1D18;--sunk:#0E100C;--ink:#EAEDE5;--ink2:#AAB2A5;--ink3:#79806F;
   --rule:#2B2F27;
-  --water:#66AEE0; --phos:#E58F4E; --nitro:#6EBE78; --carbon:#B48BE0;
-  --root:#DCAE55; --soil1:#3E3524; --soil2:#31291B; --soil3:#241E14;
-  --good:#5CC07E; --warn:#E0AE4A; --bad:#F0687A;
-  --cort:#3B3524; --cline:#9A8556; --aer:#12140F; --stele:#3B5568;
+  --water:#66AEE0;--phos:#E58F4E;--nitro:#6EBE78;--carbon:#B48BE0;
+  --soil1:#3E3524;--soil2:#31291B;--soil3:#241E14;--root:#DCAE55;
+  --good:#5CC07E;--warn:#E0AE4A;--bad:#F0687A;
+  --cort:#3B3524;--cline:#9A8556;--aer:#12140F;--stele:#3B5568;
 }}
 :root[data-theme="dark"]{
-  --bg:#121410; --panel:#1A1D18; --sunk:#0E100C; --ink:#EAEDE5; --ink2:#AAB2A5; --ink3:#79806F;
-  --rule:#2B2F27; --water:#66AEE0; --phos:#E58F4E; --nitro:#6EBE78; --carbon:#B48BE0;
-  --root:#DCAE55; --soil1:#3E3524; --soil2:#31291B; --soil3:#241E14;
-  --good:#5CC07E; --warn:#E0AE4A; --bad:#F0687A;
-  --cort:#3B3524; --cline:#9A8556; --aer:#12140F; --stele:#3B5568;
+  --bg:#121410;--panel:#1A1D18;--sunk:#0E100C;--ink:#EAEDE5;--ink2:#AAB2A5;--ink3:#79806F;
+  --rule:#2B2F27;--water:#66AEE0;--phos:#E58F4E;--nitro:#6EBE78;--carbon:#B48BE0;
+  --soil1:#3E3524;--soil2:#31291B;--soil3:#241E14;--root:#DCAE55;
+  --good:#5CC07E;--warn:#E0AE4A;--bad:#F0687A;
+  --cort:#3B3524;--cline:#9A8556;--aer:#12140F;--stele:#3B5568;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;
-  line-height:1.55;font-size:15px}
-.wrap{max-width:1240px;margin:0 auto;padding:24px 20px 70px}
+ line-height:1.55;font-size:15px}
+.wrap{max-width:1300px;margin:0 auto;padding:24px 20px 70px}
 h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.025em;
-  font-size:clamp(1.9rem,4vw,2.8rem);line-height:1;margin:0}
-h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.05rem;margin:0 0 .5rem;
-  letter-spacing:-.01em}
+ font-size:clamp(1.9rem,4vw,2.8rem);line-height:1;margin:0}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.05rem;margin:0 0 .5rem}
 .kick{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--carbon);margin-bottom:.65rem}
+ text-transform:uppercase;color:var(--carbon);margin-bottom:.65rem}
 .lede{color:var(--ink2);max-width:70ch;margin:.7rem 0 0}
 .mono{font-family:"IBM Plex Mono",monospace}
-
 .tabs{display:flex;gap:2px;margin:22px 0 0;border-bottom:1px solid var(--rule)}
 .tabs button{font:inherit;font-weight:600;font-size:.88rem;background:none;border:0;
-  border-bottom:2px solid transparent;padding:.55rem 1rem;color:var(--ink3);cursor:pointer}
+ border-bottom:2px solid transparent;padding:.55rem 1rem;color:var(--ink3);cursor:pointer}
 .tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--carbon)}
 .pane{display:none;padding-top:22px}.pane.on{display:block}
-
-.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-bottom:22px}
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin-bottom:18px}
 .scen button{font:inherit;text-align:left;background:var(--panel);border:1px solid var(--rule);
-  border-radius:5px;padding:.85rem 1rem;cursor:pointer;color:var(--ink2)}
+ border-radius:5px;padding:.8rem 1rem;cursor:pointer;color:var(--ink2)}
 .scen button[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.scen .n{display:block;font-weight:600;color:var(--ink);font-size:.98rem;margin-bottom:.15rem}
-.scen .d{font-size:.8rem;line-height:1.35}
-.scen .w{display:block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;margin-top:.4rem;
-  letter-spacing:.06em}
-
-.build{display:grid;grid-template-columns:330px minmax(0,1fr) 300px;gap:16px;align-items:start}
-@media (max-width:1080px){.build{grid-template-columns:1fr 1fr}}
-@media (max-width:760px){.build{grid-template-columns:1fr}}
+.scen .n{display:block;font-weight:600;color:var(--ink);font-size:.96rem;margin-bottom:.12rem}
+.scen .d{font-size:.79rem;line-height:1.34}
+.scen .w{display:block;font-family:"IBM Plex Mono",monospace;font-size:.67rem;margin-top:.35rem;
+ letter-spacing:.06em}
+.build{display:grid;grid-template-columns:312px minmax(0,1fr) 306px;gap:15px;align-items:start}
+@media(max-width:1140px){.build{grid-template-columns:1fr 1fr}}
+@media(max-width:780px){.build{grid-template-columns:1fr}}
 .card{background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:14px 16px}
 .tag{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:.6rem}
-.sl{margin-bottom:13px}
-.sl label{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink2);
-  margin-bottom:2px;gap:.5rem}
+ text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:.55rem}
+.sl{margin-bottom:12px}
+.sl label{display:flex;justify-content:space-between;font-size:.81rem;color:var(--ink2);
+ margin-bottom:2px;gap:.5rem}
 .sl label b{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--ink);
-  font-variant-numeric:tabular-nums;white-space:nowrap}
+ font-variant-numeric:tabular-nums;white-space:nowrap}
 .sl input{width:100%;accent-color:var(--carbon);margin:0}
-.sl .hint{font-size:.72rem;color:var(--ink3);line-height:1.3;margin-top:1px}
-.budget{margin:0 0 14px}
-.budget .row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;
-  font-size:.74rem;color:var(--ink3);margin-bottom:4px}
-.bar{height:14px;background:var(--sunk);border-radius:7px;overflow:hidden;position:relative}
-.bar i{display:block;height:100%;background:var(--carbon);border-radius:7px;transition:width .15s}
-.bar.over i{background:var(--bad)}
+.sl .hint{font-size:.71rem;color:var(--ink3);line-height:1.3;margin-top:1px}
 figure{margin:0;background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:12px}
-svg{display:block;width:100%;height:auto}
+canvas{display:block;width:100%;height:auto}
 figcaption{margin-top:8px;font-size:.76rem;color:var(--ink3)}
+svg{display:block;width:100%;height:auto}
+.ctl{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+button.mini{font:inherit;font-size:.78rem;background:transparent;border:1px solid var(--rule);
+ border-radius:4px;padding:.34rem .7rem;cursor:pointer;color:var(--ink2)}
+button.mini[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button.go{font:inherit;font-weight:600;font-size:.82rem;background:var(--carbon);color:#fff;
+ border:0;border-radius:4px;padding:.4rem .9rem;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--carbon);
+ outline-offset:2px}
+.day{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink3);margin-left:auto;
+ font-variant-numeric:tabular-nums}
 .readouts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);
-  border:1px solid var(--rule);border-radius:5px;overflow:hidden;margin-top:12px}
-.readouts div{background:var(--panel);padding:.6rem .75rem}
-.readouts .k{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink3)}
-.readouts .v{font-family:"IBM Plex Mono",monospace;font-size:1.02rem;color:var(--ink);
-  font-variant-numeric:tabular-nums}
-.score{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.3rem}
-.score .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.6rem;
-  line-height:1;letter-spacing:-.03em}
-.score .of{font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--ink3)}
-.sbar{margin-bottom:9px}
-.sbar .row{display:flex;justify-content:space-between;font-size:.76rem;color:var(--ink2);margin-bottom:2px}
-.sbar .b{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
-.sbar .b i{display:block;height:100%;border-radius:4px;transition:width .18s}
+ border:1px solid var(--rule);border-radius:5px;overflow:hidden;margin-top:12px}
+.readouts div{background:var(--panel);padding:.55rem .72rem}
+.readouts .k{font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--ink3)}
+.readouts .v{font-family:"IBM Plex Mono",monospace;font-size:1rem;color:var(--ink);
+ font-variant-numeric:tabular-nums}
+.score{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.5rem}
+.score .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:2.7rem;
+ line-height:1;letter-spacing:-.03em}
+.score .of{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--ink3)}
+.legend{display:flex;gap:12px;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+ color:var(--ink3);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
 .fb{list-style:none;margin:12px 0 0;padding:0}
 .fb li{display:grid;grid-template-columns:auto 1fr;gap:.6rem;padding:.5rem 0;
-  border-top:1px solid var(--rule);font-size:.83rem;color:var(--ink2)}
-.fb .m{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;white-space:nowrap}
-.fb .good .m{color:var(--good)} .fb .warn .m{color:var(--warn)} .fb .bad .m{color:var(--bad)}
-button.act{font:inherit;font-weight:600;font-size:.86rem;background:var(--carbon);color:#fff;
-  border:0;border-radius:4px;padding:.55rem 1rem;cursor:pointer;margin-top:12px;width:100%}
-button.mini{font:inherit;font-size:.78rem;background:transparent;border:1px solid var(--rule);
-  border-radius:4px;padding:.35rem .7rem;cursor:pointer;color:var(--ink2)}
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--carbon);
-  outline-offset:2px}
-.codebox{margin-top:10px;background:var(--sunk);border-radius:4px;padding:.6rem .7rem;
-  font-family:"IBM Plex Mono",monospace;font-size:.86rem;word-break:break-all;
-  display:flex;gap:.5rem;align-items:center;justify-content:space-between}
+ border-top:1px solid var(--rule);font-size:.82rem;color:var(--ink2)}
+.fb .m{font-family:"IBM Plex Mono",monospace;font-size:.67rem;letter-spacing:.06em;white-space:nowrap}
+.fb .good .m{color:var(--good)}.fb .warn .m{color:var(--warn)}.fb .bad .m{color:var(--bad)}
+button.act{font:inherit;font-weight:600;font-size:.85rem;background:var(--carbon);color:#fff;
+ border:0;border-radius:4px;padding:.55rem 1rem;cursor:pointer;margin-top:12px;width:100%}
+.codebox{margin-top:10px;background:var(--sunk);border-radius:4px;padding:.55rem .7rem;
+ font-family:"IBM Plex Mono",monospace;font-size:.84rem;word-break:break-all;
+ display:flex;gap:.5rem;align-items:center;justify-content:space-between}
 input[type=text],textarea{font:inherit;width:100%;background:var(--panel);color:var(--ink);
-  border:1px solid var(--rule);border-radius:4px;padding:.45rem .6rem}
-textarea{font-family:"IBM Plex Mono",monospace;font-size:.82rem;min-height:130px;resize:vertical}
-table{width:100%;border-collapse:collapse;font-size:.84rem;margin-top:12px}
-th,td{text-align:left;padding:.42rem .5rem;border-bottom:1px solid var(--rule)}
-th{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink3);font-weight:400}
+ border:1px solid var(--rule);border-radius:4px;padding:.45rem .6rem}
+textarea{font-family:"IBM Plex Mono",monospace;font-size:.81rem;min-height:120px;resize:vertical}
+table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:12px}
+th,td{text-align:left;padding:.4rem .5rem;border-bottom:1px solid var(--rule)}
+th{font-family:"IBM Plex Mono",monospace;font-size:.65rem;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--ink3);font-weight:400}
 td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;text-align:right}
 .dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:900px){.dash{grid-template-columns:1fr}}
-.note{font-size:.82rem;color:var(--ink3);margin-top:10px;line-height:1.45}
+@media(max-width:900px){.dash{grid-template-columns:1fr}}
+.note{font-size:.8rem;color:var(--ink3);margin-top:10px;line-height:1.45}
 </style>
 
 <div class="wrap">
 <p class="kick">4320 / 7320 · Plant Physiology · design studio</p>
 <h1>Root Architect</h1>
-<p class="lede">You have a fixed carbon budget and eight traits to spend it on. Build a maize root
-system for the season you're given, then find out what it actually costs you. Every number on this
-page comes from a model you can read — nothing is hidden.</p>
+<p class="lede">Spend a fixed carbon budget on eight root traits, then <strong>run the season</strong>
+and watch what your root system actually takes out of the soil. The resources are drawn where they
+really sit, and they disappear as you capture them — so you can see exactly which pool you reached
+and which one you left behind.</p>
 
 <div class="tabs" role="tablist">
   <button role="tab" aria-selected="true" data-p="build">Build a root</button>
@@ -129,185 +126,225 @@ page comes from a model you can read — nothing is hidden.</p>
   <button role="tab" aria-selected="false" data-p="model">The model</button>
 </div>
 
-<!-- ================= BUILD ================= -->
 <div class="pane on" id="p-build">
   <div class="scen" id="scen"></div>
   <div class="build">
     <div class="card">
       <span class="tag">Traits · spend your carbon</span>
-      <div class="budget">
-        <div class="row"><span>what your budget buys</span><span id="budTxt">—</span></div>
-        <div class="bar" id="budBar"><i></i></div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;
+             font-size:.73rem;color:var(--ink3);margin-bottom:4px">
+          <span>what your budget buys</span><span id="budTxt">—</span></div>
+        <div style="height:13px;background:var(--sunk);border-radius:7px;overflow:hidden">
+          <i id="budBar" style="display:block;height:100%;width:0;background:var(--carbon);
+             border-radius:7px;transition:width .15s"></i></div>
       </div>
       <div id="sliders"></div>
     </div>
 
     <div>
       <figure>
-        <svg id="sys" viewBox="0 0 520 470" role="img" aria-label="The root system your trait settings produce, drawn against a soil profile"></svg>
-        <figcaption>Your root system, drawn to the traits on the left. Soil profile to 160 cm.</figcaption>
+        <div class="ctl">
+          <button class="go" id="btnRun">▶ Run the season</button>
+          <button class="mini res" data-r="all" aria-pressed="true">all</button>
+          <button class="mini res" data-r="water" aria-pressed="false">water</button>
+          <button class="mini res" data-r="p" aria-pressed="false">phosphorus</button>
+          <button class="mini res" data-r="n" aria-pressed="false">nitrate</button>
+          <span class="day" id="dayTxt">day 0 / 120</span>
+        </div>
+        <canvas id="field" width="1120" height="760"></canvas>
+        <div class="legend">
+          <span><i style="background:var(--water)"></i>water</span>
+          <span><i style="background:var(--phos)"></i>phosphate — immobile, topsoil</span>
+          <span><i style="background:var(--nitro)"></i>nitrate — leaches downward</span>
+          <span><i style="background:var(--root)"></i>your roots</span>
+        </div>
+        <figcaption>Each dot is a packet of resource where it actually sits in the profile. Dots
+        vanish as your roots take them up — what is still there at day 120 is what you never
+        reached.</figcaption>
       </figure>
       <div class="readouts" id="reads"></div>
       <figure style="margin-top:12px">
-        <svg id="xs" viewBox="0 0 520 210" role="img" aria-label="Cross-section of one root, showing diameter, aerenchyma, cortical cell size and cell wall width"></svg>
-        <figcaption>One root in cross-section — the four traits that set what a centimetre of root costs to build and run.</figcaption>
+        <svg id="xs" viewBox="0 0 520 200" role="img" aria-label="Cross-section of one root showing diameter, aerenchyma, cortical cell size and cell wall width"></svg>
+        <figcaption>One root in cross-section — the four traits that set what a centimetre of root
+        costs to build and run.</figcaption>
       </figure>
     </div>
 
     <div class="card">
       <span class="tag" id="scoreTag">Score</span>
       <div class="score"><span class="big" id="scoreBig">0</span><span class="of">/ 100</span></div>
-      <div class="sbar"><div class="row"><span>water capture</span><span id="wV">0</span></div>
-        <div class="b"><i id="wB" style="background:var(--water)"></i></div></div>
-      <div class="sbar"><div class="row"><span>phosphorus capture</span><span id="pV">0</span></div>
-        <div class="b"><i id="pB" style="background:var(--phos)"></i></div></div>
-      <div class="sbar"><div class="row"><span>nitrogen capture</span><span id="nV">0</span></div>
-        <div class="b"><i id="nB" style="background:var(--nitro)"></i></div></div>
+      <svg id="curves" viewBox="0 0 300 190" role="img" aria-label="Cumulative capture of water, phosphorus and nitrate over the growing season"></svg>
       <ul class="fb" id="fb"></ul>
-      <label style="display:block;margin-top:14px;font-size:.8rem;color:var(--ink2)">Your name or initials
+      <label style="display:block;margin-top:14px;font-size:.79rem;color:var(--ink2)">Your name or initials
         <input type="text" id="who" maxlength="16" placeholder="e.g. JS" style="margin-top:4px"></label>
       <button class="act" id="submit">Lock it in &amp; get my code</button>
-      <div class="codebox" id="codeBox" hidden>
-        <span id="codeTxt"></span><button class="mini" id="copyBtn">copy</button>
-      </div>
+      <div class="codebox" id="codeBox" hidden><span id="codeTxt"></span>
+        <button class="mini" id="copyBtn">copy</button></div>
       <p class="note" id="submitNote" hidden></p>
     </div>
   </div>
 </div>
 
-<!-- ================= CLASS ================= -->
 <div class="pane" id="p-class">
   <div class="dash">
     <div>
       <figure>
-        <svg id="scatter" viewBox="0 0 640 460" role="img" aria-label="Every submitted root design plotted by rooting depth against topsoil root length density, coloured by the season it was designed for"></svg>
-        <figcaption>Each dot is one design. Up = deeper. Right = more root length packed into the top
-        15 cm. The two things no single root system can maximise at once.</figcaption>
+        <svg id="scatter" viewBox="0 0 640 460" role="img" aria-label="Every submitted design plotted by rooting depth against topsoil root length density"></svg>
+        <figcaption>Each dot is one design. Up = deeper. Right = more length in the top 15 cm.
+        No single root system can be at both extremes.</figcaption>
       </figure>
       <table id="board"><thead><tr><th>who</th><th>season</th><th class="num">depth</th>
         <th class="num">topsoil</th><th class="num">score</th></tr></thead><tbody></tbody></table>
     </div>
     <div class="card">
       <span class="tag">Collect the class</span>
-      <p style="font-size:.86rem;color:var(--ink2);margin:0 0 8px">Students paste their code into
+      <p style="font-size:.85rem;color:var(--ink2);margin:0 0 8px">Students paste their code into
       chat; paste the whole lot in here — one per line, any order.</p>
       <textarea id="paste" placeholder="JS:1-8k3p2f9m4&#10;AB:2-4d7q1s5x2"></textarea>
       <button class="act" id="addBtn">Add to the board</button>
       <button class="mini" id="clearBtn" style="width:100%;margin-top:8px">Clear the board</button>
-      <p class="note">Codes stay in this browser only. Reopening the page keeps the board;
-      clearing site data wipes it.</p>
+      <p class="note">Codes stay in this browser only.</p>
     </div>
   </div>
 </div>
 
-<!-- ================= MODEL ================= -->
 <div class="pane" id="p-model">
-  <div class="card" style="max-width:78ch">
-    <h2>Everything the score is built from</h2>
-    <p style="color:var(--ink2);font-size:.92rem">Argue with it — that is the point. The functional
-    forms are simplifications of published relationships; the coefficients are tuned so the
-    trade-offs bite at sensible places, not fitted to any one dataset.</p>
-    <div id="modelText"></div>
-  </div>
+  <div class="card" style="max-width:78ch"><h2>Everything the score is built from</h2>
+  <p style="color:var(--ink2);font-size:.9rem">Argue with it — that is the point. The functional
+  forms are simplifications of published relationships; the coefficients are tuned so the trade-offs
+  bite in sensible places, not fitted to any one dataset.</p>
+  <div id="modelText"></div></div>
 </div>
 </div>
-
 <script>
 (function(){
 "use strict";
 var $=function(s){return document.querySelector(s);};
 var TRAITS=[
- {k:"ang", n:"Growth angle",       u:"° from vertical", lo:10, hi:80, v:45, st:1,
+ {k:"ang",n:"Growth angle",u:"° from vertical",lo:10,hi:80,v:45,st:1,
   h:"Steep sends length down; shallow keeps it in the topsoil."},
- {k:"nax", n:"Axial roots",        u:" roots",          lo:3,  hi:22, v:9,  st:1,
+ {k:"nax",n:"Axial roots",u:" roots",lo:3,hi:22,v:9,st:1,
   h:"More crown and seminal roots spread the search — and split the budget."},
- {k:"lat", n:"Lateral density",    u:" per cm",         lo:0,  hi:10, v:4,  st:.5,
+ {k:"lat",n:"Lateral density",u:" per cm",lo:0,hi:10,v:4,st:.5,
   h:"Laterals are cheap surface area, but they compete with their own axis."},
- {k:"hair",n:"Root hair length",   u:" mm",             lo:0,  hi:1.5,v:.5, st:.05,
+ {k:"hair",n:"Root hair length",u:" mm",lo:0,hi:1.5,v:.5,st:.05,
   h:"The cheapest soil volume there is — and the only trait that really moves phosphorus."},
- {k:"dia", n:"Root diameter",      u:" mm",             lo:.4, hi:1.8,v:1.0,st:.05,
+ {k:"dia",n:"Root diameter",u:" mm",lo:.4,hi:1.8,v:1.0,st:.05,
   h:"Thicker roots push through hard soil, but cost rises with the square."},
- {k:"aer", n:"Aerenchyma",         u:"% of cortex",     lo:0,  hi:50, v:10, st:1,
+ {k:"aer",n:"Aerenchyma",u:"% of cortex",lo:0,hi:50,v:10,st:1,
   h:"Replace living cortex with air. Cheap, but you lose radial transport capacity."},
- {k:"ccs", n:"Cortical cell size", u:" µm",             lo:15, hi:60, v:28, st:1,
+ {k:"ccs",n:"Cortical cell size",u:" µm",lo:15,hi:60,v:28,st:1,
   h:"Bigger cells mean fewer of them per area — less cytoplasm and membrane to run."},
- {k:"cpw", n:"Cell wall width",    u:" µm",             lo:.5, hi:4,  v:1.2,st:.1,
-  h:"Wall is dead, cheap tissue that displaces respiring cytoplasm."}
-];
+ {k:"cpw",n:"Cell wall width",u:" µm",lo:.5,hi:4,v:1.2,st:.1,
+  h:"Wall is dead, cheap tissue that displaces respiring cytoplasm."}];
 var SCEN=[
- {k:"dry",  n:"Dry summer",     d:"Water is gone from the topsoil by July. What is left is deep.",
-  w:{w:1,p:0,n:0}, c:"var(--water)"},
- {k:"lowP", n:"Low phosphorus", d:"Plenty of P, all of it sorbed in the top 15 cm and going nowhere.",
-  w:{w:0,p:1,n:0}, c:"var(--phos)"},
- {k:"lowN", n:"Leaching nitrate", d:"Wet spring. Nitrate is already below 40 cm and still moving.",
-  w:{w:0,p:0,n:1}, c:"var(--nitro)"},
- {k:"mix",  n:"A real field",   d:"All three at once, none of them extreme. No trait is free here.",
-  w:{w:.4,p:.35,n:.25}, c:"var(--carbon)"}
-];
-var BUDGET=100, S={}, scen="dry";
+ {k:"dry",n:"Dry summer",d:"Topsoil bakes dry by July. The water left is deep.",
+  w:{w:1,p:0,n:0},c:"var(--water)"},
+ {k:"lowP",n:"Low phosphorus",d:"Plenty of P, all of it sorbed in the top 15 cm.",
+  w:{w:0,p:1,n:0},c:"var(--phos)"},
+ {k:"lowN",n:"Leaching nitrate",d:"Wet spring. Nitrate is heading for the water table.",
+  w:{w:0,p:0,n:1},c:"var(--nitro)"},
+ {k:"mix",n:"A real field",d:"All three at once. No trait is free here.",
+  w:{w:.4,p:.35,n:.25},c:"var(--carbon)"}];
+var BUDGET=100,S={},scen="dry";
 TRAITS.forEach(function(t){S[t.k]=t.v;});
 
-/* ------------------------------- the model ------------------------------- */
-function model(s){
-  var living = (1 - s.aer/100);
-  var cellPenalty = Math.pow(28/s.ccs, 0.55);         // bigger cells → cheaper
-  var wallPenalty = Math.pow(1.2/s.cpw, 0.30);        // thicker wall → less cytoplasm
-  var area = Math.PI*Math.pow(s.dia/2,2);             // mm²
-  var costCm = 0.62*area*(0.30 + 0.70*living*cellPenalty*wallPenalty)
-             + 0.030*s.lat + 0.052*s.hair + 0.10;
-  var length = BUDGET/costCm;                          // total m of root
-  var a = s.ang*Math.PI/180;
-  var axialFrac = 0.16/(1 + 0.16*s.lat);               // most length is lateral, not axial
-  var perAxis = length*axialFrac/s.nax;                // m of axial root per axis
-  var thick = 1 + 0.30*(s.dia-0.4)/1.4;                // thick roots penetrate hard soil
-  var depth = Math.min(160, perAxis*100*Math.cos(a)*thick);
-  var shallowFrac = 0.16 + 0.62*Math.pow(Math.sin(a),1.25);
-  var topsoil = length*shallowFrac/34;                 // cm root per cm3 of topsoil
-  var hairArea = length*(1 + 1.9*s.hair)*(1 + 0.10*s.lat);
-  var radial = Math.max(0.35, 1 - Math.pow(s.aer/100,1.4)*1.25);   // aerenchyma cuts transport
-  var water = (58*(1-Math.exp(-depth/70)) + 0.14*Math.min(length,200)) * radial;
-  var phos  = 26*Math.pow(topsoil,0.75) + 15*Math.pow(s.hair,0.7) + 0.05*Math.min(length,300);
-  var nitro = 50*(1-Math.exp(-Math.max(0,depth-25)/58)) + 0.13*Math.min(length,220);
-  nitro *= (1 - 0.22*Math.max(0,(s.nax-14)/8));        // too many axes compete for the same N
-  var cap=function(x){return Math.max(0,Math.min(100,x));};
-  return {costCm:costCm, length:length, depth:depth, topsoil:topsoil, hairArea:hairArea,
-          radial:radial, water:cap(water), phos:cap(phos), nitro:cap(nitro)};
+/* ===================== cost: what a centimetre of root costs ============= */
+function cost(s){
+  var living=1-s.aer/100,
+      cellPen=Math.pow(28/s.ccs,0.55),
+      wallPen=Math.pow(1.2/s.cpw,0.30),
+      area=Math.PI*Math.pow(s.dia/2,2),
+      costCm=0.62*area*(0.30+0.70*living*cellPen*wallPen)+0.030*s.lat+0.052*s.hair+0.10,
+      length=BUDGET/costCm,
+      a=s.ang*Math.PI/180,
+      axialFrac=0.16/(1+0.16*s.lat),
+      perAxis=length*axialFrac/s.nax,
+      thick=1+0.30*(s.dia-0.4)/1.4,
+      depth=Math.min(160,perAxis*100*Math.cos(a)*thick),
+      shallowFrac=0.16+0.62*Math.pow(Math.sin(a),1.25),
+      topsoil=length*shallowFrac/34,
+      radial=Math.max(0.35,1-Math.pow(s.aer/100,1.4)*1.25),
+      lambda=12+58*Math.cos(a);
+  return {costCm:costCm,length:length,depth:depth,topsoil:topsoil,radial:radial,lambda:lambda};
 }
-function score(m,sk){
+/* ===================== the season ======================================== */
+var NL=40,DZ=4,DAYS=120;
+function initial(){
+  var w=[],p=[],n=[];
+  for(var i=0;i<NL;i++){
+    var z=(i+0.5)*DZ;
+    p.push(100*Math.exp(-z/9));
+    n.push(100*Math.exp(-Math.pow(z-42,2)/(2*400)));
+    w.push(100/(1+Math.exp(-(z-38)/13)));
+  }
+  var norm=function(a){var t=a.reduce(function(x,y){return x+y;},0);
+    return a.map(function(v){return v/t*1000;});};
+  return {w:norm(w),p:norm(p),n:norm(n)};
+}
+function season(s){
+  var m=cost(s),R0=initial();
+  var R={w:R0.w.slice(),p:R0.p.slice(),n:R0.n.slice()};
+  var hairF=1+1.9*s.hair;
+  var cap={w:0,p:0,n:0},series=[],hist=[];
+  for(var d=1;d<=DAYS;d++){
+    var depth=m.depth*Math.min(1,d/85), Ltot=m.length*Math.min(1,d/95);
+    var ld=[],tot=0;
+    for(var i=0;i<NL;i++){
+      var z=(i+0.5)*DZ;
+      var v=(z<=depth)?Math.exp(-z/m.lambda):0; ld.push(v); tot+=v;
+    }
+    for(i=0;i<NL;i++) ld[i]=tot>0?ld[i]/tot*Ltot*100:0;      // cm of root in layer
+    // nitrate leaches downward
+    var vN=0.55/DZ, nn=R.n.slice();
+    for(i=NL-1;i>0;i--) nn[i]=R.n[i]*(1-vN)+R.n[i-1]*vN;
+    nn[0]=R.n[0]*(1-vN); R.n=nn;
+    for(i=0;i<NL;i++){
+      var L=ld[i];
+      if(L<=0) continue;
+      var up;
+      up=0.00062*L*hairF*R.p[i]/(R.p[i]+22); up=Math.min(up,R.p[i]); R.p[i]-=up; cap.p+=up;
+      up=0.00150*L*R.n[i]/(R.n[i]+14);       up=Math.min(up,R.n[i]); R.n[i]-=up; cap.n+=up;
+      up=0.00135*L*m.radial*R.w[i]/(R.w[i]+16); up=Math.min(up,R.w[i]); R.w[i]-=up; cap.w+=up;
+    }
+    series.push({w:cap.w,p:cap.p,n:cap.n});
+    if(d%2===0) hist.push({w:R.w.slice(),p:R.p.slice(),n:R.n.slice()});
+  }
+  var sc=function(v){return Math.max(0,Math.min(100,v/1000*100*1.35));};
+  return {m:m,R0:R0,hist:hist,series:series,
+          water:sc(cap.w),phos:sc(cap.p),nitro:sc(cap.n)};
+}
+function score(r,sk){
   var w=SCEN.filter(function(x){return x.k===sk;})[0].w;
-  return Math.round(m.water*w.w + m.phos*w.p + m.nitro*w.n);
+  return Math.round(r.water*w.w+r.phos*w.p+r.nitro*w.n);
 }
-
-/* ------------------------------- feedback -------------------------------- */
-function feedback(s,m,sk){
-  var f=[];
-  var a=s.ang;
+/* ===================== feedback ========================================== */
+function feedback(s,r,sk){
+  var m=r.m,f=[],a=s.ang;
   if(sk==="dry"||sk==="lowN"){
-    if(a>55) f.push(["bad","angle","Too shallow for this season — your length is sitting where the "+(sk==="dry"?"water":"nitrate")+" has already gone."]);
-    else if(a<28) f.push(["good","angle","Steep. Length is going down, which is where the resource is."]);
+    if(a>55) f.push(["bad","angle","Too shallow. Look at the profile — the "+(sk==="dry"?"water":"nitrate")+" you needed is still sitting below your deepest root."]);
+    else if(a<28) f.push(["good","angle","Steep. Your length went where the resource actually is."]);
   }
   if(sk==="lowP"){
-    if(a<32) f.push(["bad","angle","Steep roots miss the phosphorus. P does not move — you have to go to it."]);
-    else if(a>55) f.push(["good","angle","Shallow. Topsoil foraging is exactly right for immobile P."]);
+    if(a<32) f.push(["bad","angle","Steep roots drive past the phosphorus. P does not move — you have to go to it."]);
+    else if(a>55) f.push(["good","angle","Shallow. Exactly right for an immobile nutrient."]);
   }
-  if(s.dia>1.35) f.push(["bad","diameter","A "+s.dia.toFixed(2)+" mm root costs "+(Math.pow(s.dia/0.9,2)).toFixed(1)+"× what a 0.9 mm one does per cm. You are buying thickness you may not need."]);
-  else if(s.dia<0.6) f.push(["warn","diameter","Very fine roots are cheap but buckle in hard or dry soil."]);
-  if(s.aer<8) f.push(["warn","aerenchyma","Almost no aerenchyma. You are paying to keep every cortical cell alive."]);
-  else if(s.aer>38) f.push(["warn","aerenchyma","Aerenchyma above ~38% starts to cut radial transport — you saved carbon and lost throughput ("+Math.round((1-m.radial)*100)+"% down)."]);
-  else f.push(["good","aerenchyma","Aerenchyma is doing real work: it is why you can afford "+m.length.toFixed(0)+" m of root."]);
-  if(s.ccs>42) f.push(["good","cell size","Large cortical cells — fewer cells per unit area, less cytoplasm to maintain (Chimungu et al. 2014)."]);
-  else if(s.ccs<20) f.push(["warn","cell size","Small cells mean more membrane and cytoplasm per mm² of cortex. Expensive."]);
-  if(s.cpw>2.4) f.push(["good","wall width","Thick walls displace respiring cytoplasm — lower respiration per cm (Sidhu et al. 2024)."]);
-  if(s.hair<0.25&&sk==="lowP") f.push(["bad","root hairs","No hairs, low P. Hairs are the cheapest phosphorus trait you have and you skipped them."]);
+  if(r.phos<45&&s.hair<0.3) f.push(["bad","root hairs","No hairs. Watch the orange dots: your roots pass right through them without clearing the depletion zone."]);
   else if(s.hair>1.0) f.push(["good","root hairs","Long hairs — a lot of depletion-zone volume for very little carbon."]);
-  if(s.nax>16) f.push(["warn","axial roots","At "+s.nax+" axial roots each one gets only "+(m.length/s.nax).toFixed(1)+" m. They are also competing with each other."]);
-  else if(s.nax<5) f.push(["warn","axial roots","Few axes: deep, but you are sampling very little soil laterally."]);
-  if(m.depth<55&&(sk==="dry"||sk==="lowN")) f.push(["bad","depth","Only "+m.depth.toFixed(0)+" cm. Steepen the angle, thin the roots, or free up carbon to buy more length."]);
-  if(m.depth>105) f.push(["good","depth","Reaching "+m.depth.toFixed(0)+" cm — deep enough to track a receding wetting front."]);
+  if(s.dia>1.35) f.push(["bad","diameter","A "+s.dia.toFixed(2)+" mm root costs "+Math.pow(s.dia/0.9,2).toFixed(1)+"× what a 0.9 mm one does per cm."]);
+  if(s.aer<8) f.push(["warn","aerenchyma","Almost no aerenchyma — you are paying to keep every cortical cell alive."]);
+  else if(s.aer>38) f.push(["warn","aerenchyma","Above ~38% you start losing radial transport: water capture is down "+Math.round((1-m.radial)*100)+"%."]);
+  else f.push(["good","aerenchyma","Aerenchyma is why you can afford "+m.length.toFixed(0)+" m of root."]);
+  if(s.ccs>42) f.push(["good","cell size","Large cortical cells — less cytoplasm to maintain (Chimungu et al. 2014)."]);
+  else if(s.ccs<20) f.push(["warn","cell size","Small cells: more membrane and cytoplasm per mm² of cortex. Expensive."]);
+  if(s.cpw>2.4) f.push(["good","wall width","Thick walls displace respiring cytoplasm (Sidhu et al. 2024)."]);
+  if(s.nax>16) f.push(["warn","axial roots",s.nax+" axes share the budget — each gets only "+(m.length/s.nax).toFixed(1)+" m."]);
+  if(m.depth<55&&(sk==="dry"||sk==="lowN")) f.push(["bad","depth","Only "+m.depth.toFixed(0)+" cm. Steepen, thin the roots, or free up carbon."]);
+  if(m.depth>105) f.push(["good","depth","Reaching "+m.depth.toFixed(0)+" cm — deep enough to follow a receding front."]);
   return f;
 }
-
-/* ------------------------------ UI: sliders ------------------------------ */
+/* ===================== UI: sliders and scenarios ========================= */
 var slHost=$("#sliders");
 TRAITS.forEach(function(t){
   var d=document.createElement("div"); d.className="sl";
@@ -316,301 +353,369 @@ TRAITS.forEach(function(t){
     '<div class="hint">'+t.h+'</div>';
   slHost.appendChild(d);
   d.querySelector("input").addEventListener("input",function(e){
-    S[t.k]=parseFloat(e.target.value); render();});
+    S[t.k]=parseFloat(e.target.value); recompute(); });
 });
 var scHost=$("#scen");
 SCEN.forEach(function(x){
   var b=document.createElement("button");
-  b.setAttribute("aria-pressed", x.k===scen);
+  b.setAttribute("aria-pressed",x.k===scen);
   b.innerHTML='<span class="n">'+x.n+'</span><span class="d">'+x.d+'</span>'+
     '<span class="w" style="color:'+x.c+'">optimises '+
-    (x.k==="mix"?"40% water · 35% P · 25% N":x.k==="dry"?"water capture":x.k==="lowP"?"P capture":"N capture")+'</span>';
-  b.addEventListener("click",function(){scen=x.k;
+    (x.k==="mix"?"40% water · 35% P · 25% N":x.k==="dry"?"water capture":
+     x.k==="lowP"?"P capture":"N capture")+'</span>';
+  b.addEventListener("click",function(){ scen=x.k;
     Array.prototype.forEach.call(scHost.children,function(c,i){
-      c.setAttribute("aria-pressed", SCEN[i].k===scen);});
-    render();});
+      c.setAttribute("aria-pressed",SCEN[i].k===scen);});
+    recompute(); });
   scHost.appendChild(b);
 });
 
-/* ------------------------------ drawing ---------------------------------- */
-var NS="http://www.w3.org/2000/svg";
-function E(t,a,p){var n=document.createElementNS(NS,t);for(var k in a)if(a[k]!=null)n.setAttribute(k,a[k]);
- if(p)p.appendChild(n);return n;}
-function clear(n){while(n.firstChild)n.removeChild(n.firstChild);}
-function seeded(a){return function(){a|=0;a=a+0x6D2B79F5|0;var x=Math.imul(a^a>>>15,1|a);
- x=x+Math.imul(x^x>>>7,61|x)^x;return ((x^x>>>14)>>>0)/4294967296;};}
+/* ===================== the field ========================================= */
+var cv=$("#field"),X=cv.getContext("2d"),W=1120,H=760;
+var X0=90,X1=1030,TOP=64,BOT=724,PZ=(BOT-TOP)/160;
+function co(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+var CO={};
+function readCO(){["water","phos","nitro","soil1","soil2","soil3","root","ink","ink2","ink3",
+  "rule","panel"].forEach(function(k){CO[k]=co("--"+k);});}
+readCO(); matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){
+  readCO(); draw(); });
+function Z(cm){return TOP+cm*PZ;}
+var rndS=1;
+function rnd(){rndS=(rndS*1664525+1013904223)&0x7fffffff;return rndS/0x7fffffff;}
 
-function drawSystem(m){
-  var sv=$("#sys"); clear(sv);
-  var X0=260, Y0=54, PXcm=2.35;                // 160 cm → 376 px
-  [[0,15,"var(--soil1)"],[15,45,"var(--soil2)"],[45,160,"var(--soil3)"]].forEach(function(b){
-    E("rect",{x:26,y:Y0+b[0]*PXcm,width:468,height:(b[1]-b[0])*PXcm,fill:b[2],opacity:.75},sv);});
-  [0,20,40,60,80,100,120,140,160].forEach(function(cm){
-    var t=E("text",{x:20,y:Y0+cm*PXcm+4,"font-size":9,fill:"var(--ink3)","text-anchor":"end",
-      "font-family":"IBM Plex Mono, monospace"},sv); t.textContent=cm;});
-  var t0=E("text",{x:20,y:Y0-10,"font-size":9,fill:"var(--ink3)","text-anchor":"end",
-    "font-family":"IBM Plex Mono, monospace"},sv); t0.textContent="cm";
-  E("line",{x1:26,y1:Y0,x2:494,y2:Y0,stroke:"var(--ink3)","stroke-width":1},sv);
-  E("path",{d:"M "+X0+" "+Y0+" L "+X0+" 22 M "+X0+" 30 L "+(X0-14)+" 16 M "+X0+" 32 L "+(X0+14)+" 18",
-    stroke:"var(--nitro)","stroke-width":2.4,fill:"none","stroke-linecap":"round"},sv);
-  var n=Math.round(S.nax), a=S.ang*Math.PI/180, rr=seeded(11);
-  var lenPx=Math.min(376, m.depth*PXcm/Math.max(.25,Math.cos(a)));
-  var w=Math.max(1.1, 1.0+ (S.dia-0.4)*2.2);
-  for(var i=0;i<n;i++){
-    var side=(i%2)?1:-1, k=Math.floor(i/2);
-    var jitter=(rr()-0.5)*0.30;
-    var ai=a*(0.55+0.45*(k+1)/Math.ceil(n/2))+jitter;
-    var ex=X0+Math.sin(ai)*lenPx*side, ey=Y0+Math.cos(ai)*lenPx;
-    var cx=X0+Math.sin(ai)*lenPx*0.62*side, cy=Y0+Math.cos(ai)*lenPx*0.17;
-    var pa=E("path",{d:"M "+X0+" "+Y0+" Q "+cx.toFixed(1)+" "+cy.toFixed(1)+" "+ex.toFixed(1)+" "+ey.toFixed(1),
-      fill:"none",stroke:"var(--root)","stroke-width":w,"stroke-linecap":"round"},sv);
-    var L=pa.getTotalLength(), nl=Math.round(L/28*Math.max(.6,S.lat/2.2));
-    for(var j=1;j<nl;j++){
-      var t=j/nl, p1=pa.getPointAtLength(L*t), p2=pa.getPointAtLength(Math.min(L,L*t+2));
-      var dx=p2.x-p1.x, dy=p2.y-p1.y, mm2=Math.hypot(dx,dy)||1;
-      var nx=-dy/mm2, ny=dx/mm2, ln=(5+rr()*9)*(0.5+S.lat/9);
-      var sd=(j%2)?1:-1;
-      E("line",{x1:p1.x,y1:p1.y,x2:p1.x+nx*ln*sd,y2:p1.y+ny*ln*sd,stroke:"var(--root)",
-        "stroke-width":Math.max(.7,w*0.34),"stroke-linecap":"round",opacity:.8},sv);
+var PART={w:[],p:[],n:[]}, N0={w:[],p:[],n:[]}, RES=null, shown="all";
+function makeParticles(R0){
+  rndS=17; PART={w:[],p:[],n:[]}; N0={w:[],p:[],n:[]};
+  ["w","p","n"].forEach(function(t){
+    var tot=R0[t].reduce(function(a,b){return a+b;},0);
+    for(var i=0;i<NL;i++){
+      var k=Math.round(R0[t][i]/tot*300);
+      N0[t].push(k); PART[t].push([]);
+      for(var j=0;j<k;j++)
+        PART[t][i].push({x:X0+14+rnd()*(X1-X0-28), z:(i+rnd())*DZ});
     }
-  }
-  var dY=Y0+Math.min(376,m.depth*PXcm);
-  E("line",{x1:26,y1:dY,x2:494,y2:dY,stroke:"var(--ink)","stroke-width":1,"stroke-dasharray":"4 4",
-    opacity:.6},sv);
-  var dt=E("text",{x:490,y:dY-6,"font-size":10,fill:"var(--ink)","text-anchor":"end",
-    "font-family":"IBM Plex Mono, monospace"},sv);
-  dt.textContent="rooting depth "+m.depth.toFixed(0)+" cm";
+  });
 }
-
+function draw(){
+  X.clearRect(0,0,W,H);
+  X.fillStyle=CO.panel; X.fillRect(0,0,W,H);
+  var g=X.createLinearGradient(0,TOP,0,BOT);
+  g.addColorStop(0,CO.soil1); g.addColorStop(.35,CO.soil2); g.addColorStop(1,CO.soil3);
+  X.fillStyle=g; X.fillRect(X0,TOP,X1-X0,BOT-TOP);
+  X.strokeStyle=CO.rule; X.lineWidth=1; X.strokeRect(X0+.5,TOP+.5,X1-X0-1,BOT-TOP-1);
+  X.font="500 13px 'IBM Plex Mono', monospace"; X.fillStyle=CO.ink3; X.textAlign="right";
+  for(var cm=0;cm<=160;cm+=20){
+    X.fillText(cm, X0-10, Z(cm)+4);
+    X.globalAlpha=.25; X.beginPath(); X.moveTo(X0,Z(cm)); X.lineTo(X1,Z(cm));
+    X.strokeStyle=CO.ink3; X.stroke(); X.globalAlpha=1;
+  }
+  X.fillText("cm", X0-10, TOP-14); X.textAlign="left";
+  // resources
+  var Rn=RES? (RES.frame||RES.R0) : null;
+  [["w",CO.water],["p",CO.phos],["n",CO.nitro]].forEach(function(t){
+    if(shown!=="all" && shown!==({w:"water",p:"p",n:"n"})[t[0]]) return;
+    X.fillStyle=t[1];
+    for(var i=0;i<NL;i++){
+      var keep=N0[t[0]][i];
+      if(Rn && RES.R0[t[0]][i]>0)
+        keep=Math.round(N0[t[0]][i]*Math.max(0,Rn[t[0]][i]/RES.R0[t[0]][i]));
+      var arr=PART[t[0]][i];
+      for(var j=0;j<Math.min(keep,arr.length);j++){
+        X.globalAlpha=.88;
+        X.beginPath(); X.arc(arr[j].x, Z(arr[j].z), 3.6, 0, 6.3); X.fill();
+      }
+    }
+  });
+  X.globalAlpha=1;
+  // roots
+  if(RES){
+    var s=S, m=RES.m, prog=RES.prog===undefined?1:RES.prog;
+    var depth=m.depth*Math.min(1,prog*DAYS/85);
+    var n=Math.round(s.nax), a=s.ang*Math.PI/180;
+    var lenPx=depth*PZ/Math.max(.25,Math.cos(a));
+    rndS=5;
+    X.lineCap="round";
+    for(var i2=0;i2<n;i2++){
+      var side=(i2%2)?1:-1, k2=Math.floor(i2/2);
+      var ai=a*(0.55+0.45*(k2+1)/Math.ceil(n/2))+(rnd()-0.5)*0.3;
+      var bx=560, by=TOP;
+      var ex=bx+Math.sin(ai)*lenPx*side, ey=by+Math.cos(ai)*lenPx;
+      var cx=bx+Math.sin(ai)*lenPx*.62*side, cy=by+Math.cos(ai)*lenPx*.17;
+      X.strokeStyle=CO.root; X.lineWidth=Math.max(1.4,1.2+(s.dia-.4)*2.4);
+      X.beginPath(); X.moveTo(bx,by); X.quadraticCurveTo(cx,cy,ex,ey); X.stroke();
+      var nl=Math.round(lenPx/34*Math.max(.6,s.lat/2.2));
+      for(var j2=1;j2<nl;j2++){
+        var t2=j2/nl, mt=1-t2;
+        var px=mt*mt*bx+2*mt*t2*cx+t2*t2*ex, py=mt*mt*by+2*mt*t2*cy+t2*t2*ey;
+        var dx=2*mt*(cx-bx)+2*t2*(ex-cx), dy=2*mt*(cy-by)+2*t2*(ey-cy);
+        var mm=Math.hypot(dx,dy)||1, nx=-dy/mm, ny=dx/mm;
+        var ln=(6+rnd()*11)*(0.5+s.lat/9), sd=(j2%2)?1:-1;
+        X.lineWidth=Math.max(.8,1.0); X.globalAlpha=.85;
+        X.beginPath(); X.moveTo(px,py); X.lineTo(px+nx*ln*sd,py+ny*ln*sd); X.stroke();
+        X.globalAlpha=1;
+      }
+    }
+    X.setLineDash([6,6]); X.strokeStyle=CO.ink; X.globalAlpha=.55; X.lineWidth=1.5;
+    X.beginPath(); X.moveTo(X0,Z(depth)); X.lineTo(X1,Z(depth)); X.stroke();
+    X.setLineDash([]); X.globalAlpha=1;
+    X.fillStyle=CO.ink; X.font="500 13px 'IBM Plex Mono', monospace"; X.textAlign="right";
+    X.fillText("rooting depth "+depth.toFixed(0)+" cm", X1-8, Z(depth)-8); X.textAlign="left";
+  }
+}
+/* playback */
+var play=null;
+function runSeason(){
+  if(play) cancelAnimationFrame(play);
+  var i=0, frames=RES.hist.length;
+  (function step(){
+    RES.frame=RES.hist[Math.min(i,frames-1)];
+    RES.prog=(i+1)/frames;
+    $("#dayTxt").textContent="day "+Math.min(DAYS,Math.round((i+1)/frames*DAYS))+" / "+DAYS;
+    draw(); drawCurves(Math.min(i,frames-1)/frames);
+    i++;
+    if(i<frames) play=requestAnimationFrame(step); else play=null;
+  })();
+}
+/* ===================== capture curves ==================================== */
+function drawCurves(frac){
+  var sv=$("#curves"); while(sv.firstChild) sv.removeChild(sv.firstChild);
+  var NSNS="http://www.w3.org/2000/svg";
+  function E(t,a){var n=document.createElementNS(NSNS,t);for(var k in a)n.setAttribute(k,a[k]);
+    sv.appendChild(n);return n;}
+  var x0=34,x1=292,y0=18,y1=150;
+  E("line",{x1:x0,y1:y1,x2:x1,y2:y1,stroke:"var(--rule)"});
+  E("line",{x1:x0,y1:y0,x2:x0,y2:y1,stroke:"var(--rule)"});
+  [0,50,100].forEach(function(v){
+    var y=y1-(v/100)*(y1-y0);
+    E("line",{x1:x0,y1:y,x2:x1,y2:y,stroke:"var(--rule)","stroke-dasharray":"2 4",opacity:.7});
+    var t=E("text",{x:x0-6,y:y+4,"font-size":9,fill:"var(--ink3)","text-anchor":"end",
+      "font-family":"IBM Plex Mono, monospace"}); t.textContent=v;
+  });
+  var t2=E("text",{x:x0,y:12,"font-size":9,fill:"var(--ink3)",
+    "font-family":"IBM Plex Mono, monospace"}); t2.textContent="% of the pool captured";
+  var t3=E("text",{x:x1,y:166,"font-size":9,fill:"var(--ink3)","text-anchor":"end",
+    "font-family":"IBM Plex Mono, monospace"}); t3.textContent="day 120";
+  if(!RES) return;
+  var mx=Math.max(1,RES.series.length-1), upto=Math.round(frac*mx);
+  [["w","var(--water)","water"],["p","var(--phos)","P"],["n","var(--nitro)","N"]]
+   .forEach(function(c,ci){
+    var d="";
+    for(var i=0;i<=upto;i++){
+      var v=RES.series[i][c[0]]/1000*100*1.35;
+      d+=(i?" L ":"M ")+(x0+i/mx*(x1-x0)).toFixed(1)+" "+
+         (y1-Math.min(100,v)/100*(y1-y0)).toFixed(1);
+    }
+    if(d) E("path",{d:d,fill:"none",stroke:c[1],"stroke-width":2.2,"stroke-linecap":"round"});
+    var last=RES.series[upto][c[0]]/1000*100*1.35;
+    var ty=y1-Math.min(100,last)/100*(y1-y0);
+    var lb=E("text",{x:x1+2,y:Math.max(y0+8,Math.min(y1,ty))+3,"font-size":10,fill:c[1],
+      "text-anchor":"end","font-family":"IBM Plex Mono, monospace"});
+    lb.textContent=c[2]+" "+Math.round(Math.min(100,last));
+  });
+}
+/* ===================== cross-section ===================================== */
 function drawXS(m){
-  var sv=$("#xs"); clear(sv);
-  var cx=105, cy=105, R=Math.min(88, 34+S.dia*40);
-  var steleR=R*0.30;
-  E("circle",{cx:cx,cy:cy,r:R,fill:"var(--cort)",stroke:"var(--cline)","stroke-width":1.5},sv);
-  var cells=Math.max(5,Math.round((R-steleR)/(S.ccs*0.115)));
-  var rr=seeded(5), aerCells=[];
+  var sv=$("#xs"); while(sv.firstChild) sv.removeChild(sv.firstChild);
+  var NSNS="http://www.w3.org/2000/svg";
+  function E(t,a){var n=document.createElementNS(NSNS,t);for(var k in a)n.setAttribute(k,a[k]);
+    sv.appendChild(n);return n;}
+  var cx=100,cy=100,R=Math.min(84,32+S.dia*38),steleR=R*.30;
+  E("circle",{cx:cx,cy:cy,r:R,fill:"var(--cort)",stroke:"var(--cline)","stroke-width":1.5});
+  var cells=Math.max(5,Math.round((R-steleR)/(S.ccs*.115)));
+  rndS=5; var aer=[];
   for(var ring=1;ring<=cells;ring++){
     var r=steleR+(R-steleR)*ring/cells;
-    E("circle",{cx:cx,cy:cy,r:r,fill:"none",stroke:"var(--cline)","stroke-width":Math.max(.6,S.cpw*0.7),
-      opacity:.75},sv);
-    var nseg=Math.max(8,Math.round(2*Math.PI*r/(S.ccs*0.115)));
+    E("circle",{cx:cx,cy:cy,r:r,fill:"none",stroke:"var(--cline)",
+      "stroke-width":Math.max(.6,S.cpw*.7),opacity:.75});
+    var nseg=Math.max(8,Math.round(2*Math.PI*r/(S.ccs*.115)));
     for(var q=0;q<nseg;q++){
-      var th=q/nseg*Math.PI*2;
-      E("line",{x1:cx+Math.cos(th)*(r-(R-steleR)/cells),y1:cy+Math.sin(th)*(r-(R-steleR)/cells),
-        x2:cx+Math.cos(th)*r,y2:cy+Math.sin(th)*r,stroke:"var(--cline)",
-        "stroke-width":Math.max(.6,S.cpw*0.7),opacity:.75},sv);
-      if(ring>1&&ring<cells&&rr()<S.aer/100)
-        aerCells.push([cx+Math.cos(th+Math.PI/nseg)*(r-(R-steleR)/cells/2),
-                       cy+Math.sin(th+Math.PI/nseg)*(r-(R-steleR)/cells/2),(R-steleR)/cells*0.42]);
+      var th=q/nseg*Math.PI*2, ri=r-(R-steleR)/cells;
+      E("line",{x1:cx+Math.cos(th)*ri,y1:cy+Math.sin(th)*ri,x2:cx+Math.cos(th)*r,
+        y2:cy+Math.sin(th)*r,stroke:"var(--cline)","stroke-width":Math.max(.6,S.cpw*.7),opacity:.75});
+      if(ring>1&&ring<cells&&rnd()<S.aer/100)
+        aer.push([cx+Math.cos(th+Math.PI/nseg)*(r-(R-steleR)/cells/2),
+                  cy+Math.sin(th+Math.PI/nseg)*(r-(R-steleR)/cells/2),(R-steleR)/cells*.42]);
     }
   }
-  aerCells.forEach(function(c){E("circle",{cx:c[0].toFixed(1),cy:c[1].toFixed(1),r:c[2].toFixed(1),
-    fill:"var(--aer)"},sv);});
-  E("circle",{cx:cx,cy:cy,r:steleR,fill:"var(--stele)"},sv);
-  var lbl=[["diameter",S.dia.toFixed(2)+" mm"],["aerenchyma",Math.round(S.aer)+"%"],
-           ["cell size",Math.round(S.ccs)+" µm"],["wall width",S.cpw.toFixed(1)+" µm"],
-           ["cost",m.costCm.toFixed(3)+" C / cm"]];
-  lbl.forEach(function(l,i){
-    var y=44+i*30;
-    var a1=E("text",{x:235,y:y,"font-size":10,fill:"var(--ink3)",
-      "font-family":"IBM Plex Mono, monospace"},sv); a1.textContent=l[0];
-    var a2=E("text",{x:235,y:y+15,"font-size":13,fill:"var(--ink)",
-      "font-family":"IBM Plex Mono, monospace"},sv); a2.textContent=l[1];
+  aer.forEach(function(c){E("circle",{cx:c[0].toFixed(1),cy:c[1].toFixed(1),r:c[2].toFixed(1),
+    fill:"var(--aer)"});});
+  E("circle",{cx:cx,cy:cy,r:steleR,fill:"var(--stele)"});
+  [["diameter",S.dia.toFixed(2)+" mm"],["aerenchyma",Math.round(S.aer)+"%"],
+   ["cell size",Math.round(S.ccs)+" µm"],["wall width",S.cpw.toFixed(1)+" µm"],
+   ["cost",m.costCm.toFixed(3)+" C / cm"]].forEach(function(l,i){
+    var y=34+i*30;
+    var a=E("text",{x:230,y:y,"font-size":10,fill:"var(--ink3)",
+      "font-family":"IBM Plex Mono, monospace"}); a.textContent=l[0];
+    var b=E("text",{x:230,y:y+15,"font-size":13,fill:"var(--ink)",
+      "font-family":"IBM Plex Mono, monospace"}); b.textContent=l[1];
   });
-  E("line",{x1:cx-R,y1:200,x2:cx+R,y2:200,stroke:"var(--ink3)","stroke-width":1.5},sv);
-  var sc=E("text",{x:cx,y:194,"font-size":9,fill:"var(--ink3)","text-anchor":"middle",
-    "font-family":"IBM Plex Mono, monospace"},sv); sc.textContent=S.dia.toFixed(2)+" mm";
 }
-
-/* ------------------------------- render ---------------------------------- */
-function render(){
+/* ===================== recompute ========================================= */
+var deb=null;
+function recompute(){
   TRAITS.forEach(function(t){
-    var el=document.getElementById("v_"+t.k);
     var v=S[t.k];
-    el.textContent=(t.st<1? v.toFixed(t.st<0.1?2:1) : Math.round(v))+t.u;
+    document.getElementById("v_"+t.k).textContent=
+      (t.st<1? v.toFixed(t.st<0.1?2:1) : Math.round(v))+t.u;
   });
-  var m=model(S), sk=scen, sc=score(m,sk);
-  var used=Math.min(100, 100);
-  $("#budTxt").textContent="100 C buys "+m.length.toFixed(0)+" m of root";
-  var frac=Math.max(.05,Math.min(1, m.length/240));
-  $("#budBar").querySelector("i").style.width=(frac*100)+"%";
-  var R=$("#reads"); clear(R);
-  [["total root length", m.length.toFixed(0)+" m"],
-   ["rooting depth", m.depth.toFixed(0)+" cm"],
-   ["topsoil density", m.topsoil.toFixed(2)+" cm/cm³"],
-   ["cost per cm", m.costCm.toFixed(3)+" C"]].forEach(function(p){
-    var d=document.createElement("div");
-    d.innerHTML='<div class="k">'+p[0]+'</div><div class="v">'+p[1]+'</div>'; R.appendChild(d);});
-  drawSystem(m); drawXS(m);
-  $("#scoreBig").textContent=sc;
-  $("#scoreTag").textContent="Score · "+SCEN.filter(function(x){return x.k===sk;})[0].n;
-  [["w",m.water],["p",m.phos],["n",m.nitro]].forEach(function(p){
-    $("#"+p[0]+"V").textContent=Math.round(p[1]);
-    $("#"+p[0]+"B").style.width=p[1]+"%";});
-  var F=$("#fb"); clear(F);
-  feedback(S,m,sk).forEach(function(f){
-    var li=document.createElement("li"); li.className=f[0];
-    li.innerHTML='<span class="m">'+f[1]+'</span><span>'+f[2]+'</span>'; F.appendChild(li);});
+  clearTimeout(deb); deb=setTimeout(function(){
+    RES=season(S); RES.frame=null; RES.prog=1;
+    if(!PART.w.length) makeParticles(RES.R0);
+    var m=RES.m,sc=score(RES,scen);
+    $("#budTxt").textContent="100 C buys "+m.length.toFixed(0)+" m of root";
+    $("#budBar").style.width=Math.max(5,Math.min(100,m.length/240*100))+"%";
+    var R=$("#reads"); R.innerHTML="";
+    [["total root length",m.length.toFixed(0)+" m"],["rooting depth",m.depth.toFixed(0)+" cm"],
+     ["topsoil density",m.topsoil.toFixed(2)+" cm/cm³"],["cost per cm",m.costCm.toFixed(3)+" C"]]
+     .forEach(function(p){var d=document.createElement("div");
+      d.innerHTML='<div class="k">'+p[0]+'</div><div class="v">'+p[1]+'</div>'; R.appendChild(d);});
+    $("#scoreBig").textContent=sc;
+    $("#scoreTag").textContent="Score · "+SCEN.filter(function(x){return x.k===scen;})[0].n;
+    var F=$("#fb"); F.innerHTML="";
+    feedback(S,RES,scen).forEach(function(f){
+      var li=document.createElement("li"); li.className=f[0];
+      li.innerHTML='<span class="m">'+f[1]+'</span><span>'+f[2]+'</span>'; F.appendChild(li);});
+    drawXS(m); runSeason();
+  },140);
 }
-
-/* --------------------------- codes & class board ------------------------- */
+$("#btnRun").addEventListener("click",function(){ if(RES) runSeason(); });
+Array.prototype.forEach.call(document.querySelectorAll(".res"),function(b){
+  b.addEventListener("click",function(){
+    shown=b.dataset.r;
+    Array.prototype.forEach.call(document.querySelectorAll(".res"),function(x){
+      x.setAttribute("aria-pressed",x===b);});
+    draw();
+  });
+});
+/* ===================== codes and class board ============================= */
 var A36="0123456789abcdefghijklmnopqrstuvwxyz";
 function enc(){
-  var out="";
+  var o="";
   TRAITS.forEach(function(t){
-    var f=(S[t.k]-t.lo)/(t.hi-t.lo);
-    out+=A36[Math.max(0,Math.min(35,Math.round(f*35)))];
-  });
-  var si=SCEN.map(function(x){return x.k;}).indexOf(scen);
-  return (si+1)+"-"+out;
+    o+=A36[Math.max(0,Math.min(35,Math.round((S[t.k]-t.lo)/(t.hi-t.lo)*35)))];});
+  return (SCEN.map(function(x){return x.k;}).indexOf(scen)+1)+"-"+o;
 }
 function dec(code){
   var m=/^([1-4])-([0-9a-z]{8})$/.exec(code.trim().toLowerCase());
   if(!m) return null;
   var s={};
-  TRAITS.forEach(function(t,i){
-    var f=A36.indexOf(m[2][i])/35;
-    s[t.k]=t.lo+f*(t.hi-t.lo);
+  TRAITS.forEach(function(t,i){ s[t.k]=t.lo+A36.indexOf(m[2][i])/35*(t.hi-t.lo); });
+  return {s:s,scen:SCEN[+m[1]-1].k};
+}
+var BOARD=[];
+function addRows(lines){
+  lines.forEach(function(ln){
+    ln=ln.trim(); if(!ln) return;
+    var i=ln.lastIndexOf(":"), who=i>0?ln.slice(0,i):"anon", code=i>0?ln.slice(i+1):ln;
+    var d=dec(code); if(!d) return;
+    var r=season(d.s);
+    BOARD=BOARD.filter(function(x){return !(x.who===who&&x.code===code);});
+    BOARD.push({who:who,code:code,scen:d.scen,depth:r.m.depth,topsoil:r.m.topsoil,
+                score:score(r,d.scen)});
   });
-  return {s:s, scen:SCEN[+m[1]-1].k};
+  drawBoard();
+}
+function saveBoard(){ try{localStorage.setItem("rootArchitectBoard",
+  JSON.stringify(BOARD.map(function(r){return r.who+":"+r.code;})));}catch(e){} }
+function loadBoard(){ try{var v=JSON.parse(localStorage.getItem("rootArchitectBoard")||"[]");
+  if(v.length) addRows(v);}catch(e){} }
+function drawBoard(){
+  var tb=$("#board").querySelector("tbody"); tb.innerHTML="";
+  BOARD.slice().sort(function(a,b){return b.score-a.score;}).forEach(function(r){
+    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>"+r.who+"</td><td style='color:"+c.c+"'>"+c.n+"</td>"+
+      "<td class='num'>"+r.depth.toFixed(0)+" cm</td><td class='num'>"+r.topsoil.toFixed(2)+
+      "</td><td class='num'>"+r.score+"</td>";
+    tb.appendChild(tr);
+  });
+  var sv=$("#scatter"); while(sv.firstChild) sv.removeChild(sv.firstChild);
+  var NSNS="http://www.w3.org/2000/svg";
+  function E(t,a){var n=document.createElementNS(NSNS,t);for(var k in a)n.setAttribute(k,a[k]);
+    sv.appendChild(n);return n;}
+  var PX=function(v){return 70+Math.min(1,v/7)*520;},
+      PY=function(v){return 400-Math.min(1,v/160)*350;};
+  E("line",{x1:70,y1:400,x2:600,y2:400,stroke:"var(--rule)"});
+  E("line",{x1:70,y1:50,x2:70,y2:400,stroke:"var(--rule)"});
+  [0,40,80,120,160].forEach(function(v){
+    E("line",{x1:70,y1:PY(v),x2:600,y2:PY(v),stroke:"var(--rule)","stroke-dasharray":"2 5",opacity:.7});
+    var t=E("text",{x:62,y:PY(v)+4,"font-size":10,fill:"var(--ink3)","text-anchor":"end",
+      "font-family":"IBM Plex Mono, monospace"}); t.textContent=v;});
+  [0,2,4,6].forEach(function(v){
+    var t=E("text",{x:PX(v),y:420,"font-size":10,fill:"var(--ink3)","text-anchor":"middle",
+      "font-family":"IBM Plex Mono, monospace"}); t.textContent=v;});
+  var yl=E("text",{x:70,y:38,"font-size":11,fill:"var(--ink2)",
+    "font-family":"IBM Plex Mono, monospace"}); yl.textContent="rooting depth (cm)";
+  var xl=E("text",{x:600,y:442,"font-size":11,fill:"var(--ink2)","text-anchor":"end",
+    "font-family":"IBM Plex Mono, monospace"}); xl.textContent="topsoil root density (cm/cm³) →";
+  SCEN.forEach(function(c,i){
+    E("circle",{cx:80+i*140,cy:452,r:5,fill:c.c});
+    var t=E("text",{x:92+i*140,y:456,"font-size":10,fill:"var(--ink2)",
+      "font-family":"IBM Plex Mono, monospace"}); t.textContent=c.n;});
+  if(!BOARD.length){
+    var e=E("text",{x:335,y:225,"font-size":13,fill:"var(--ink3)","text-anchor":"middle",
+      "font-family":"IBM Plex Mono, monospace"});
+    e.textContent="no designs yet — lock one in, or paste the class codes"; return;
+  }
+  BOARD.forEach(function(r){
+    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
+    E("circle",{cx:PX(r.topsoil),cy:PY(r.depth),r:7,fill:c.c,stroke:"var(--panel)","stroke-width":2});
+    var t=E("text",{x:PX(r.topsoil),y:PY(r.depth)-12,"font-size":10,fill:"var(--ink2)",
+      "text-anchor":"middle","font-family":"IBM Plex Mono, monospace"}); t.textContent=r.who;});
 }
 $("#submit").addEventListener("click",function(){
   var who=($("#who").value||"anon").trim().slice(0,16).replace(/[:\n]/g,"");
   var code=who+":"+enc();
   $("#codeTxt").textContent=code; $("#codeBox").hidden=false;
-  var note=$("#submitNote"); note.hidden=false;
-  note.textContent="Paste that into the class chat. It encodes all eight traits and the season, so "
-    +"anyone can rebuild your root exactly.";
+  var n=$("#submitNote"); n.hidden=false;
+  n.textContent="Paste that into the class chat. It encodes all eight traits and the season.";
   addRows([code]); saveBoard();
 });
 $("#copyBtn").addEventListener("click",function(){
   navigator.clipboard&&navigator.clipboard.writeText($("#codeTxt").textContent);
-  $("#copyBtn").textContent="copied";
-  setTimeout(function(){$("#copyBtn").textContent="copy";},1400);
-});
-
-var BOARD=[];
-function addRows(lines){
-  lines.forEach(function(ln){
-    ln=ln.trim(); if(!ln) return;
-    var i=ln.lastIndexOf(":");
-    var who=i>0?ln.slice(0,i):"anon", code=i>0?ln.slice(i+1):ln;
-    var d=dec(code); if(!d) return;
-    var m=model(d.s);
-    BOARD=BOARD.filter(function(r){return !(r.who===who&&r.code===code);});
-    BOARD.push({who:who, code:code, scen:d.scen, depth:m.depth, topsoil:m.topsoil,
-                score:score(m,d.scen)});
-  });
-  drawBoard();
-}
-function saveBoard(){
-  try{localStorage.setItem("rootArchitectBoard",JSON.stringify(
-    BOARD.map(function(r){return r.who+":"+r.code;})));}catch(e){}
-}
-function loadBoard(){
-  try{var v=JSON.parse(localStorage.getItem("rootArchitectBoard")||"[]");
-    if(v.length) addRows(v);}catch(e){}
-}
-function drawBoard(){
-  var tb=$("#board").querySelector("tbody"); clear(tb);
-  BOARD.slice().sort(function(a,b){return b.score-a.score;}).forEach(function(r){
-    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
-    var tr=document.createElement("tr");
-    tr.innerHTML="<td>"+r.who+"</td><td style='color:"+c.c+"'>"+c.n+"</td>"+
-      "<td class='num'>"+r.depth.toFixed(0)+" cm</td>"+
-      "<td class='num'>"+r.topsoil.toFixed(2)+"</td>"+
-      "<td class='num'>"+r.score+"</td>";
-    tb.appendChild(tr);
-  });
-  var sv=$("#scatter"); clear(sv);
-  var X=function(v){return 70+Math.min(1,v/7)*520;},
-      Y=function(v){return 400-Math.min(1,v/160)*350;};
-  E("line",{x1:70,y1:400,x2:600,y2:400,stroke:"var(--rule)"},sv);
-  E("line",{x1:70,y1:50,x2:70,y2:400,stroke:"var(--rule)"},sv);
-  [0,40,80,120,160].forEach(function(v){
-    E("line",{x1:70,y1:Y(v),x2:600,y2:Y(v),stroke:"var(--rule)","stroke-dasharray":"2 5",opacity:.7},sv);
-    var t=E("text",{x:62,y:Y(v)+4,"font-size":10,fill:"var(--ink3)","text-anchor":"end",
-      "font-family":"IBM Plex Mono, monospace"},sv); t.textContent=v;});
-  [0,2,4,6].forEach(function(v){
-    var t=E("text",{x:X(v),y:420,"font-size":10,fill:"var(--ink3)","text-anchor":"middle",
-      "font-family":"IBM Plex Mono, monospace"},sv); t.textContent=v;});
-  var yl=E("text",{x:70,y:38,"font-size":11,fill:"var(--ink2)",
-    "font-family":"IBM Plex Mono, monospace"},sv); yl.textContent="rooting depth (cm)";
-  var xl=E("text",{x:600,y:442,"font-size":11,fill:"var(--ink2)","text-anchor":"end",
-    "font-family":"IBM Plex Mono, monospace"},sv); xl.textContent="topsoil root density (cm/cm³) →";
-  SCEN.forEach(function(c,i){
-    E("circle",{cx:80+i*140,cy:452,r:5,fill:c.c},sv);
-    var t=E("text",{x:92+i*140,y:456,"font-size":10,fill:"var(--ink2)",
-      "font-family":"IBM Plex Mono, monospace"},sv); t.textContent=c.n;});
-  if(!BOARD.length){
-    var e=E("text",{x:335,y:225,"font-size":13,fill:"var(--ink3)","text-anchor":"middle",
-      "font-family":"IBM Plex Mono, monospace"},sv);
-    e.textContent="no designs yet — lock one in, or paste the class codes";
-    return;
-  }
-  BOARD.forEach(function(r){
-    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
-    E("circle",{cx:X(r.topsoil),cy:Y(r.depth),r:7,fill:c.c,stroke:"var(--panel)","stroke-width":2},sv);
-    var t=E("text",{x:X(r.topsoil),y:Y(r.depth)-12,"font-size":10,fill:"var(--ink2)",
-      "text-anchor":"middle","font-family":"IBM Plex Mono, monospace"},sv);
-    t.textContent=r.who;
-  });
-}
+  this.textContent="copied"; var b=this; setTimeout(function(){b.textContent="copy";},1400);});
 $("#addBtn").addEventListener("click",function(){
-  addRows($("#paste").value.split("\n")); saveBoard(); $("#paste").value="";
-});
-$("#clearBtn").addEventListener("click",function(){
-  BOARD=[]; saveBoard(); drawBoard();
-});
-
-/* --------------------------------- tabs ---------------------------------- */
+  addRows($("#paste").value.split("\n")); saveBoard(); $("#paste").value="";});
+$("#clearBtn").addEventListener("click",function(){BOARD=[];saveBoard();drawBoard();});
 Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(b){
   b.addEventListener("click",function(){
     Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(x){
-      x.setAttribute("aria-selected", x===b);});
+      x.setAttribute("aria-selected",x===b);});
     Array.prototype.forEach.call(document.querySelectorAll(".pane"),function(p){
-      p.classList.toggle("on", p.id==="p-"+b.dataset.p);});
-  });
+      p.classList.toggle("on",p.id==="p-"+b.dataset.p);});});
 });
-
-/* ------------------------------ model text ------------------------------- */
-$("#modelText").innerHTML =
- '<h2 style="margin-top:1.1rem">Cost of a centimetre of root</h2>'+
- '<p style="font-family:IBM Plex Mono,monospace;font-size:.82rem;background:var(--sunk);'+
+$("#modelText").innerHTML=
+ '<h2 style="margin-top:1.1rem">1 · What a centimetre of root costs</h2>'+
+ '<p style="font-family:IBM Plex Mono,monospace;font-size:.8rem;background:var(--sunk);'+
  'padding:.7rem .8rem;border-radius:4px;color:var(--ink2);overflow-x:auto">'+
- 'living   = 1 − aerenchyma/100<br>'+
- 'cellPen  = (28 / cellSize)^0.55<br>'+
- 'wallPen  = (1.2 / wallWidth)^0.30<br>'+
- 'area     = π · (diameter/2)²<br>'+
- 'costCm   = 0.62·area·(0.30 + 0.70·living·cellPen·wallPen) + 0.030·laterals + 0.052·hairs + 0.10<br>'+
- 'length   = 100 / costCm</p>'+
- '<p style="color:var(--ink2);font-size:.9rem">The 0.30 term is the fraction of the cost that is '+
- 'structural and unavoidable; the rest is living tissue you can make cheaper. That single line is '+
- 'why aerenchyma, large cortical cells and thick cell walls all buy you more root.</p>'+
- '<h2 style="margin-top:1.3rem">Where that length ends up</h2>'+
- '<p style="font-family:IBM Plex Mono,monospace;font-size:.82rem;background:var(--sunk);'+
+ 'living  = 1 − aerenchyma/100<br>cellPen = (28 / cellSize)^0.55<br>'+
+ 'wallPen = (1.2 / wallWidth)^0.30<br>area    = π·(diameter/2)²<br>'+
+ 'costCm  = 0.62·area·(0.30 + 0.70·living·cellPen·wallPen) + 0.030·lat + 0.052·hairs + 0.10<br>'+
+ 'length  = 100 / costCm</p>'+
+ '<h2 style="margin-top:1.3rem">2 · Where that length goes</h2>'+
+ '<p style="font-family:IBM Plex Mono,monospace;font-size:.8rem;background:var(--sunk);'+
  'padding:.7rem .8rem;border-radius:4px;color:var(--ink2);overflow-x:auto">'+
- 'axialFrac= 0.16 / (1 + 0.16·laterals)         most length is lateral<br>'+
- 'perAxis  = length · axialFrac / axes<br>'+
- 'depth    = perAxis·100·cos(angle)·thickness   (capped 160 cm)<br>'+
- 'shallow  = 0.16 + 0.62·sin(angle)^1.25<br>'+
- 'topsoil  = length · shallow / 34              (cm root per cm³)<br>'+
+ 'axialFrac = 0.16 / (1 + 0.16·laterals)<br>'+
+ 'depth     = (length·axialFrac/axes)·100·cos(angle)·thickness   (cap 160 cm)<br>'+
+ 'λ         = 12 + 58·cos(angle)          how fast density falls with depth<br>'+
+ 'ld(z)     ∝ exp(−z / λ)   for z ≤ depth, else 0</p>'+
+ '<h2 style="margin-top:1.3rem">3 · The season — 120 days, 40 layers of 4 cm</h2>'+
+ '<p style="color:var(--ink2);font-size:.9rem">Roots extend to their full depth by day 85 and '+
+ 'their full length by day 95, so early in the season you only have topsoil. Nitrate moves down '+
+ '0.55 cm a day. Each day, in every layer:</p>'+
+ '<p style="font-family:IBM Plex Mono,monospace;font-size:.8rem;background:var(--sunk);'+
+ 'padding:.7rem .8rem;border-radius:4px;color:var(--ink2);overflow-x:auto">'+
+ 'uptake_P = 0.00062 · L · (1+1.9·hairs) · R/(R+22)<br>'+
+ 'uptake_N = 0.00150 · L · R/(R+14)<br>'+
+ 'uptake_W = 0.00135 · L · radial · R/(R+16)<br>'+
  'radial   = max(0.35, 1 − (aer/100)^1.4 · 1.25)</p>'+
- '<h2 style="margin-top:1.3rem">Capture</h2>'+
- '<p style="font-family:IBM Plex Mono,monospace;font-size:.82rem;background:var(--sunk);'+
- 'padding:.7rem .8rem;border-radius:4px;color:var(--ink2);overflow-x:auto">'+
- 'water = [58·(1 − e^(−depth/70)) + 0.14·min(length,200)] · radial<br>'+
- 'P     = 26·topsoil^0.75 + 15·hairs^0.7 + 0.05·min(length,300)<br>'+
- 'N     = 50·(1 − e^(−(depth−25)/58)) + 0.13·min(length,220), penalised above 14 axes</p>'+
- '<p style="color:var(--ink2);font-size:.9rem">Water saturates with depth because a deep root only '+
- 'helps until it reaches the water. P barely uses depth at all and leans on hairs. N sits in '+
- 'between and punishes crowding, because axial roots that grow side by side deplete the same '+
- 'nitrate.</p>'+
- '<p style="color:var(--ink3);font-size:.84rem;margin-top:1rem">Sources for the shapes of these '+
- 'relationships: Lynch 2013 (Steep, Cheap and Deep); Lynch 2019; Chimungu et al. 2014 (cortical '+
- 'cell size and respiration); Colombi et al. 2019; Sidhu et al. 2024 (cell wall width); '+
- 'Postma &amp; Lynch 2011 (aerenchyma).</p>';
+ '<p style="color:var(--ink2);font-size:.9rem">The Michaelis–Menten term is what makes depletion '+
+ 'matter: once a layer is stripped, more root there buys you almost nothing. That is why the '+
+ 'dots disappearing on the left are the whole point — and why phosphorus, which never refills '+
+ 'by mass flow, punishes a root system that arrives late.</p>'+
+ '<p style="color:var(--ink3);font-size:.83rem;margin-top:1rem">Shapes after: Lynch 2013; '+
+ 'Lynch 2019; Chimungu et al. 2014; Colombi et al. 2019; Sidhu et al. 2024; Postma &amp; Lynch 2011.</p>';
 
-loadBoard(); render();
+loadBoard(); recompute();
 })();
 </script>
