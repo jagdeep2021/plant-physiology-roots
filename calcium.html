@@ -1,0 +1,530 @@
+<title>The Calcium Bottleneck</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F2EFE7; --panel:#FCFBF7; --sunk:#E5E1D5; --ink:#1B1A15; --ink2:#565246; --ink3:#878273;
+  --rule:#D6D2C3;
+  --sky:#DCE7EE; --sky2:#C7DAE6; --soil1:#B49468; --soil2:#96784E; --soil3:#7A6040;
+  --ca:#1FA8C9; --strip:#C42A57; --leaf:#3C8B4C; --fruit:#CE3A2A; --xyl:#2C6E9E;
+  --vap:#7FB4CE; --tip:#26B37E; --root:#C9A464;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111310; --panel:#191C17; --sunk:#0D0F0B; --ink:#EAEDE4; --ink2:#A9B0A3; --ink3:#787F71;
+  --rule:#2A2E26;
+  --sky:#161E24; --sky2:#1B262E; --soil1:#3C3122; --soil2:#2F2719; --soil3:#241D13;
+  --ca:#49CDEA; --strip:#FF5C84; --leaf:#4FB863; --fruit:#EF5642; --xyl:#5C9ED0;
+  --vap:#6FA8C6; --tip:#3FD9A9; --root:#D2AA61;
+}}
+:root[data-theme="dark"]{
+  --bg:#111310; --panel:#191C17; --sunk:#0D0F0B; --ink:#EAEDE4; --ink2:#A9B0A3; --ink3:#787F71;
+  --rule:#2A2E26; --sky:#161E24; --sky2:#1B262E; --soil1:#3C3122; --soil2:#2F2719; --soil3:#241D13;
+  --ca:#49CDEA; --strip:#FF5C84; --leaf:#4FB863; --fruit:#EF5642; --xyl:#5C9ED0;
+  --vap:#6FA8C6; --tip:#3FD9A9; --root:#D2AA61;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;
+  line-height:1.55;font-size:15px}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 20px 64px}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.025em;
+  font-size:clamp(1.9rem,4vw,2.9rem);line-height:1;margin:0}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.03rem;margin:0 0 .45rem}
+.kick{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--strip);margin-bottom:.65rem}
+.lede{color:var(--ink2);max-width:72ch;margin:.7rem 0 0}
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(188px,1fr));gap:8px;margin:20px 0 14px}
+.scen button{font:inherit;text-align:left;background:var(--panel);border:1px solid var(--rule);
+  border-radius:5px;padding:.65rem .8rem;cursor:pointer;color:var(--ink2)}
+.scen button[aria-pressed="true"]{border-color:var(--strip);box-shadow:inset 0 0 0 1px var(--strip)}
+.scen .n{display:block;font-weight:600;color:var(--ink);font-size:.92rem;margin-bottom:.1rem}
+.scen .d{font-size:.76rem;line-height:1.3}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:16px;align-items:start}
+@media (max-width:940px){.main{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+canvas{display:block;width:100%;height:auto}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:5px;padding:13px 15px;
+  margin-bottom:12px}
+.tag{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:.55rem}
+.card p{margin:0;font-size:.85rem;color:var(--ink2)}
+.rd{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;
+  font-size:.78rem;padding:.28rem 0;border-top:1px solid var(--rule);
+  font-variant-numeric:tabular-nums}
+.rd:first-of-type{border-top:0}
+.rd b{font-weight:500;color:var(--ink)}
+.meter{margin-top:9px}
+.meter .row{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;
+  font-size:.7rem;color:var(--ink3);margin-bottom:3px}
+.bar{height:11px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:6px;transition:width .25s linear}
+.ctl{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+button.mini{font:inherit;font-size:.79rem;background:transparent;border:1px solid var(--rule);
+  border-radius:4px;padding:.34rem .68rem;cursor:pointer;color:var(--ink2)}
+button.mini[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button:focus-visible{outline:2px solid var(--ca);outline-offset:2px}
+.why{margin-top:22px;background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+  padding:20px 22px}
+.why p{color:var(--ink2);max-width:76ch;margin:0 0 .7rem;font-size:.93rem}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:5px;overflow:hidden;margin-top:14px}
+.grid3 div{background:var(--panel);padding:.85rem 1rem}
+.grid3 .q{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:.95rem;
+  color:var(--ink);margin-bottom:.25rem}
+.grid3 .a{font-size:.81rem;color:var(--ink3);line-height:1.42}
+</style>
+
+<div class="wrap">
+<p class="kick">4320 / 7320 · Plant Physiology · a simulation</p>
+<h1>The Calcium Bottleneck</h1>
+<p class="lede">Calcium travels in the cell walls and nowhere else. That means the Casparian strip
+stops it — everywhere except the few millimetres of root that have not built the strip yet. Run the
+scenarios and watch where it actually ends up.</p>
+
+<div class="scen" id="scen"></div>
+
+<div class="main">
+  <div class="stage">
+    <canvas id="cv" width="1120" height="720"></canvas>
+  </div>
+  <div>
+    <div class="card">
+      <span class="tag" id="scTag">Watch for</span>
+      <p id="scNote"></p>
+    </div>
+    <div class="card">
+      <span class="tag">Plant state</span>
+      <div class="rd"><span>growing root tips</span><b id="rTips">0</b></div>
+      <div class="rd"><span>air humidity</span><b id="rHum">0%</b></div>
+      <div class="rd"><span>vapour-pressure deficit</span><b id="rVpd">0 kPa</b></div>
+      <div class="rd"><span>transpiration</span><b id="rTr">0</b></div>
+      <div class="rd"><span>soil Ca²⁺</span><b id="rSoil">1.0×</b></div>
+      <div class="rd"><span>Ca²⁺ uptake rate</span><b id="rUp">0 / min</b></div>
+      <div class="meter"><div class="row"><span>fruit Ca²⁺</span><span id="fV">0%</span></div>
+        <div class="bar"><i id="fB" style="background:var(--fruit)"></i></div></div>
+      <div class="meter"><div class="row"><span>leaf Ca²⁺</span><span id="lV">0%</span></div>
+        <div class="bar"><i id="lB" style="background:var(--leaf)"></i></div></div>
+      <div class="ctl">
+        <button class="mini" id="btnPause" aria-pressed="false">Pause</button>
+        <button class="mini" id="btnFast" aria-pressed="false">3× speed</button>
+        <button class="mini" id="btnReset">Restart</button>
+      </div>
+    </div>
+    <div class="card">
+      <span class="tag">Verdict</span>
+      <p id="verdict">Running…</p>
+    </div>
+  </div>
+</div>
+
+<div class="why">
+  <h2>Why doubling the calcium in the soil does almost nothing</h2>
+  <p>Uptake is limited by how much <em>unsuberised root tip</em> the plant currently has, not by how
+  much calcium is out there. Behind the tip the endodermis has closed the apoplast, and calcium —
+  which never gets a symplastic ride, because cytosolic Ca²⁺ is held at nanomolar concentrations on
+  purpose — simply cannot cross. Run <strong>Extra calcium fertiliser</strong> and then
+  <strong>Hot &amp; dry</strong>: the fertiliser barely moves the fruit, and the drought, which stops
+  new root growth, wrecks it.</p>
+  <p>The second bottleneck is downstream. Once in the xylem, calcium goes where the water goes. A leaf
+  transpires hard; a waxy fruit hardly transpires at all, and is fed mostly by root pressure at night.
+  So the leaves take the great majority, and because Ca²⁺ is not phloem-mobile, none of it ever comes
+  back. Blossom-end rot is the fruit losing that competition.</p>
+  <div class="grid3">
+    <div><p class="q">Why the inset shows two panels</p><p class="a">Same root, two ages. Behind the tip the strip is built and the apoplastic route dead-ends. At the tip it has not been laid down yet, and calcium walks straight in.</p></div>
+    <div><p class="q">Passage cells</p><p class="a">Even in mature root, a few endodermal cells stay unsuberised opposite the xylem poles. Real, but a trickle compared with the tip.</p></div>
+    <div><p class="q">The grower's mistake</p><p class="a">Reaching for calcium spray or fertiliser when the plant needed steady water and undamaged roots.</p></div>
+  </div>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById("cv"), X=cv.getContext("2d");
+var W=1120,H=720, GY=300, SPX=790;
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var CO={};
+function readCO(){["sky","sky2","soil1","soil2","soil3","ca","strip","leaf","fruit","xyl",
+  "vap","tip","root","panel","ink","ink2","ink3","rule","sunk"].forEach(function(k){
+  CO[k]=getComputedStyle(document.documentElement).getPropertyValue("--"+k).trim();});}
+readCO(); matchMedia("(prefers-color-scheme: dark)").addEventListener("change",readCO);
+var $=function(s){return document.querySelector(s);};
+
+var SCEN=[
+ {k:"steady",n:"Well watered",d:"24 °C, 60% RH. Roots growing steadily.",rh:60,tc:24,ca:1,gr:1.0,puls:0,
+  note:"The baseline. New tips keep appearing, so calcium keeps entering. Even here, watch how much of it ends up in leaves rather than the fruit."},
+ {k:"hotdry",n:"Hot &amp; dry",d:"34 °C, 25% RH. Growth has stalled.",rh:25,tc:34,ca:1,gr:0.22,puls:0,
+  note:"High VPD drives water hard through the plant, but the soil has dried and the tips have stopped extending. The doorway closed. Uptake collapses even though transpiration is at its peak."},
+ {k:"humid",n:"Humid glasshouse",d:"22 °C, 88% RH. Very low VPD.",rh:88,tc:22,ca:1,gr:0.9,puls:0,
+  note:"Barely any transpiration. Total uptake is low — but a much larger SHARE of it reaches the fruit, because the leaves are no longer out-pulling it. This is why humidity management works."},
+ {k:"erratic",n:"Erratic irrigation",d:"Wet, dry, wet. Tips die back and regrow.",rh:55,tc:28,ca:1,gr:1.0,puls:1,
+  note:"Uptake comes in pulses that track root growth, not water content. Every dry-down kills tips; every rewet has to build new ones before calcium can move again."},
+ {k:"salt",n:"Salinity / root damage",d:"Few functional tips left.",rh:55,tc:28,ca:1.4,gr:0.12,puls:0,
+  note:"More calcium in the soil solution than the baseline — and almost none of it gets in. The limit was never concentration; it was how much unsuberised tip the plant still has."},
+ {k:"fert",n:"Extra Ca fertiliser",d:"3× soil calcium, hot and dry.",rh:28,tc:33,ca:3,gr:0.24,puls:0,
+  note:"The grower's instinct: the fruit is short of calcium, so add calcium. Three times as much in the soil, and the fruit barely notices — because the bottleneck is the strip, not the supply."}
+];
+var sc=SCEN[0];
+
+/* ---------------- state ---------------- */
+var S={}, running=true, fast=false;
+function rnd(){S.seed=(S.seed*1664525+1013904223)&0x7fffffff;return S.seed/0x7fffffff;}
+function reset(){
+  S={seed:9, t:0, axes:[], ions:[], flying:[], vap:[], fruit:0, leaf:0, upCount:0, upRate:0,
+     upWin:[], insetA:[], insetB:[], rot:0};
+  for(var i=0;i<7;i++){
+    var ang=(-0.72+i*0.24)+(rnd()-0.5)*0.08;
+    S.axes.push({pts:[{x:330,y:GY}], tip:{x:330,y:GY}, ang:ang, alive:true,
+                 w:5.2-Math.abs(ang)*1.2, nextLat:70+rnd()*70, isLat:false});
+  }
+  for(var j=0;j<210;j++)
+    S.ions.push({x:20+rnd()*750, y:GY+18+rnd()*385, got:false, ph:rnd()*6.3});
+  for(var v=0;v<70;v++) S.vap.push({x:rnd()*SPX, y:rnd()*GY, s:0.3+rnd()*0.9});
+  for(var a=0;a<4;a++) S.insetA.push({p:rnd()});
+  for(var b=0;b<4;b++) S.insetB.push({p:rnd()});
+  $("#verdict").textContent="Running…";
+}
+function vpd(){
+  var es=0.61078*Math.exp(17.27*sc.tc/(sc.tc+237.3));
+  return es*(1-sc.rh/100);
+}
+function transp(){ return Math.max(.07,Math.min(1, vpd()/2.4)); }
+function fruitShare(){ return 0.05+0.42*Math.pow(1-transp(),1.5); }
+function growthNow(){
+  var g=sc.gr;
+  if(sc.puls) g=sc.gr*Math.max(0,Math.sin(S.t*0.42))*1.5;
+  return g;
+}
+
+/* ---------------- drawing helpers ---------------- */
+function tomato(cx,cy,r){
+  X.beginPath(); X.moveTo(cx,cy-r*0.92);
+  X.bezierCurveTo(cx+r*1.16,cy-r*0.98,cx+r*1.1,cy+r*0.96,cx,cy+r*0.96);
+  X.bezierCurveTo(cx-r*1.1,cy+r*0.96,cx-r*1.16,cy-r*0.98,cx,cy-r*0.92);
+  X.closePath();
+}
+function label(s,x,y,c,sz,al){
+  X.fillStyle=c||CO.ink2; X.font="500 "+(sz||11)+"px 'IBM Plex Mono', monospace";
+  X.textAlign=al||"left"; X.fillText(s,x,y); X.textAlign="left";
+}
+
+/* ---------------- scene ---------------- */
+function drawSky(){
+  var g=X.createLinearGradient(0,0,0,GY);
+  g.addColorStop(0,CO.sky2); g.addColorStop(1,CO.sky);
+  X.fillStyle=g; X.fillRect(0,0,SPX,GY);
+  var hum=sc.rh/100;
+  X.fillStyle=CO.vap;
+  S.vap.forEach(function(d,i){
+    X.globalAlpha=0.06+0.30*hum;
+    X.beginPath(); X.arc(d.x,(d.y+S.t*6*d.s)%GY,1.6+2.4*hum*d.s,0,6.3); X.fill();
+  });
+  X.globalAlpha=1;
+  label("air humidity "+sc.rh+"%   ·   VPD "+vpd().toFixed(2)+" kPa   ·   "+sc.tc+" °C",
+        14,22,CO.ink3,12);
+}
+function drawShoot(){
+  var T=transp();
+  X.strokeStyle=CO.leaf; X.lineWidth=13; X.lineCap="round";
+  X.beginPath(); X.moveTo(330,GY); X.lineTo(330,86); X.stroke();
+  X.strokeStyle=CO.xyl; X.lineWidth=3; X.globalAlpha=.5;
+  X.beginPath(); X.moveTo(330,GY); X.lineTo(330,90); X.stroke(); X.globalAlpha=1;
+  var leaves=[[-1,132],[1,168],[-1,206],[1,244]];
+  leaves.forEach(function(L,i){
+    X.save(); X.translate(330,L[1]); X.scale(L[0],1);
+    X.fillStyle=CO.leaf; X.globalAlpha=.93;
+    X.beginPath(); X.ellipse(74,0,74,21,-0.2,0,6.3); X.fill();
+    X.strokeStyle=CO.leaf; X.lineWidth=5;
+    X.beginPath(); X.moveTo(0,0); X.lineTo(30,-6); X.stroke();
+    X.restore();
+    // transpiration: vapour leaving the stomata
+    for(var k=0;k<4;k++){
+      var ph=(S.t*(0.5+1.9*T)+i*0.37+k*0.25)%1;
+      var bx=330+L[0]*(48+k*24), by=L[1]-14-ph*46;
+      X.globalAlpha=(1-ph)*0.75*T;
+      X.fillStyle=CO.vap;
+      X.beginPath(); X.arc(bx,by,2.2+2.2*ph,0,6.3); X.fill();
+    }
+    X.globalAlpha=1;
+  });
+  label("transpiration "+Math.round(T*100)+"%",14,48,CO.vap,12);
+  X.strokeStyle=CO.vap; X.globalAlpha=.8; X.lineWidth=3;
+  for(var a=0;a<5;a++){X.beginPath();X.moveTo(18+a*13,58);X.lineTo(18+a*13,58+6+26*T);X.stroke();}
+  X.globalAlpha=1;
+  // fruit
+  var fx=452, fy=150, fr=40;
+  X.strokeStyle=CO.leaf; X.lineWidth=5;
+  X.beginPath(); X.moveTo(334,116); X.lineTo(fx,fy-fr+8); X.stroke();
+  tomato(fx,fy,fr); X.fillStyle=CO.fruit; X.fill();
+  var deficit=Math.max(0,1-S.fruit/100);
+  S.rot=Math.min(1, S.rot*0.995 + (S.t>26? deficit*0.0016:0));
+  if(S.rot>0.03){
+    X.save(); X.globalAlpha=Math.min(.92,S.rot*1.4);
+    X.beginPath(); X.ellipse(fx,fy+fr*0.6,fr*0.66*S.rot+5,fr*0.42*S.rot+4,0,0,6.3);
+    X.fillStyle="#241512"; X.fill(); X.restore();
+    if(S.rot>0.25) label("blossom-end rot",fx,fy+fr+40,CO.strip,12,"center");
+  }
+  label("fruit  "+Math.round(S.fruit)+"%",fx,fy+fr+22,CO.ink2,12,"center");
+  label("leaves  "+Math.round(S.leaf),176,286,CO.ink2,12,"center");
+  X.fillStyle=CO.soil3; X.fillRect(0,GY-3,SPX,5);
+}
+function drawSoil(){
+  var g=X.createLinearGradient(0,GY,0,H);
+  g.addColorStop(0,CO.soil1); g.addColorStop(.5,CO.soil2); g.addColorStop(1,CO.soil3);
+  X.fillStyle=g; X.fillRect(0,GY,SPX,H-GY);
+  S.ions.forEach(function(o){
+    if(o.got) return;
+    var wob=Math.sin(S.t*1.6+o.ph)*2;
+    X.fillStyle=CO.ca; X.globalAlpha=.9;
+    X.beginPath(); X.arc(o.x+wob,o.y,4.0,0,6.3); X.fill();
+  });
+  X.globalAlpha=1;
+  label("soil solution — Ca²⁺ "+sc.ca.toFixed(1)+"×",14,GY+24,CO.ink3,12);
+}
+function drawRoots(){
+  var g=growthNow();
+  S.axes.forEach(function(ax){
+    var path=ax.pts.concat([ax.tip]);
+    if(path.length<2) return;
+    X.lineCap="round"; X.lineJoin="round";
+    X.strokeStyle=CO.root; X.lineWidth=ax.w;
+    X.beginPath(); path.forEach(function(p,i){i?X.lineTo(p.x,p.y):X.moveTo(p.x,p.y);}); X.stroke();
+    // suberised / strip-formed length: everything but the last ~40 px
+    var n=path.length, cut=n-1, acc=0;
+    while(ax.alive && cut>0 && acc<40){
+      acc+=Math.hypot(path[cut].x-path[cut-1].x, path[cut].y-path[cut-1].y); cut--;
+    }
+    if(cut>1){
+      X.strokeStyle=CO.strip; X.lineWidth=1.8; X.setLineDash([6,6]); X.globalAlpha=.85;
+      X.beginPath();
+      for(var i=0;i<=cut;i++){var p=path[i]; i?X.lineTo(p.x,p.y):X.moveTo(p.x,p.y);}
+      X.stroke(); X.setLineDash([]); X.globalAlpha=1;
+    }
+    // the tip: unsuberised, the only way in
+    var tp=ax.tip;
+    var act=g>0.06 && ax.alive;
+    X.strokeStyle=CO.tip; X.lineWidth=ax.w+0.6;
+    X.beginPath();
+    for(var j=cut;j<n;j++){var q=path[j]; j===cut?X.moveTo(q.x,q.y):X.lineTo(q.x,q.y);}
+    X.stroke();
+    if(act){
+      var gr=X.createRadialGradient(tp.x,tp.y,2,tp.x,tp.y,26);
+      gr.addColorStop(0,CO.tip); gr.addColorStop(1,"rgba(0,0,0,0)");
+      X.globalAlpha=.35+.2*Math.sin(S.t*4); X.fillStyle=gr;
+      X.beginPath(); X.arc(tp.x,tp.y,26,0,6.3); X.fill(); X.globalAlpha=1;
+    }
+    X.fillStyle=act?CO.tip:CO.ink3;
+    X.beginPath(); X.arc(tp.x,tp.y,4.4,0,6.3); X.fill();
+  });
+  var act=growthNow()>0.06 && S.axes.some(function(a){return a.alive;});
+  X.fillStyle=CO.soil3; X.globalAlpha=.88; X.fillRect(0,H-52,SPX,52); X.globalAlpha=1;
+  label(act?"green tips = no Casparian strip yet — calcium can enter here"
+           :"tips have stopped growing — no unsuberised surface left",
+        14,H-16, act?CO.tip:CO.strip, 13);
+  label("dashed magenta = strip formed, apoplast sealed behind the tip",14,H-34,CO.strip,11);
+  // travelling ions
+  S.flying.forEach(function(f){
+    X.fillStyle=CO.ca;
+    X.beginPath(); X.arc(f.x,f.y,5,0,6.3); X.fill();
+    X.strokeStyle=CO.xyl; X.globalAlpha=.35; X.lineWidth=1;
+    X.beginPath(); X.arc(f.x,f.y,8,0,6.3); X.stroke(); X.globalAlpha=1;
+  });
+}
+
+/* ---------------- inset ---------------- */
+function panel(y0,y1,title,sub,withStrip,list){
+  var x0=SPX+18, x1=W-18;
+  X.fillStyle=CO.panel; X.fillRect(x0,y0,x1-x0,y1-y0);
+  X.strokeStyle=CO.rule; X.strokeRect(x0+.5,y0+.5,x1-x0-1,y1-y0-1);
+  label(title,x0+12,y0+24,CO.ink,13);
+  label(sub,x0+12,y0+42,CO.ink3,11);
+  var cy0=y0+64, cy1=y1-56, cx0=x0+16, cx1=x1-16, w=(cx1-cx0)/4;
+  for(var i=0;i<4;i++){
+    X.fillStyle=(i===2)?CO.tip:(i===3?CO.xyl:CO.soil1);
+    X.globalAlpha=(i===2)?.45:(i===3?.35:.5);
+    X.fillRect(cx0+i*w,cy0,w,cy1-cy0); X.globalAlpha=1;
+    X.strokeStyle=CO.ink3; X.globalAlpha=.4;
+    X.strokeRect(cx0+i*w+.5,cy0+.5,w-1,cy1-cy0-1); X.globalAlpha=1;
+  }
+  label("cortex",cx0+w,cy1+18,CO.ink3,10,"center");
+  label("endodermis",cx0+2.5*w,cy1+18,CO.ink3,10,"center");
+  label("xylem",cx0+3.5*w,cy1+18,CO.ink3,10,"center");
+  var wallY=cy0+10, blockX=cx0+2*w;
+  X.strokeStyle=CO.ink3; X.globalAlpha=.5; X.lineWidth=1.5;
+  X.beginPath(); X.moveTo(cx0-8,wallY); X.lineTo(cx1,wallY); X.stroke(); X.globalAlpha=1;
+  label("apoplast (cell walls)",cx0-6,wallY-8,CO.ink3,10);
+  if(withStrip){
+    X.fillStyle=CO.strip; X.fillRect(blockX-4,cy0,8,cy1-cy0);
+    X.fillRect(cx0+3*w-4,cy0,8,cy1-cy0);
+    label("Casparian strip",blockX+14,cy0+(cy1-cy0)/2,CO.strip,11);
+  }
+  list.forEach(function(o){
+    o.p+= (withStrip?0.26:0.22)*DT*(fast?3:1);
+    var lim=withStrip? (blockX-10-(cx0-8))/(cx1-(cx0-8)) : 1;
+    if(o.p>lim+0.5) o.p=0;
+    var px=(cx0-8)+Math.min(o.p,lim)*(cx1-(cx0-8));
+    X.fillStyle=CO.ca;
+    X.beginPath(); X.arc(px,wallY,6,0,6.3); X.fill();
+    X.fillStyle="#fff"; X.font="600 8px 'IBM Plex Mono', monospace"; X.textAlign="center";
+    X.fillText("Ca",px,wallY+3); X.textAlign="left";
+    if(withStrip&&o.p>=lim){
+      X.strokeStyle=CO.strip; X.lineWidth=2.6;
+      X.beginPath(); X.moveTo(px-8,wallY-8); X.lineTo(px+8,wallY+8);
+      X.moveTo(px+8,wallY-8); X.lineTo(px-8,wallY+8); X.stroke();
+    }
+  });
+  label(withStrip?"blocked — and Ca²⁺ has no symplastic route"
+                 :"straight through into the xylem",
+        cx0-6,cy1+40, withStrip?CO.strip:CO.tip, 11);
+}
+function drawInset(){
+  X.fillStyle=CO.sunk; X.fillRect(SPX,0,W-SPX,H);
+  X.strokeStyle=CO.rule; X.beginPath(); X.moveTo(SPX+.5,0); X.lineTo(SPX+.5,H); X.stroke();
+  panel(40,330,"MATURE ROOT","behind the tip — strip already built",true,S.insetA);
+  panel(390,680,"ROOT TIP","the first few mm — no strip yet",false,S.insetB);
+}
+
+/* ---------------- sim ---------------- */
+var DT=0, last=null;
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(last===null) last=ts;
+  DT=Math.min(.05,(ts-last)/1000); last=ts;
+  if(running){
+    var sp=fast?3:1;
+    S.t+=DT*sp;
+    var g=growthNow(), T=transp();
+    // a growing plant keeps emitting new nodal roots; a stalled one does not
+    var aliveN=0; for(var q=0;q<S.axes.length;q++) if(S.axes[q].alive) aliveN++;
+    if(g>0.06 && aliveN<8){
+      var a2=(rnd()-0.5)*1.7;
+      S.axes.push({pts:[{x:330,y:GY}],tip:{x:330,y:GY},ang:a2,alive:true,
+                   w:5.2-Math.abs(a2)*1.2,nextLat:60+rnd()*70,isLat:false});
+      if(S.axes.length>52) S.axes.splice(0, S.axes.length-52);
+    }
+    // grow
+    S.axes.forEach(function(ax){
+      if(!ax.alive) return;
+      var step=22*g*DT*sp;
+      if(step<=0) return;
+      ax.ang+=(rnd()-0.5)*0.045*sp;
+      ax.ang-=ax.ang*0.09*DT*sp;                       // gravitropism: bends back toward down
+      if(ax.ang>1.30) ax.ang=1.30; if(ax.ang<-1.30) ax.ang=-1.30;
+      var nx=ax.tip.x+Math.sin(ax.ang)*step, ny=ax.tip.y+Math.cos(ax.ang)*step;
+      if(nx<20){nx=20; ax.ang=Math.abs(ax.ang)*0.5;}
+      if(nx>SPX-20){nx=SPX-20; ax.ang=-Math.abs(ax.ang)*0.5;}
+      if(ny<GY+3) ny=GY+3;
+      if(ny>H-58){
+        ax.alive=false;
+        // maize keeps emitting new nodal roots while it is growing well
+        if(!ax.isLat && S.axes.filter(function(q){return q.alive;}).length<13){
+          var a2=(rnd()-0.5)*1.7;
+          S.axes.push({pts:[{x:330,y:GY}],tip:{x:330,y:GY},ang:a2,alive:true,
+                       w:5.2-Math.abs(a2)*1.2,nextLat:70+rnd()*70,isLat:false});
+        }
+        if(S.axes.length>46) S.axes.splice(0, S.axes.length-46);
+        return;
+      }
+      ax.tip={x:nx,y:ny};
+      var lp=ax.pts[ax.pts.length-1];
+      if(Math.hypot(nx-lp.x,ny-lp.y)>4.5) ax.pts.push({x:nx,y:ny});
+      ax.nextLat-=step;
+      if(ax.nextLat<=0&&!ax.isLat&&S.axes.filter(function(q){return q.alive;}).length<22){
+        ax.nextLat=60+rnd()*80;
+        var base=ax.pts[Math.max(0,ax.pts.length-14)];
+        S.axes.push({pts:[{x:base.x,y:base.y}],tip:{x:base.x,y:base.y},
+                     ang:Math.max(-1.25,Math.min(1.25,ax.ang+(rnd()<.5?-1:1)*(0.55+rnd()*0.4))),
+                     alive:true,w:2.4,nextLat:1e9,isLat:true});
+      }
+    });
+    // absorb only at tips
+    if(g>0.06){
+      S.axes.forEach(function(ax){
+        if(!ax.alive) return;
+        var tp=ax.tip;
+        S.ions.forEach(function(o){
+          if(o.got) return;
+          if(Math.hypot(o.x-tp.x,o.y-tp.y)<17 && rnd()<(0.35+0.65*T)*sc.ca*0.5){
+            o.got=true; S.upCount++;
+            S.flying.push({x:o.x,y:o.y,ax:ax,i:ax.pts.length-1,phase:0});
+          }
+        });
+      });
+    }
+    // travel: back up the axis, then the stem, then to leaf or fruit
+    S.flying.forEach(function(f){
+      var v=(120+280*T)*DT*sp;
+      if(f.phase===0){
+        f.i-=Math.max(1,Math.round(v/5));
+        if(f.i<=0){f.phase=1;f.x=330;f.y=GY;}
+        else{var p=f.ax.pts[f.i]; f.x=p.x; f.y=p.y;}
+      } else if(f.phase===1){
+        f.y-=v;
+        if(f.y<=140){f.phase=2; f.toFruit=rnd()<fruitShare(); f.tx=f.toFruit?452:256;
+                     f.ty=f.toFruit?150:206;}
+      } else if(f.phase===2){
+        var dx=f.tx-f.x, dy=f.ty-f.y, m=Math.hypot(dx,dy)||1;
+        f.x+=dx/m*v; f.y+=dy/m*v;
+        if(m<9){ f.done=true;
+          if(f.toFruit) S.fruit=Math.min(100,S.fruit+2.4); else S.leaf+=1.6; }
+      }
+    });
+    S.flying=S.flying.filter(function(f){return !f.done;});
+    // respawn soil ions far from the tips so the soil never empties
+    var gone=S.ions.filter(function(o){return o.got;});
+    if(gone.length>60) gone.slice(0,30).forEach(function(o){
+      o.got=false; o.x=20+rnd()*750; o.y=GY+18+rnd()*385;});
+    // uptake rate, 8 s window
+    S.upWin.push({t:S.t,c:S.upCount});
+    while(S.upWin.length&&S.upWin[0].t<S.t-8) S.upWin.shift();
+    S.upRate=S.upWin.length>1?
+      (S.upCount-S.upWin[0].c)/(S.t-S.upWin[0].t)*60 : 0;
+  }
+  X.clearRect(0,0,W,H);
+  drawSky(); drawSoil(); drawRoots(); drawShoot(); drawInset();
+  hud();
+}
+function hud(){
+  var g=growthNow(), T=transp();
+  var tips=S.axes.filter(function(a){return a.alive;}).length*(g>0.06?1:0);
+  $("#rTips").textContent=tips;
+  $("#rHum").textContent=sc.rh+"%";
+  $("#rVpd").textContent=vpd().toFixed(2)+" kPa";
+  $("#rTr").textContent=Math.round(T*100)+"%";
+  $("#rSoil").textContent=sc.ca.toFixed(1)+"×";
+  $("#rUp").textContent=S.upRate.toFixed(0)+" / min";
+  $("#fV").textContent=Math.round(S.fruit)+"%";
+  $("#lV").textContent=Math.round(S.leaf);
+  $("#fB").style.width=S.fruit+"%";
+  $("#lB").style.width=Math.min(100,S.leaf/2.6)+"%";
+  if(S.t>22){
+    var v;
+    if(S.fruit>72) v="The fruit is keeping up. Steady root growth plus a share of the stream large enough to matter.";
+    else if(S.fruit>38) v="The fruit is behind the leaves but not failing. In a real crop this is the knife edge.";
+    else v="The fruit is losing. "+(growthNow()<0.3
+      ? "Almost no unsuberised tip left, so almost nothing is getting in — regardless of soil calcium."
+      : "Transpiration is pulling nearly all of it into the leaves, and it will never come back.");
+    $("#verdict").textContent=v;
+  }
+}
+/* ---------------- controls ---------------- */
+var host=$("#scen");
+SCEN.forEach(function(x,i){
+  var b=document.createElement("button");
+  b.setAttribute("aria-pressed", i===0);
+  b.innerHTML='<span class="n">'+x.n+'</span><span class="d">'+x.d+'</span>';
+  b.addEventListener("click",function(){
+    sc=x; Array.prototype.forEach.call(host.children,function(c,j){
+      c.setAttribute("aria-pressed", SCEN[j].k===sc.k);});
+    $("#scNote").innerHTML=sc.note; reset();
+  });
+  host.appendChild(b);
+});
+$("#scNote").innerHTML=sc.note;
+$("#btnPause").addEventListener("click",function(){
+  running=!running; this.setAttribute("aria-pressed",!running);
+  this.textContent=running?"Pause":"Resume";});
+$("#btnFast").addEventListener("click",function(){
+  fast=!fast; this.setAttribute("aria-pressed",fast);});
+$("#btnReset").addEventListener("click",reset);
+reset();
+requestAnimationFrame(loop);
+})();
+</script>

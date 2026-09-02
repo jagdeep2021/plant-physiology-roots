@@ -1,0 +1,1245 @@
+<title>Before the Casparian Strip</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EBEEE8; --surface:#F7F8F4; --surface-2:#E1E6DB; --sunk:#DDE2D6;
+  --ink:#161B17; --ink-2:#48524A; --ink-3:#747F77; --rule:#C9D0C4;
+  --lignin:#0E7C61; --lignin-soft:#D4EAE0;
+  --dye:#BC2B52; --dye-soft:#F6DBE3;
+  --epi:#C08739; --epi-soft:#EFE0C6;
+  --cortex:#DCCBAA; --cortex-line:#A8905F; --cortex-ink:#7A6437;
+  --endo:#0E7C61;
+  --peri:#7F9DB8; --stele:#AFC6D8; --xylem:#33526D;
+  --soil-a:#B49A73; --soil-b:#8A7047; --soil-c:#6A5537;
+  --nP:#C0632B; --nN:#3D6FA8;
+  --dur:.5s;
+  --shell:min(1120px, 92vw);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0D120F; --surface:#151B17; --surface-2:#1D251F; --sunk:#111713;
+  --ink:#E8EDE6; --ink-2:#A8B3AA; --ink-3:#76837A; --rule:#28322B;
+  --lignin:#3FD9A9; --lignin-soft:#0F312703;
+  --lignin-soft:#0F3127; --dye:#FF6E92; --dye-soft:#3B1723;
+  --epi:#D9A155; --epi-soft:#3A2C15;
+  --cortex:#3D3524; --cortex-line:#9A8556; --cortex-ink:#C6AF78;
+  --endo:#3FD9A9;
+  --peri:#4E6E8A; --stele:#2A3E4E; --xylem:#9FC4E0;
+  --soil-a:#3A3225; --soil-b:#2C2519; --soil-c:#211C13;
+  --nP:#E0854C; --nN:#79A9DC;
+}}
+:root[data-theme="dark"]{
+  --bg:#0D120F; --surface:#151B17; --surface-2:#1D251F; --sunk:#111713;
+  --ink:#E8EDE6; --ink-2:#A8B3AA; --ink-3:#76837A; --rule:#28322B;
+  --lignin:#3FD9A9; --lignin-soft:#0F3127; --dye:#FF6E92; --dye-soft:#3B1723;
+  --epi:#D9A155; --epi-soft:#3A2C15;
+  --cortex:#3D3524; --cortex-line:#9A8556; --cortex-ink:#C6AF78;
+  --endo:#3FD9A9;
+  --peri:#4E6E8A; --stele:#2A3E4E; --xylem:#9FC4E0;
+  --soil-a:#3A3225; --soil-b:#2C2519; --soil-c:#211C13;
+  --nP:#E0854C; --nN:#79A9DC;
+}
+@media (prefers-reduced-motion: reduce){ :root{ --dur:0s } * { animation-duration:.001s !important; transition-duration:.001s !important } }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.shell{width:var(--shell);margin:0 auto}
+h1,h2,h3{font-family:Fraunces,"Iowan Old Style",Georgia,serif;font-weight:600;text-wrap:balance;margin:0;letter-spacing:-.012em}
+h1{font-size:clamp(2.4rem,5.6vw,4rem);line-height:1.02;letter-spacing:-.028em}
+h2{font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.12}
+h3{font-size:1.06rem;line-height:1.3;font-weight:600}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ---- scale eyebrow ---- */
+.scale{display:inline-flex;align-items:center;gap:.55rem;
+  font-family:"IBM Plex Mono",monospace;font-size:.685rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3)}
+.scale::before{content:"";width:34px;height:0;border-top:1px solid currentColor;
+  border-left:1px solid currentColor;border-right:1px solid currentColor;height:5px;
+  display:block;opacity:.75}
+
+/* ---- header ---- */
+header{padding:clamp(2.6rem,6vw,4.6rem) 0 clamp(1.6rem,3vw,2.4rem)}
+.kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--lignin);margin-bottom:1.5rem}
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(1.5rem,4vw,3.4rem);align-items:center}
+.lede{margin-top:1.5rem;font-size:1.11rem;color:var(--ink-2);max-width:56ch}
+.lede b{color:var(--ink);font-weight:600}
+.stopmark{margin-top:1.6rem;display:flex;gap:.7rem;align-items:baseline;
+  border-left:2px solid var(--dye);padding-left:.9rem}
+.stopmark .mono{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dye)}
+.stopmark span:last-child{font-size:.94rem;color:var(--ink-2)}
+
+/* ---- zoom rail / nav ---- */
+.rail{margin:clamp(2.2rem,5vw,3.4rem) 0 0;border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);padding:.5rem 0;overflow-x:auto}
+.rail ol{display:flex;list-style:none;margin:0;padding:0;gap:0;min-width:max-content}
+.rail li{flex:1 1 0;min-width:118px}
+.rail a{display:block;text-decoration:none;padding:.75rem .9rem .8rem;
+  border-right:1px solid var(--rule);height:100%}
+.rail li:last-child a{border-right:0}
+.rail a:hover,.rail a:focus-visible{background:var(--surface-2)}
+.rail .r-s{display:block;font-family:"IBM Plex Mono",monospace;font-size:.7rem;
+  color:var(--lignin);letter-spacing:.08em}
+.rail .r-t{display:block;font-size:.83rem;color:var(--ink-2);margin-top:.15rem;line-height:1.25}
+
+/* ---- sections ---- */
+main{padding-bottom:5rem}
+section{padding:clamp(3rem,7vw,5.2rem) 0;border-bottom:1px solid var(--rule)}
+.s-head{max-width:62ch;margin-bottom:2rem}
+.s-head h2{margin:.7rem 0 .7rem}
+.s-head p{color:var(--ink-2)}
+
+.split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);
+  gap:clamp(1.2rem,3vw,2.4rem);align-items:start}
+.split.even{grid-template-columns:1fr 1fr}
+@media (max-width:860px){ .hero,.split,.split.even{grid-template-columns:1fr} }
+
+figure{margin:0;background:var(--surface);border:1px solid var(--rule);
+  border-radius:3px;padding:clamp(.9rem,2vw,1.4rem);overflow-x:auto}
+figure svg{display:block;width:100%;height:auto;max-width:100%}
+figcaption{margin-top:.9rem;font-size:.8rem;color:var(--ink-3);line-height:1.45;max-width:70ch}
+figcaption em{color:var(--ink-2);font-style:normal}
+
+/* svg text + tissue classes */
+svg text{font-family:"IBM Plex Mono",monospace;fill:var(--ink-2)}
+.lbl{font-size:11px}
+.lbl-sm{font-size:9.5px;fill:var(--ink-3)}
+.lbl-lg{font-size:13px;fill:var(--ink)}
+.t-epi{fill:var(--epi)} .t-cortex{fill:var(--cortex)} .t-endo{fill:var(--endo)}
+.t-peri{fill:var(--peri)} .t-stele{fill:var(--stele)} .t-xyl{fill:var(--xylem)}
+.wall{stroke:var(--cortex-line);stroke-width:1;fill:none;opacity:.55}
+.dye{fill:var(--dye)} .dye-s{stroke:var(--dye)}
+
+/* ---- panels / controls ---- */
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+  padding:1.15rem 1.25rem}
+.panel h3{margin-bottom:.45rem}
+.panel p{font-size:.92rem;color:var(--ink-2)}
+.panel .tag{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.5rem}
+.ctl{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+button{font:inherit;font-size:.84rem;color:var(--ink-2);background:var(--surface);
+  border:1px solid var(--rule);border-radius:2px;padding:.42rem .8rem;cursor:pointer;
+  transition:background var(--dur),color var(--dur),border-color var(--dur)}
+button:hover{border-color:var(--ink-3);color:var(--ink)}
+button[aria-pressed="true"],button.on{background:var(--lignin);border-color:var(--lignin);color:var(--bg)}
+:root[data-theme="dark"] button[aria-pressed="true"],
+:root[data-theme="dark"] button.on{color:#0D120F}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--lignin);outline-offset:2px}
+button.dyebtn[aria-pressed="true"],button.dyebtn.on{background:var(--dye);border-color:var(--dye)}
+
+input[type=range]{width:100%;accent-color:var(--lignin)}
+.slider-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem}
+.slider-row label{font-family:"IBM Plex Mono",monospace;font-size:.72rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--ink);
+  font-variant-numeric:tabular-nums;min-width:4.2em;text-align:right}
+
+/* facts list */
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:.05rem}
+.facts li{display:grid;grid-template-columns:auto 1fr;gap:.85rem;align-items:baseline;
+  padding:.5rem 0;border-top:1px solid var(--rule);font-size:.9rem;color:var(--ink-2)}
+.facts li:first-child{border-top:0}
+.facts b{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--lignin);
+  font-weight:500;letter-spacing:.06em;white-space:nowrap}
+
+/* jobs strip */
+.jobs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:0;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--surface)}
+.jobs div{padding:1rem 1.1rem;border-right:1px solid var(--rule)}
+.jobs div:last-child{border-right:0}
+.jobs .n{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--lignin);letter-spacing:.1em}
+.jobs .w{display:block;font-weight:600;margin:.25rem 0 .2rem;font-size:.98rem;color:var(--ink)}
+.jobs .d{font-size:.8rem;color:var(--ink-3);line-height:1.4}
+@media (max-width:700px){ .jobs div{border-right:0;border-bottom:1px solid var(--rule)} }
+
+/* quote */
+blockquote{margin:0;padding:1.4rem 1.6rem;background:var(--dye-soft);
+  border-left:3px solid var(--dye);border-radius:0 3px 3px 0}
+blockquote p{font-family:Fraunces,Georgia,serif;font-size:1.12rem;line-height:1.5;color:var(--ink)}
+blockquote cite{display:block;margin-top:.8rem;font-family:"IBM Plex Mono",monospace;
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-style:normal}
+
+/* next-lecture cards */
+.next{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.next div{background:var(--surface);padding:1.05rem 1.15rem}
+.next .q{font-family:Fraunces,Georgia,serif;font-size:1.02rem;color:var(--ink);margin-bottom:.3rem;line-height:1.28}
+.next .a{font-size:.83rem;color:var(--ink-3);line-height:1.45}
+
+footer{padding:2.6rem 0 3.4rem;color:var(--ink-3);font-size:.82rem;
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.pulse{animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.38}}
+.hid{display:none}
+</style>
+<style>
+/* chart series tokens — validated with the dataviz palette checker */
+:root{ --c1:#0E7C61; --c2:#C08739; --c3:#3D6FA8; --c4:#BC2B52; --grid:#CBD2C6 }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --c1:#00A87E; --c2:#B57A24; --c3:#4A8ED6; --c4:#E24A72; --grid:#28322B }}
+:root[data-theme="dark"]{ --c1:#00A87E; --c2:#B57A24; --c3:#4A8ED6; --c4:#E24A72; --grid:#28322B }
+.ax{stroke:var(--grid);stroke-width:1}
+.gridline{stroke:var(--grid);stroke-width:1;stroke-dasharray:2 4;opacity:.8}
+.ser1{stroke:var(--c1)} .ser2{stroke:var(--c2)}
+.f1{fill:var(--c1)} .f2{fill:var(--c2)} .f3{fill:var(--c3)} .f4{fill:var(--c4)}
+.curve{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.zoneband{fill:var(--lignin);opacity:0;transition:opacity var(--dur)}
+.zoneband.on{opacity:.13}
+.zonehit{fill:transparent;cursor:pointer}
+</style>
+
+<header class="shell">
+  <p class="kicker">4320 / 7320 &nbsp;·&nbsp; Plant Physiology &nbsp;·&nbsp; Lecture 2 opener</p>
+  <div class="hero">
+    <div>
+      <h1>Before the Casparian Strip</h1>
+      <p class="lede">Last time we ran a <b>six-order-of-magnitude zoom</b> — from a metre of maize root
+      system standing in a field, down to the wall of a single endodermal cell — and stopped one slide
+      short of the thing that wall is famous for. This is that run, in motion. Work through it, then
+      we open the gate.</p>
+      <div class="stopmark">
+        <span class="mono">We stopped here</span>
+        <span>Caspary, 1865 — one speculative sentence in an otherwise purely anatomical monograph.</span>
+      </div>
+    </div>
+    <figure>
+      <svg id="heroSec" viewBox="0 0 360 360" role="img" aria-label="Maize root cross-section with the endodermis highlighted as the point where the last lecture ended">
+        <g class="secbase">
+          <circle class="t-epi" cx="180" cy="180" r="162"></circle>
+          <circle class="t-cortex" cx="180" cy="180" r="150"></circle>
+          <circle class="t-endo" cx="180" cy="180" r="64"></circle>
+          <circle class="t-peri" cx="180" cy="180" r="52"></circle>
+          <circle class="t-stele" cx="180" cy="180" r="44"></circle>
+        </g>
+        <g data-walls></g>
+        <g>
+          <circle class="t-xyl" cx="180" cy="180" r="13"></circle>
+          <circle class="t-xyl" cx="180" cy="152" r="7.5"></circle>
+          <circle class="t-xyl" cx="207" cy="171" r="7.5"></circle>
+          <circle class="t-xyl" cx="196" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="164" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="153" cy="171" r="7.5"></circle>
+        </g>
+        <circle cx="180" cy="180" r="58" fill="none" stroke="var(--dye)" stroke-width="2.5" class="pulse"></circle>
+        <line x1="300" y1="60" x2="222" y2="139" stroke="var(--dye)" stroke-width="1.5"></line>
+        <circle cx="221" cy="140" r="3" class="dye"></circle>
+        <text x="304" y="52" class="lbl" fill="var(--dye)">endodermis</text>
+      </svg>
+      <figcaption>Maize primary root, transverse. <em>The red ring is where Lecture 1 ended</em> — at the
+      innermost cortical boundary, with the wall itself still undrawn.</figcaption>
+    </figure>
+  </div>
+
+  <nav class="rail" aria-label="Sections, ordered by spatial scale">
+    <ol>
+      <li><a href="#brief"><span class="r-s">~1 m</span><span class="r-t">Why roots exist</span></a></li>
+      <li><a href="#lenses"><span class="r-s">30 cm / 200 µm</span><span class="r-t">Two lenses</span></a></li>
+      <li><a href="#profile"><span class="r-s">0–60 cm</span><span class="r-t">Where P and N sit</span></a></li>
+      <li><a href="#axis"><span class="r-s">0–14 mm</span><span class="r-t">Zones along the axis</span></a></li>
+      <li><a href="#tip"><span class="r-s">0–2 mm</span><span class="r-t">The cap that steers</span></a></li>
+      <li><a href="#layers"><span class="r-s">≈900 µm</span><span class="r-t">Layers, outside in</span></a></li>
+      <li><a href="#pathways"><span class="r-s">≈250 µm</span><span class="r-t">Three ways inward</span></a></li>
+      <li><a href="#next"><span class="r-s">≈0.5 µm</span><span class="r-t">Lecture 2 starts</span></a></li>
+    </ol>
+  </nav>
+</header>
+
+<main class="shell">
+
+<!-- ============ 1. THE BRIEF ============ -->
+<section id="brief">
+  <div class="s-head">
+    <span class="scale">Whole plant · ~1 m</span>
+    <h2>The brief we set ourselves</h2>
+    <p>Design a monocot root system with the best soil exploration capacity we can manage. Everything
+    that follows is a constraint on that design problem — and the root already has five jobs to do
+    before we start optimising anything.</p>
+  </div>
+  <div class="jobs">
+    <div><span class="n">01</span><span class="w">Water uptake</span><span class="d">Bulk flow to the xylem, driven by transpiration</span></div>
+    <div><span class="n">02</span><span class="w">Nutrient uptake</span><span class="d">Selective, against a gradient, and expensive</span></div>
+    <div><span class="n">03</span><span class="w">Anchorage</span><span class="d">Mechanical work against lodging and impedance</span></div>
+    <div><span class="n">04</span><span class="w">Storage</span><span class="d">Carbon and reserves banked below ground</span></div>
+    <div><span class="n">05</span><span class="w">Sensing</span><span class="d">Gravity, water, touch, neighbours, microbes</span></div>
+  </div>
+  <p style="margin-top:1.1rem;font-size:.88rem;color:var(--ink-3);max-width:70ch">
+  And the side effects we do not usually put on the list: roots feed the soil microbiome, deposit
+  carbon into the soil profile, and open the channels that let water infiltrate.</p>
+</section>
+
+<!-- ============ 2. TWO LENSES ============ -->
+<section id="lenses">
+  <div class="s-head">
+    <span class="scale">30 cm ↔ 200 µm</span>
+    <h2>Two lenses on the same organ</h2>
+    <p><em>Morphology</em> is the study of form and how that form develops. <em>Anatomy</em> — from Greek
+    <span class="mono">ana-</span> ("apart") + <span class="mono">tomē</span> ("to cut") — is what you
+    see once you cut it open. The lecture used both, and they answer different questions.</p>
+  </div>
+  <div class="split even">
+    <figure>
+      <svg id="archFig" viewBox="0 0 300 360" role="img" aria-label="Maize root system architecture: crown roots, seminal roots and their laterals, drawn at field scale"></svg>
+      <figcaption><strong>Architecture</strong> — where root length is placed in the soil.
+      Asks: <em>which soil does this plant reach?</em></figcaption>
+    </figure>
+    <figure>
+      <svg id="anatFig" viewBox="0 0 360 360" role="img" aria-label="Maize root cross-section showing epidermis, cortex, endodermis, pericycle, stele and metaxylem">
+        <g class="secbase">
+          <circle class="t-epi" cx="180" cy="180" r="162"></circle>
+          <circle class="t-cortex" cx="180" cy="180" r="150"></circle>
+          <circle class="t-endo" cx="180" cy="180" r="64"></circle>
+          <circle class="t-peri" cx="180" cy="180" r="52"></circle>
+          <circle class="t-stele" cx="180" cy="180" r="44"></circle>
+        </g>
+        <g data-walls></g>
+        <g>
+          <circle class="t-xyl" cx="180" cy="180" r="13"></circle>
+          <circle class="t-xyl" cx="180" cy="152" r="7.5"></circle>
+          <circle class="t-xyl" cx="207" cy="171" r="7.5"></circle>
+          <circle class="t-xyl" cx="196" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="164" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="153" cy="171" r="7.5"></circle>
+        </g>
+        <g>
+          <line x1="24" y1="342" x2="96" y2="342" stroke="currentColor" stroke-width="2"></line>
+          <text x="24" y="333" class="lbl-sm">200 µm</text>
+        </g>
+      </svg>
+      <figcaption><strong>Anatomy</strong> — how tissue is arranged across the radius.
+      Asks: <em>what does that reach cost, and what gets in?</em></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 3. SOIL PROFILE ============ -->
+<section id="profile">
+  <div class="s-head">
+    <span class="scale">Soil profile · 0–60 cm</span>
+    <h2>The two nutrients live at different depths</h2>
+    <p>Phosphate barely moves: it sorbs to soil particles and stays where it was deposited, so the
+    P pool is a shallow one. Nitrate moves with the water and leaches down. One root system cannot
+    be optimal for both — which is why architecture is a trade-off, not a maximum.</p>
+  </div>
+  <div class="split">
+    <figure>
+      <div class="ctl" role="group" aria-label="Root architecture ideotype">
+        <button id="btnShallow" aria-pressed="true">Shallow forager (topsoil, P)</button>
+        <button id="btnDeep" aria-pressed="false">Steep &amp; deep (subsoil, N)</button>
+      </div>
+      <svg id="soilFig" viewBox="0 0 620 430" role="img" aria-label="Soil profile showing immobile phosphate concentrated in the topsoil and mobile nitrate leached into the subsoil, with two contrasting maize root architectures"></svg>
+      <figcaption>Schematic profile. Nutrient pools drawn from their mobility, not from measured
+      concentrations. Ideotype logic after <em>Lynch 2013 (Steep, Cheap and Deep)</em> and
+      <em>Lynch 2019</em>.</figcaption>
+    </figure>
+    <div class="panel">
+      <span class="tag">Trait list from the lecture</span>
+      <h3 id="soilTitle">Topsoil foraging improves P capture</h3>
+      <p id="soilText">Shallow basal root growth angles, more adventitious (crown) roots, more basal
+      root whorls, dispersed laterals, longer and denser root hairs — plus aerenchyma and root
+      etiolation to make all that length cheaper to run.</p>
+      <ul class="facts" id="soilFacts" style="margin-top:1rem"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. ALONG THE AXIS ============ -->
+<section id="axis">
+  <div class="s-head">
+    <span class="scale">Longitudinal · 0–14 mm from the apex</span>
+    <h2>Anatomy changes along the axis, and over time</h2>
+    <p>Cut the same root at 1 mm and at 12 mm from the apex and you get two different organs. The
+    zones are not arbitrary labels — they are defined by <em>cell elongation rate</em>. Click a zone.</p>
+  </div>
+  <figure>
+    <div class="ctl" role="group" aria-label="Root zone">
+      <button class="zbtn" data-z="cap" aria-pressed="false">Root cap</button>
+      <button class="zbtn" data-z="mer" aria-pressed="false">Meristem</button>
+      <button class="zbtn" data-z="elo" aria-pressed="true">Elongation</button>
+      <button class="zbtn" data-z="mat" aria-pressed="false">Maturation</button>
+      <button id="btnDrought" class="dyebtn" aria-pressed="false" style="margin-left:auto">Impose water deficit</button>
+    </div>
+    <svg id="axisFig" viewBox="0 0 760 462" role="img" aria-label="Relative elongation rate plotted against distance from the maize root apex, aligned above a longitudinal drawing of the root showing cap, meristem, elongation and maturation zones"></svg>
+    <figcaption>Upper: relative elongation rate along the growth zone — schematic, after
+    <em>Sharp et al. 1988</em> and <em>Voothuluru et al. 2024</em>. Under water deficit the growth
+    zone shortens toward the apex while rates near the tip are largely maintained.
+    Lower: cell length and vacuole volume at the matching position. <em>Vacuole expansion is cell
+    expansion</em> (Dünser et al. 2019).</figcaption>
+  </figure>
+  <div class="split" style="margin-top:1.4rem">
+    <div class="panel">
+      <span class="tag" id="zTag">Zone</span>
+      <h3 id="zTitle">Elongation zone</h3>
+      <p id="zText"></p>
+    </div>
+    <div class="panel">
+      <span class="tag">Numbers to hold onto</span>
+      <ul class="facts">
+        <li><b>~10 mm</b><span>length of the well-watered maize growth zone</span></li>
+        <li><b>~5 mm</b><span>growth zone under water deficit — it shortens, it does not stop</span></li>
+        <li><b>&gt;90%</b><span>of a mature cell's volume that is vacuole</span></li>
+        <li><b>~10–20×</b><span>length gain of a cortical cell across the elongation zone</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. THE TIP ============ -->
+<section id="tip">
+  <div class="s-head">
+    <span class="scale">Apex · 0–2 mm</span>
+    <h2>The cap: a sacrificial nose that also steers</h2>
+    <p>The cap is doing three jobs at once — lubricating its way through soil, feeding and defending
+    the meristem behind it, and reading the direction of gravity. Tilt the root and watch the
+    statoliths fall.</p>
+  </div>
+  <div class="split">
+    <figure>
+      <div class="slider-row">
+        <label for="tiltRange">Tilt from vertical</label>
+        <input id="tiltRange" type="range" min="0" max="90" value="0" step="1">
+        <span class="readout" id="tiltOut">0°</span>
+      </div>
+      <svg id="gravFig" viewBox="0 0 620 380" role="img" aria-label="Root tip that can be tilted; amyloplast statoliths sediment onto the new lower wall of the columella, auxin redistributes to the lower flank, and the tip curves back toward gravity"></svg>
+      <figcaption>Columella statoliths sediment within seconds; curvature follows over hours.
+      Gravitropic signalling reviewed in <em>Baluška et al. 2009</em> — the "root-brain" framing —
+      and in the <em>preLights</em> history of gravitropism.</figcaption>
+    </figure>
+    <div class="panel">
+      <span class="tag">What the cap is made of</span>
+      <ul class="facts">
+        <li><b>Mucilage</b><span>a polysaccharide gel that cuts friction and lets the tip penetrate</span></li>
+        <li><b>Columella</b><span>central files holding dense, starch-filled amyloplasts — the statoliths</span></li>
+        <li><b>Border cells</b><span>released <em>alive</em>; their secretome traps and neutralises pathogens before they reach the meristem (Hawes et al. 2003; Wen et al. 2009)</span></li>
+      </ul>
+      <p id="gravText" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--rule)"></p>
+      <p style="margin-top:.7rem;font-size:.85rem;color:var(--ink-3)">The sign trap: in <em>roots</em>,
+      auxin accumulating on the lower flank <em>inhibits</em> elongation. The upper flank keeps
+      growing, so the tip curves down. In shoots the same signal does the opposite.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. LAYERS ============ -->
+<section id="layers">
+  <div class="s-head">
+    <span class="scale">Transverse · ≈900 µm across</span>
+    <h2>Outside in: five stops on the radius</h2>
+    <p>This is the drawing the whole lecture was building toward. Every layer is a checkpoint with a
+    different job. Click one.</p>
+  </div>
+  <div class="split">
+    <figure>
+      <svg id="explFig" viewBox="0 0 380 380" role="img" aria-label="Interactive maize root cross-section: click epidermis, cortex, endodermis, pericycle or stele to read its role">
+        <g class="secbase" id="explRings">
+          <circle class="t-epi hit" data-layer="epi" cx="180" cy="180" r="162"></circle>
+          <circle class="t-cortex hit" data-layer="cortex" cx="180" cy="180" r="150"></circle>
+          <circle class="t-endo hit" data-layer="endo" cx="180" cy="180" r="64"></circle>
+          <circle class="t-peri hit" data-layer="peri" cx="180" cy="180" r="52"></circle>
+          <circle class="t-stele hit" data-layer="stele" cx="180" cy="180" r="44"></circle>
+        </g>
+        <g data-walls></g>
+        <g style="pointer-events:none">
+          <circle class="t-xyl" cx="180" cy="180" r="13"></circle>
+          <circle class="t-xyl" cx="180" cy="152" r="7.5"></circle>
+          <circle class="t-xyl" cx="207" cy="171" r="7.5"></circle>
+          <circle class="t-xyl" cx="196" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="164" cy="203" r="7.5"></circle>
+          <circle class="t-xyl" cx="153" cy="171" r="7.5"></circle>
+        </g>
+        <circle id="explRing" cx="180" cy="180" r="162" fill="none" stroke="var(--ink)" stroke-width="2.5" style="pointer-events:none;transition:r var(--dur)"></circle>
+        <g style="pointer-events:none">
+          <line x1="30" y1="366" x2="102" y2="366" stroke="currentColor" stroke-width="2"></line>
+          <text x="30" y="357" class="lbl-sm">200 µm</text>
+        </g>
+      </svg>
+      <figcaption>Maize and the small grains: a wide cortex of many cell files wrapped around a
+      relatively small stele. That ratio is the whole argument of the second half of the course —
+      the cortex is most of the root's construction and maintenance bill.</figcaption>
+    </figure>
+    <div class="panel">
+      <span class="tag" id="lTag">Layer</span>
+      <h3 id="lTitle">Epidermis</h3>
+      <p id="lText"></p>
+      <p id="lRole" style="margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--rule);font-size:.85rem;color:var(--ink-3)"></p>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:1.4rem">
+    <span class="tag">The framing to keep</span>
+    <p style="font-size:1rem">The root is <strong>a polarized epithelium</strong> (Barberon &amp; Geldner
+    2014). Like the epithelium lining your gut, it has an outside face and an inside face, and it puts
+    different transporters on each. That polarity is what turns a tube of cells into a
+    <em>selective</em> tube of cells — and it only works if the space <em>between</em> the cells is
+    sealed. Hold that thought.</p>
+  </div>
+</section>
+
+<!-- ============ 7. PATHWAYS ============ -->
+<section id="pathways">
+  <div class="s-head">
+    <span class="scale">Radial file · ≈250 µm</span>
+    <h2>Three ways in — and one of them is a hole in the argument</h2>
+    <p>Follow one file of cells from the soil to the xylem. Water and everything dissolved in it has
+    three routes across. Press play, then look hard at the yellow one.</p>
+  </div>
+  <figure>
+    <div class="ctl">
+      <button id="btnPlay" class="on">Pause</button>
+      <button class="pbtn" data-p="apo" aria-pressed="true">Apoplastic</button>
+      <button class="pbtn" data-p="sym" aria-pressed="true">Symplastic</button>
+      <button class="pbtn" data-p="trans" aria-pressed="true">Transcellular</button>
+      <button id="btnStrip" class="dyebtn" aria-pressed="false" style="margin-left:auto">Build the Casparian strip →</button>
+    </div>
+    <svg id="pathFig" viewBox="0 0 760 330" role="img" aria-label="A radial file of root cells from epidermis to xylem, with animated tracers taking the apoplastic, symplastic and transcellular routes inward; a Casparian strip can be added at the endodermal wall to block the apoplastic route"></svg>
+    <figcaption id="pathCap">Tracers move inward at equal speed for clarity; the real routes differ in
+    resistance. Plasmodesmata drawn after <em>Nicolas et al. 2017</em>.</figcaption>
+  </figure>
+  <div class="split even" style="margin-top:1.4rem">
+    <div class="panel">
+      <span class="tag">Route</span>
+      <ul class="facts">
+        <li><b>Apoplast</b><span>through the cell-wall continuum. Never crosses a membrane, so <strong>nothing selects what travels</strong>. Fast, cheap, indiscriminate.</span></li>
+        <li><b>Symplast</b><span>one membrane crossing at the epidermis, then cell to cell through plasmodesmata. Selective at the front door.</span></li>
+        <li><b>Transcellular</b><span>in and out across a membrane at every cell, largely through aquaporins. Most control, most cost.</span></li>
+      </ul>
+    </div>
+    <div class="panel" id="stripPanel">
+      <span class="tag">The problem on the screen</span>
+      <h3>A root that only had the apoplast would be a straw</h3>
+      <p>It would deliver soil solution — sodium, aluminium, heavy metals, whatever is dissolved out
+      there — straight into the xylem and up to the leaves, unexamined. The polarity of the epithelium
+      would be pointless, because everything could simply walk around the cells.</p>
+      <p style="margin-top:.7rem">So the root does the only thing that fixes it: it <strong>glues the
+      wall shut</strong>, all the way around, one cell layer deep. Press the red button.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. NEXT ============ -->
+<section id="next">
+  <div class="s-head">
+    <span class="scale">The seal itself · ≈0.5 µm</span>
+    <h2>Lecture 2 starts here</h2>
+    <p>Robert Caspary described this band in 1865 and, in a monograph that is otherwise pure anatomy,
+    allowed himself exactly one sentence of speculation about what it might be <em>for</em>.</p>
+  </div>
+  <div class="split">
+    <div>
+      <blockquote>
+        <p>"That such a greatly thickened, poreless cell layer that is joined together without
+        extracellular spaces, and which surrounds the body of the vascular bundle as a tube, is
+        especially difficult to permeate for gases and liquids, can be assumed."</p>
+        <cite>Robert Caspary, 1865 — translation by the Geldner lab</cite>
+      </blockquote>
+      <p style="margin-top:1.3rem;color:var(--ink-2)">He was right, and it took another 150 years to
+      work out how the cell builds it, how it knows where to put it, and what happens to a plant that
+      cannot. That is where we pick up.</p>
+    </div>
+    <figure>
+      <svg id="stripFig" viewBox="0 0 420 320" role="img" aria-label="Close-up of two endodermal cells with a lignified Casparian strip sealing the anticlinal wall, blocking apoplastic flow and forcing solutes across the plasma membrane"></svg>
+      <figcaption>The strip is a lignin band fused to the plasma membrane in the anticlinal wall —
+      not a coating on the cell, a <em>weld between</em> cells.</figcaption>
+    </figure>
+  </div>
+  <div class="next" style="margin-top:2rem">
+    <div><p class="q">How is it built, and how does the cell know where?</p><p class="a">CASP proteins, the CSD membrane domain, and the ESB1/peroxidase machinery that polymerises lignin in one band — Zhang et al. 2024.</p></div>
+    <div><p class="q">What does a mutant look like?</p><p class="a">The red-dye leak test. Wild type holds the dye out of the stele; the mutant does not. A leak test, exactly as you would pressure-test a pipe.</p></div>
+    <div><p class="q">Why does calcium care?</p><p class="a">Ca²⁺ moves almost entirely apoplastically and almost entirely in the xylem — so the strip, and transpiration, set where it ends up. Blossom-end rot is the failure mode.</p></div>
+    <div><p class="q">What else gets modified?</p><p class="a">Suberin lamellae, exodermis, passage cells — the mature cortex keeps rebuilding itself long after elongation stops.</p></div>
+    <div><p class="q">What does all this cost?</p><p class="a">Cortical cell size, aerenchyma, cell wall width — the metabolic-cost argument, LAT imaging, and RootSlice simulation.</p></div>
+  </div>
+</section>
+
+<!-- ============ MNEMONIC ============ -->
+<section id="remember" style="border-bottom:0">
+  <div class="s-head" style="max-width:66ch">
+    <span class="scale">How to still have this in a year</span>
+    <h2>A fort, its walls, and its gates</h2>
+  </div>
+  <div class="split even">
+    <div class="panel">
+      <p style="font-size:1.02rem">A root is working a crowded marketplace. It has to take what it
+      wants, leave what it does not, and not get robbed. Its solution is <strong>radial
+      deployment</strong>: rings of tissue like the walls of a fort, with gates in the wall — and the
+      gates are the only way through.</p>
+    </div>
+    <div class="panel">
+      <ul class="facts">
+        <li><b>Cap</b><span>the scout — reads gravity, clears the path, takes the damage</span></li>
+        <li><b>Cortex</b><span>the bulk of the fort. Cheap volume is the whole design problem</span></li>
+        <li><b>Endodermis</b><span>the wall. Next lecture: the mortar that makes it a wall</span></li>
+        <li><b>Stele</b><span>the keep — once you are in, you ride the xylem to the shoot</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="shell">
+  <span>4320 / 7320 Plant Physiology · Lecture 2 opener · recap of Lecture 1</span>
+  <span class="mono">1 m → 0.5 µm</span>
+</footer>
+<style>
+.narrbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;
+  padding:.85rem 0 0;font-size:.85rem;color:var(--ink-3)}
+.narrbar .lab{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)}
+.narr{display:none;margin:.9rem 0 0;padding:.85rem 0 .85rem 1rem;
+  border-left:2px solid var(--lignin);
+  font-family:Fraunces,Georgia,serif;font-size:1.06rem;line-height:1.5;color:var(--ink);
+  font-style:italic}
+body.narrate .narr{display:block}
+.narr.speaking{background:var(--lignin-soft);border-radius:0 3px 3px 0}
+.narr button{margin-left:.6rem;font-size:.72rem;padding:.2rem .5rem;vertical-align:.12em;
+  font-style:normal;font-family:"IBM Plex Mono",monospace}
+</style>
+<script>
+(function(){
+"use strict";
+var SVGNS="http://www.w3.org/2000/svg";
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function el(tag, attrs, parent){
+  var n=document.createElementNS(SVGNS,tag);
+  if(attrs) for(var k in attrs){ if(attrs[k]!==null&&attrs[k]!==undefined) n.setAttribute(k,attrs[k]); }
+  if(parent) parent.appendChild(n);
+  return n;
+}
+function txt(parent,x,y,s,cls,extra){
+  var t=el("text",{x:x,y:y,"class":cls||"lbl"},parent); t.textContent=s;
+  if(extra) for(var k in extra) t.setAttribute(k,extra[k]);
+  return t;
+}
+function clear(n){ while(n.firstChild) n.removeChild(n.firstChild); }
+function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0;
+  var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t;
+  return ((t^t>>>14)>>>0)/4294967296; }; }
+
+/* ---------------- cross-section cell walls ---------------- */
+function ring(g,r0,r1,n){
+  for(var i=0;i<n;i++){
+    var a=i/n*Math.PI*2;
+    el("line",{x1:180+Math.cos(a)*r0,y1:180+Math.sin(a)*r0,
+               x2:180+Math.cos(a)*r1,y2:180+Math.sin(a)*r1,"class":"wall"},g);
+  }
+}
+Array.prototype.forEach.call(document.querySelectorAll("[data-walls]"),function(g){
+  g.setAttribute("pointer-events","none");
+  ring(g,64,150,56); ring(g,150,162,76); ring(g,52,64,40);
+  [86,107,128].forEach(function(r){ el("circle",{cx:180,cy:180,r:r,"class":"wall"},g); });
+  el("circle",{cx:180,cy:180,r:150,"class":"wall"},g);
+  el("circle",{cx:180,cy:180,r:64,"class":"wall"},g);
+});
+
+/* ---------------- root system drawing ---------------- */
+function drawSystem(host, opt){
+  var g=el("g",{},host);
+  var x0=opt.x0, y0=opt.y0, seed=mulberry(opt.seed||7);
+  opt.roots.forEach(function(r){
+    var a=r.ang*Math.PI/180;
+    var ex=x0+Math.sin(a)*r.len, ey=y0+Math.cos(a)*r.len;
+    var cx=x0+Math.sin(a)*r.len*0.62, cy=y0+Math.cos(a)*r.len*0.18;
+    var p=el("path",{d:"M "+x0+" "+y0+" Q "+cx.toFixed(1)+" "+cy.toFixed(1)+" "+ex.toFixed(1)+" "+ey.toFixed(1),
+      fill:"none",stroke:opt.color,"stroke-width":r.w||3,"stroke-linecap":"round"},g);
+    var L=p.getTotalLength(), n=Math.max(4,Math.round(L/16));
+    for(var i=1;i<n;i++){
+      var t=i/n, pt=p.getPointAtLength(L*t), pt2=p.getPointAtLength(Math.min(L,L*t+2));
+      var dx=pt2.x-pt.x, dy=pt2.y-pt.y, m=Math.hypot(dx,dy)||1;
+      var nx=-dy/m, ny=dx/m, ln=(6+seed()*10)*(opt.latScale||1);
+      var side=(i%2)?1:-1;
+      el("line",{x1:pt.x,y1:pt.y,x2:pt.x+nx*ln*side,y2:pt.y+ny*ln*side,
+        stroke:opt.color,"stroke-width":1.1,"stroke-linecap":"round",opacity:.75},g);
+    }
+  });
+  return g;
+}
+var SHALLOW=[{ang:-72,len:210},{ang:-58,len:230},{ang:-44,len:200},{ang:-24,len:150,w:2.4},
+             {ang:72,len:210},{ang:58,len:230},{ang:44,len:200},{ang:24,len:150,w:2.4},{ang:0,len:130,w:2.4}];
+var DEEP=[{ang:-30,len:210},{ang:-18,len:300},{ang:-8,len:340},{ang:8,len:340},
+          {ang:18,len:300},{ang:30,len:210},{ang:0,len:355,w:3.4}];
+var MIXED=[{ang:-62,len:190},{ang:-46,len:225},{ang:-30,len:250},{ang:-12,len:270,w:2.6},
+           {ang:62,len:190},{ang:46,len:225},{ang:30,len:250},{ang:12,len:270,w:2.6},{ang:0,len:285,w:2.6}];
+
+/* ---- §2 architecture figure ---- */
+(function(){
+  var s=document.getElementById("archFig"); if(!s) return;
+  el("line",{x1:16,y1:44,x2:284,y2:44,stroke:"var(--rule)","stroke-width":1.5},s);
+  txt(s,16,36,"soil surface","lbl-sm");
+  el("path",{d:"M150 44 L150 14 M150 22 L138 8 M150 26 L164 12",stroke:"var(--ink-3)",
+    "stroke-width":2,fill:"none","stroke-linecap":"round"},s);
+  drawSystem(s,{x0:150,y0:44,roots:MIXED,color:"var(--epi)",seed:11,latScale:.9});
+  el("line",{x1:16,y1:346,x2:106,y2:346,stroke:"currentColor","stroke-width":2},s);
+  txt(s,16,338,"30 cm","lbl-sm");
+})();
+
+/* ---- §3 soil profile ---- */
+(function(){
+  var s=document.getElementById("soilFig"); if(!s) return;
+  var rootG=null, cur="shallow";
+  var Y=function(cm){ return 50+cm*6; };
+  var bands=[[0,15,"var(--soil-a)"],[15,35,"var(--soil-b)"],[35,60,"var(--soil-c)"]];
+  bands.forEach(function(b){ el("rect",{x:90,y:Y(b[0]),width:510,height:(b[1]-b[0])*6,fill:b[2]},s); });
+  el("rect",{x:90,y:50,width:510,height:360,fill:"none",stroke:"var(--rule)"},s);
+  [0,15,30,45,60].forEach(function(cm){
+    el("line",{x1:82,y1:Y(cm),x2:90,y2:Y(cm),"class":"ax"},s);
+    txt(s,76,Y(cm)+4,cm+"",'lbl-sm',{"text-anchor":"end"});
+  });
+  txt(s,76,32,"depth (cm)","lbl-sm",{"text-anchor":"end"});
+  var rnd=mulberry(42), pg=el("g",{id:"poolP"},s), ng=el("g",{id:"poolN"},s);
+  for(var i=0;i<190;i++){
+    var x=100+rnd()*490, d=Math.pow(rnd(),2.6)*58;
+    el("circle",{cx:x.toFixed(1),cy:Y(d).toFixed(1),r:2.6,fill:"var(--c2)",opacity:.85},pg);
+  }
+  for(var j=0;j<170;j++){
+    var x2=100+rnd()*490, d2=60-Math.pow(rnd(),2.2)*55;
+    el("circle",{cx:x2.toFixed(1),cy:Y(d2).toFixed(1),r:2.6,fill:"var(--c3)",opacity:.85},ng);
+  }
+  var lg=el("g",{},s);
+  el("circle",{cx:104,cy:26,r:4,fill:"var(--c2)"},lg); txt(lg,114,30,"phosphate — immobile","lbl");
+  el("circle",{cx:280,cy:26,r:4,fill:"var(--c3)"},lg); txt(lg,290,30,"nitrate — mobile, leaches","lbl");
+  function render(kind){
+    if(rootG) rootG.remove();
+    rootG=drawSystem(s,{x0:345,y0:50,roots:kind==="shallow"?SHALLOW:DEEP,
+      color:"var(--ink)",seed:kind==="shallow"?5:9,latScale:.8});
+    rootG.setAttribute("opacity",".9");
+    pg.setAttribute("opacity",kind==="shallow"?"1":".22");
+    ng.setAttribute("opacity",kind==="shallow"?".22":"1");
+    cur=kind;
+  }
+  render("shallow");
+  var T=document.getElementById("soilTitle"), X=document.getElementById("soilText"),
+      F=document.getElementById("soilFacts");
+  var COPY={
+    shallow:{t:"Topsoil foraging improves P capture",
+      x:"Shallow basal root growth angles, more adventitious (crown) roots, more basal root whorls, dispersed laterals, and longer, denser root hairs — all of it placing length in the top 15 cm where the phosphate is. Aerenchyma and root etiolation then make that length cheaper to run.",
+      f:[["angle","shallow basal and crown root growth angles"],["whorls","more basal root whorls, more axial roots"],["hairs","longer, denser root hairs — the cheapest soil volume there is"],["cost","aerenchyma + etiolation reduce the bill per cm"]]},
+    deep:{t:"Steep, cheap and deep captures N",
+      x:"Steep growth angles, fewer axial roots, longer unbranched segments, and reduced lateral branching density — length spent on getting down rather than spreading out, tracking the nitrate as it leaches ahead of the root front.",
+      f:[["angle","steep growth angles, faster descent"],["fewer axials","less competition between a plant's own roots"],["laterals","reduced branching density on the axial roots"],["payoff","reaches water and nitrate late in the season"]]}
+  };
+  function setCopy(k){
+    var c=COPY[k]; T.textContent=c.t; X.textContent=c.x; clear(F);
+    c.f.forEach(function(p){ var li=document.createElement("li");
+      li.innerHTML="<b>"+p[0]+"</b><span>"+p[1]+"</span>"; F.appendChild(li); });
+  }
+  setCopy("shallow");
+  var bS=document.getElementById("btnShallow"), bD=document.getElementById("btnDeep");
+  function pick(k){ render(k); setCopy(k);
+    bS.setAttribute("aria-pressed",k==="shallow"); bD.setAttribute("aria-pressed",k==="deep"); }
+  bS.addEventListener("click",function(){pick("shallow");});
+  bD.addEventListener("click",function(){pick("deep");});
+})();
+
+/* ---- §4 axis: REGR chart + longitudinal root ---- */
+(function(){
+  var s=document.getElementById("axisFig"); if(!s) return;
+  var X=function(m){ return 70+m/14*640; }, Y=function(r){ return 190-r/0.40*150; };
+  var bump=function(m,A,p,k){ if(m<=0) return 0; return A*Math.pow(m/p,k)*Math.exp(k*(1-m/p)); };
+  function curve(A,p,k){ var d="",i,m,y;
+    for(i=0;i<=140;i++){ m=i/10; y=Y(Math.min(bump(m,A,p,k),0.40));
+      d+=(i?" L ":"M ")+X(m).toFixed(1)+" "+y.toFixed(1); }
+    return d; }
+
+  var ZONES={cap:[0,1],mer:[1,3],elo:[3,10],mat:[10,14]};
+  var bandG=el("g",{},s);
+  Object.keys(ZONES).forEach(function(k){
+    el("rect",{x:X(ZONES[k][0]),y:30,width:X(ZONES[k][1])-X(ZONES[k][0]),height:335,
+      "class":"zoneband",id:"band-"+k},bandG);
+  });
+
+  /* chart axes */
+  var ch=el("g",{},s);
+  [0,0.1,0.2,0.3,0.4].forEach(function(r){
+    el("line",{x1:70,y1:Y(r),x2:710,y2:Y(r),"class":r?"gridline":"ax"},ch);
+    txt(ch,62,Y(r)+4,r.toFixed(1),"lbl-sm",{"text-anchor":"end"});
+  });
+  el("line",{x1:70,y1:40,x2:70,y2:190,"class":"ax"},ch);
+  txt(ch,70,26,"relative elongation rate  (h⁻¹)","lbl-sm");
+  for(var m=0;m<=14;m+=2){
+    el("line",{x1:X(m),y1:190,x2:X(m),y2:196,"class":"ax"},ch);
+    txt(ch,X(m),210,m+"","lbl-sm",{"text-anchor":"middle"});
+  }
+  txt(ch,710,228,"mm from apex","lbl-sm",{"text-anchor":"end"});
+
+  var pWW=el("path",{d:curve(0.34,4.3,3.2),"class":"curve ser1"},ch);
+  var pWD=el("path",{d:curve(0.30,2.2,3.6),"class":"curve ser2",opacity:".35"},ch);
+  txt(ch,272,52,"well-watered","lbl",{"text-anchor":"middle",fill:"var(--c1)"});
+  var lWD=txt(ch,152,70,"water deficit","lbl",{"text-anchor":"end",fill:"var(--c2)",opacity:".55"});
+  var lg=el("g",{},ch);
+  el("line",{x1:578,y1:52,x2:600,y2:52,"class":"curve ser1"},lg); txt(lg,606,56,"well-watered","lbl-sm");
+  el("line",{x1:578,y1:70,x2:600,y2:70,"class":"curve ser2"},lg); txt(lg,606,74,"water deficit","lbl-sm");
+
+  var mk=el("g",{},ch);
+  var mkL=el("line",{x1:X(4.5),y1:40,x2:X(4.5),y2:190,stroke:"var(--ink)","stroke-width":1,
+    "stroke-dasharray":"3 3",opacity:".55"},mk);
+  var mkD=el("circle",{cx:X(4.5),cy:Y(bump(4.5,0.34,4.3,3.2)),r:5,fill:"var(--c1)",
+    stroke:"var(--surface)","stroke-width":2},mk);
+
+  var brG=el("g",{},s);
+  function bracket(hi,label,col){
+    clear(brG);
+    el("path",{d:"M "+X(0)+" 224 L "+X(0)+" 232 L "+X(hi)+" 232 L "+X(hi)+" 224",
+      fill:"none",stroke:col,"stroke-width":1.5},brG);
+    txt(brG,(X(0)+X(hi))/2,246,label,"lbl",{"text-anchor":"middle",fill:col});
+  }
+
+  /* longitudinal root */
+  var rg=el("g",{},s), cy=310, hh=44;
+  el("path",{d:"M 124 "+(cy-hh)+" C 88 "+(cy-hh)+" 70 "+(cy-24)+" 70 "+cy+
+    " C 70 "+(cy+24)+" 88 "+(cy+hh)+" 124 "+(cy+hh)+" L 740 "+(cy+hh)+" L 740 "+(cy-hh)+" Z",
+    fill:"var(--epi)",opacity:".85"},rg);
+  el("path",{d:"M 128 "+(cy-hh+8)+" C 96 "+(cy-hh+8)+" 80 "+(cy-22)+" 80 "+cy+
+    " C 80 "+(cy+22)+" 96 "+(cy+hh-8)+" 128 "+(cy+hh-8)+" L 740 "+(cy+hh-8)+" L 740 "+(cy-hh+8)+" Z",
+    fill:"var(--cortex)"},rg);
+  el("rect",{x:X(1.6),y:cy-11,width:740-X(1.6),height:22,fill:"var(--stele)"},rg);
+  /* cap */
+  var capG=el("g",{},rg);
+  el("path",{d:"M 118 "+(cy-hh)+" C 84 "+(cy-hh)+" 68 "+(cy-24)+" 68 "+cy+
+    " C 68 "+(cy+24)+" 84 "+(cy+hh)+" 118 "+(cy+hh) +" Z",fill:"var(--epi)"},capG);
+  var rr=mulberry(3);
+  for(var q=0;q<26;q++){ var aa=(rr()-0.5)*2.3+Math.PI;
+    el("circle",{cx:(68+Math.cos(aa)*(46+rr()*12)).toFixed(1),cy:(cy+Math.sin(aa)*(hh+rr()*10)).toFixed(1),
+      r:1.7,fill:"var(--epi)",opacity:.5},capG); }
+  /* cells with vacuoles */
+  var cellG=el("g",{},rg), x=X(1.05);
+  while(x<736){
+    var mm=(x-70)/640*14, prog=Math.max(0,Math.min(1,(mm-1.5)/7.5));
+    var L=7+54*prog, vf=0.16+0.66*prog;
+    if(x+L>736) break;
+    [[cy-hh+10,26],[cy+hh-36,26]].forEach(function(row){
+      el("rect",{x:x.toFixed(1),y:row[0],width:L.toFixed(1),height:row[1],rx:2,
+        fill:"none",stroke:"var(--cortex-line)","stroke-width":1},cellG);
+      el("rect",{x:(x+L*(1-vf)/2).toFixed(1),y:row[0]+4,width:(L*vf).toFixed(1),height:row[1]-8,rx:2,
+        fill:"var(--c3)",opacity:.3},cellG);
+    });
+    if(mm>10.4){
+      var hx=x+L/2;
+      el("line",{x1:hx,y1:cy-hh,x2:hx-4,y2:cy-hh-16,stroke:"var(--epi)","stroke-width":1.4,"stroke-linecap":"round"},cellG);
+      el("line",{x1:hx,y1:cy+hh,x2:hx+4,y2:cy+hh+16,stroke:"var(--epi)","stroke-width":1.4,"stroke-linecap":"round"},cellG);
+    }
+    x+=L+2.5;
+  }
+  var key=el("g",{},s);
+  el("rect",{x:70,y:428,width:16,height:11,rx:2,fill:"var(--c3)",opacity:".45"},key);
+  txt(key,92,438,"vacuole — the volume that does the growing","lbl-sm");
+  el("line",{x1:400,y1:434,x2:414,y2:424,stroke:"var(--epi)","stroke-width":1.6,"stroke-linecap":"round"},key);
+  txt(key,422,438,"root hair","lbl-sm");
+
+  var names={cap:["Root cap","0–1 mm"],mer:["Meristem","1–3 mm"],
+             elo:["Elongation zone","3–10 mm"],mat:["Maturation zone","10 mm →"]};
+  var lblG=el("g",{},s);
+  Object.keys(ZONES).forEach(function(k){
+    var mid=(X(ZONES[k][0])+X(ZONES[k][1]))/2;
+    txt(lblG,mid,388,names[k][0],"lbl",{"text-anchor":"middle"});
+    txt(lblG,mid,404,names[k][1],"lbl-sm",{"text-anchor":"middle"});
+    el("rect",{x:X(ZONES[k][0]),y:30,width:X(ZONES[k][1])-X(ZONES[k][0]),height:380,
+      "class":"zonehit","data-z":k},s);
+  });
+
+  var ZTEXT={
+    cap:["Root cap · 0–1 mm","A cell layer being shed as fast as it is made. Mucilage lowers friction so the tip can push through soil; columella cells hold the statoliths that read gravity; border cells detach alive and keep secreting, running chemical defence out in front of the meristem."],
+    mer:["Meristem · 1–3 mm","Division, not expansion. Cells here are small and isodiametric with dense cytoplasm and small vacuoles — elongation rate is still low. Everything the root will ever be is specified in this millimetre or two."],
+    elo:["Elongation zone · 3–10 mm","Where the root actually travels. Rate peaks around 4 mm from the apex. Cells lengthen ten- to twenty-fold in a few hours, and almost all of that added volume is vacuole — turgor doing the work against a loosening wall. This is also the zone drought attacks first: the zone shortens toward the apex."],
+    mat:["Maturation zone · from ~10 mm","Elongation has stopped and differentiation takes over: root hairs emerge, xylem matures, and the endodermis lays down its wall modifications. The anatomy you see here is not the anatomy of the tip — same root, different organ."]
+  };
+  var zTag=document.getElementById("zTag"), zTitle=document.getElementById("zTitle"), zText=document.getElementById("zText");
+  var MPOS={cap:0.5,mer:2,elo:4.5,mat:12}, drought=false, curZ="elo";
+  function paint(){
+    Object.keys(ZONES).forEach(function(k){
+      document.getElementById("band-"+k).classList.toggle("on",k===curZ); });
+    Array.prototype.forEach.call(document.querySelectorAll(".zbtn"),function(b){
+      b.setAttribute("aria-pressed",b.dataset.z===curZ); });
+    var mm=MPOS[curZ];
+    mkL.setAttribute("x1",X(mm)); mkL.setAttribute("x2",X(mm));
+    mkD.setAttribute("cx",X(mm));
+    mkD.setAttribute("cy",Y(Math.min(drought?bump(mm,0.30,2.2,3.6):bump(mm,0.34,4.3,3.2),0.40)));
+    mkD.setAttribute("fill",drought?"var(--c2)":"var(--c1)");
+    zTag.textContent="Zone · "+names[curZ][1];
+    zTitle.textContent=ZTEXT[curZ][0]; zText.textContent=ZTEXT[curZ][1];
+  }
+  function paintWater(){
+    pWW.setAttribute("opacity",drought?".3":"1");
+    pWD.setAttribute("opacity",drought?"1":".35");
+    lWD.setAttribute("opacity",drought?"1":".55");
+    bracket(drought?5.5:11,drought?"growth zone ≈ 5 mm":"growth zone ≈ 10 mm",
+      drought?"var(--c2)":"var(--c1)");
+    var b=document.getElementById("btnDrought");
+    b.setAttribute("aria-pressed",drought);
+    b.textContent=drought?"Rewater":"Impose water deficit";
+    paint();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".zbtn"),function(b){
+    b.addEventListener("click",function(){ curZ=b.dataset.z; paint(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll(".zonehit"),function(r){
+    r.addEventListener("click",function(){ curZ=r.dataset.z; paint(); }); });
+  document.getElementById("btnDrought").addEventListener("click",function(){
+    drought=!drought; paintWater(); });
+  paintWater();
+})();
+
+/* ---- §5 gravitropism ---- */
+(function(){
+  var s=document.getElementById("gravFig"); if(!s) return;
+  var PX=160, PY=170;
+  txt(s,24,28,"tilt the root","lbl-sm");
+  txt(s,346,28,"~6 h later","lbl-sm");
+  el("line",{x1:330,y1:44,x2:330,y2:356,stroke:"var(--rule)"},s);
+  var garrow=el("g",{},s);
+  el("line",{x1:34,y1:262,x2:34,y2:318,stroke:"var(--ink-3)","stroke-width":2},garrow);
+  el("polygon",{points:"28,312 40,312 34,326",fill:"var(--ink-3)"},garrow);
+  txt(garrow,24,256,"g","lbl");
+
+  var G=el("g",{},s);
+  el("path",{d:"M98 56 L98 276 Q98 312 160 346 Q222 312 222 276 L222 56 Z",fill:"var(--epi)",opacity:".9"},G);
+  el("path",{d:"M110 56 L110 272 Q110 302 160 332 Q210 302 210 272 L210 56 Z",fill:"var(--cortex)"},G);
+  el("rect",{x:143,y:56,width:34,height:186,fill:"var(--stele)"},G);
+  var auxL=el("rect",{x:98,y:170,width:12,height:120,fill:"var(--c4)",opacity:"0"},G);
+  var auxR=el("rect",{x:210,y:170,width:12,height:120,fill:"var(--c4)",opacity:"0"},G);
+  var cells=[];
+  for(var r=0;r<3;r++) for(var c=0;c<2;c++){
+    var cx=146+c*28, cyy=266+r*28;
+    el("rect",{x:cx-13,y:cyy-13,width:26,height:26,rx:2,fill:"none",
+      stroke:"var(--cortex-line)","stroke-width":1.2},G);
+    cells.push([cx,cyy]);
+  }
+  var stat=[];
+  cells.forEach(function(p){
+    for(var i=0;i<3;i++){ stat.push({g:el("circle",{cx:p[0],cy:p[1],r:3.4,fill:"var(--xylem)"},G),
+      p:p,o:(i-1)*7.2}); }
+  });
+  var mu=mulberry(8);
+  for(var k=0;k<34;k++){ var aa=(mu()-0.5)*2.5+Math.PI/2;
+    el("circle",{cx:(160+Math.cos(aa)*(56+mu()*20)).toFixed(1),
+      cy:(292+Math.sin(aa)*(52+mu()*18)).toFixed(1),r:2.1,fill:"var(--epi)",opacity:.45},G); }
+  txt(s,236,272,"columella","lbl-sm");
+  txt(s,236,288,"statoliths","lbl-sm",{fill:"var(--xylem)"});
+  txt(s,236,344,"mucilage","lbl-sm");
+  txt(s,236,150,"stele","lbl-sm");
+
+  var outG=el("g",{},s);
+  var range=document.getElementById("tiltRange"), out=document.getElementById("tiltOut"),
+      gt=document.getElementById("gravText");
+  function render(a){
+    G.setAttribute("transform","rotate("+a+" "+PX+" "+PY+")");
+    var rad=a*Math.PI/180, gx=Math.sin(rad), gy=Math.cos(rad);
+    stat.forEach(function(st){
+      st.g.setAttribute("cx",(st.p[0]+gx*4.2-gy*st.o).toFixed(2));
+      st.g.setAttribute("cy",(st.p[1]+gy*4.2+gx*st.o).toFixed(2));
+    });
+    var lat=Math.sin(rad);
+    auxR.setAttribute("opacity",(Math.max(0,lat)*0.75).toFixed(3));
+    auxL.setAttribute("opacity",(Math.max(0,-lat)*0.75).toFixed(3));
+    clear(outG);
+    var n=42, ds=6.6, px=472-Math.sin(rad)*98, py=60, d="M "+px+" "+py;
+    for(var i=1;i<=n;i++){ var th=rad*(1-i/n);
+      px+=Math.sin(th)*ds; py+=Math.cos(th)*ds; d+=" L "+px.toFixed(1)+" "+py.toFixed(1); }
+    el("path",{d:d,fill:"none",stroke:"var(--epi)","stroke-width":30,"stroke-linecap":"round",opacity:".9"},outG);
+    el("path",{d:d,fill:"none",stroke:"var(--cortex)","stroke-width":17,"stroke-linecap":"round"},outG);
+    el("circle",{cx:px.toFixed(1),cy:py.toFixed(1),r:14,fill:"var(--epi)"},outG);
+    el("text",{x:474,y:366,"class":"lbl","text-anchor":"middle"},outG).textContent =
+      a>4 ? "tip has turned "+a+"° back toward g" : "vertical — no redistribution, no bending";
+    out.textContent=a+"°";
+    gt.innerHTML = a<5
+      ? "At rest the statoliths sit on the bottom wall of every columella cell and auxin is delivered symmetrically. Nothing to correct."
+      : "Statoliths have fallen onto what is now the <strong>lower</strong> wall. That contact is read by the cell, auxin is redirected to the lower flank, and the lower flank <strong>slows</strong>. The upper flank out-grows it and the tip swings back toward vertical.";
+  }
+  range.addEventListener("input",function(){ render(+range.value); });
+  render(0);
+})();
+
+/* ---- §6 layer explorer ---- */
+(function(){
+  var s=document.getElementById("explFig"); if(!s) return;
+  var band=el("circle",{cx:180,cy:180,r:156,fill:"none",stroke:"var(--ink)",opacity:".16",
+    "stroke-width":12,"pointer-events":"none"},s);
+  s.insertBefore(band,document.getElementById("explRing"));
+  var edge=document.getElementById("explRing");
+  var L={
+    epi:{r:156,w:12,t:"Epidermis",tag:"Layer 1 · outermost",
+      d:"One cell thick, in direct contact with the soil solution and with the microbiome. Trichoblasts extend root hairs; atrichoblasts do not. This is the cheapest surface area a root can buy.",
+      role:"Absorptive surface and the first membrane a nutrient meets."},
+    cortex:{r:107,w:86,t:"Cortex",tag:"Layer 2 · the bulk",
+      d:"Many concentric files of large parenchyma cells — in maize the great majority of the root's cross-sectional area. It is living tissue: it respires, it must be built, and it must be maintained.",
+      role:"Cheap volume, storage, aerenchyma, mycorrhizal habitat — and the root's biggest running cost."},
+    endo:{r:58,w:12,t:"Endodermis",tag:"Layer 3 · the boundary",
+      d:"The innermost cortical layer, and unlike everything outside it, an unbroken ring with no gaps. This is the layer that turns the root into a selective epithelium.",
+      role:"The checkpoint. Everything entering the stele is committed to crossing a membrane here — because of what gets built into its wall. That is Lecture 2."},
+    peri:{r:48,w:8,t:"Pericycle",tag:"Layer 4 · inside the boundary",
+      d:"A thin layer just inside the endodermis that stays meristematic. Lateral roots initiate here — which means every branch has to be born inside the seal and push its way out through it.",
+      role:"Lateral root founder cells; a standing problem for how the seal is maintained."},
+    stele:{r:22,w:44,t:"Stele",tag:"Layer 5 · the vascular core",
+      d:"Xylem and phloem in the centre. In maize, a large central metaxylem vessel ringed by others. Once solutes are here, transpiration carries them to the shoot with no further checkpoint.",
+      role:"The destination. Whatever gets in, gets delivered."}
+  };
+  var lTag=document.getElementById("lTag"), lTitle=document.getElementById("lTitle"),
+      lText=document.getElementById("lText"), lRole=document.getElementById("lRole");
+  function pick(k){
+    var o=L[k];
+    band.setAttribute("r",o.r); band.setAttribute("stroke-width",o.w);
+    edge.setAttribute("r",o.r); edge.setAttribute("stroke-width",1.5);
+    edge.setAttribute("stroke",k==="endo"?"var(--dye)":"var(--ink)");
+    lTag.textContent=o.tag; lTitle.textContent=o.t; lText.textContent=o.d; lRole.textContent=o.role;
+  }
+  Array.prototype.forEach.call(s.querySelectorAll(".hit"),function(c){
+    c.style.cursor="pointer";
+    c.addEventListener("click",function(){ pick(c.dataset.layer); });
+  });
+  pick("epi");
+})();
+
+/* ---- §7 radial pathways ---- */
+(function(){
+  var s=document.getElementById("pathFig"); if(!s) return;
+  var TOP=90, BOT=220, W=8;
+  var bx=[40,118,196,274,352,430,508], XYL=660;
+  var defs=el("defs",{},s);
+  var mk=el("marker",{id:"arw",viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"6",
+    markerHeight:"6",orient:"auto-start-reverse"},defs);
+  el("path",{d:"M0 0 L10 5 L0 10 z",fill:"var(--dye)"},mk);
+
+  var fills=[["var(--epi)",40,118],["var(--cortex)",118,196],["var(--cortex)",196,274],
+             ["var(--cortex)",274,352],["var(--endo)",352,430],["var(--peri)",430,508],
+             ["var(--stele)",508,XYL]];
+  fills.forEach(function(f){ el("rect",{x:f[1],y:TOP,width:f[2]-f[1],height:BOT-TOP,fill:f[0],
+    opacity:f[0]==="var(--endo)"?".55":".9"},s); });
+  el("circle",{cx:560,cy:132,r:17,fill:"var(--xylem)"},s);
+  el("circle",{cx:614,cy:178,r:22,fill:"var(--xylem)"},s);
+
+  var wg=el("g",{},s);
+  el("rect",{x:40,y:TOP,width:XYL-40,height:W,fill:"var(--cortex-line)",opacity:".7"},wg);
+  el("rect",{x:40,y:BOT-W,width:XYL-40,height:W,fill:"var(--cortex-line)",opacity:".7"},wg);
+  bx.forEach(function(b){ el("rect",{x:b-W/2,y:TOP,width:W,height:BOT-TOP,
+    fill:"var(--cortex-line)",opacity:".7"},wg); });
+  bx.slice(1).forEach(function(b){
+    [138,150,162].forEach(function(y){
+      el("rect",{x:b-W/2-1,y:y,width:W+2,height:5,fill:"var(--surface)"},wg); });
+    el("circle",{cx:b,cy:196,r:3.4,fill:"var(--surface)"},wg);
+  });
+  txt(s,196,80,"plasmodesmata","lbl-sm",{"text-anchor":"middle"});
+  el("line",{x1:196,y1:84,x2:196,y2:134,stroke:"var(--ink-3)","stroke-width":.8},s);
+
+  var strip=el("g",{opacity:"0"},s);
+  el("rect",{x:352-W/2,y:TOP,width:W,height:BOT-TOP,fill:"var(--dye)"},strip);
+  el("rect",{x:430-W/2,y:TOP,width:W,height:BOT-TOP,fill:"var(--dye)"},strip);
+  var detour=el("g",{opacity:"0"},s);
+  el("path",{d:"M 344 96 C 322 96 318 140 356 148",fill:"none",stroke:"var(--dye)",
+    "stroke-width":2,"stroke-dasharray":"4 4","marker-end":"url(#arw)"},detour);
+  txt(detour,300,74,"blocked — must cross a membrane","lbl",{"text-anchor":"middle",fill:"var(--dye)"});
+  el("line",{x1:336,y1:88,x2:348,y2:104,stroke:"var(--dye)","stroke-width":2.5},detour);
+  el("line",{x1:348,y1:88,x2:336,y2:104,stroke:"var(--dye)","stroke-width":2.5},detour);
+
+  var lab=[["epidermis",79],["cortex  ×3",274],["endodermis",391],["pericycle",469],["xylem",584]];
+  lab.forEach(function(l){ txt(s,l[1],244,l[0],"lbl",{"text-anchor":"middle"}); });
+  el("path",{d:"M 120 250 L 120 256 L 350 256 L 350 250",fill:"none",stroke:"var(--rule)"},s);
+  txt(s,20,84,"soil","lbl-sm");
+  txt(s,20,260,"outside","lbl-sm"); txt(s,XYL,260,"inside","lbl-sm",{"text-anchor":"end"});
+
+  var wave="M 8 196"; for(var wx=12;wx<=XYL;wx+=4){
+    wave+=" L "+wx+" "+(196+15*Math.sin((wx-8)/78*Math.PI*2)).toFixed(1); }
+  var guides=el("g",{opacity:"0"},s);
+  var P={
+    apo:{p:el("path",{d:"M 8 94 L "+XYL+" 94"},guides),c:"var(--c2)",y:98,n:"apoplast"},
+    sym:{p:el("path",{d:"M 8 150 L "+XYL+" 150"},guides),c:"var(--c1)",y:154,n:"symplast"},
+    trans:{p:el("path",{d:wave},guides),c:"var(--c3)",y:200,n:"transcellular"}
+  };
+  var dots={}, on={apo:true,sym:true,trans:true}, t={apo:0,sym:.33,trans:.66};
+  Object.keys(P).forEach(function(k){
+    var o=P[k]; o.len=o.p.getTotalLength();
+    el("path",{d:o.p.getAttribute("d"),fill:"none",stroke:o.c,"stroke-width":1.4,
+      "stroke-dasharray":"3 5",opacity:".55"},s);
+    dots[k]=el("circle",{r:6.5,fill:o.c,stroke:"var(--surface)","stroke-width":2},s);
+    txt(s,XYL+10,o.y,o.n,"lbl",{fill:o.c});
+  });
+
+  var stripOn=false, playing=!reduce, last=null;
+  var tStop=(344-8)/(XYL-8);
+  function place(k,tt){
+    var o=P[k], pt=o.p.getPointAtLength(o.len*tt);
+    dots[k].setAttribute("cx",pt.x.toFixed(1)); dots[k].setAttribute("cy",pt.y.toFixed(1));
+    dots[k].setAttribute("opacity",on[k]?"1":"0");
+  }
+  function frame(ts){
+    if(last===null) last=ts;
+    var dt=Math.min(.05,(ts-last)/1000); last=ts;
+    if(playing){
+      Object.keys(P).forEach(function(k){
+        var lim=(k==="apo"&&stripOn)?tStop:1;
+        t[k]+=dt*0.14;
+        if(t[k]>lim+0.45) t[k]=0;
+        place(k,Math.min(t[k],lim));
+      });
+    }
+    requestAnimationFrame(frame);
+  }
+  Object.keys(P).forEach(function(k){ place(k,t[k]); });
+  if(reduce){ Object.keys(P).forEach(function(k){ place(k,0.42); }); }
+  requestAnimationFrame(frame);
+
+  var bp=document.getElementById("btnPlay");
+  bp.textContent=playing?"Pause":"Play";
+  bp.classList.toggle("on",playing);
+  bp.addEventListener("click",function(){ playing=!playing;
+    bp.textContent=playing?"Pause":"Play"; bp.classList.toggle("on",playing); });
+  Array.prototype.forEach.call(document.querySelectorAll(".pbtn"),function(b){
+    b.addEventListener("click",function(){ var k=b.dataset.p; on[k]=!on[k];
+      b.setAttribute("aria-pressed",on[k]); place(k,t[k]); }); });
+
+  var cap=document.getElementById("pathCap"), bs=document.getElementById("btnStrip");
+  var cap0=cap.innerHTML;
+  bs.addEventListener("click",function(){
+    stripOn=!stripOn;
+    strip.setAttribute("opacity",stripOn?"1":"0");
+    detour.setAttribute("opacity",stripOn?"1":"0");
+    bs.setAttribute("aria-pressed",stripOn);
+    bs.textContent=stripOn?"Remove the strip":"Build the Casparian strip →";
+    t.apo=0;
+    cap.innerHTML = stripOn
+      ? "<strong>With the strip in place</strong>, the apoplastic route dead-ends in the endodermal wall. Anything still travelling in the wall continuum has to cross a plasma membrane to continue — and at that membrane the root finally gets to choose. The symplastic and transcellular routes are untouched."
+      : cap0;
+  });
+})();
+
+/* ---- §8 strip close-up ---- */
+(function(){
+  var s=document.getElementById("stripFig"); if(!s) return;
+  var d2=el("defs",{},s);
+  [["arw2","var(--c2)"],["arw3","var(--c3)"]].forEach(function(m){
+    var mm=el("marker",{id:m[0],viewBox:"0 0 10 10",refX:"8",refY:"5",markerWidth:"6",
+      markerHeight:"6",orient:"auto-start-reverse"},d2);
+    el("path",{d:"M0 0 L10 5 L0 10 z",fill:m[1]},mm);
+  });
+  txt(s,210,22,"CORTEX  (outside)","lbl",{"text-anchor":"middle"});
+  txt(s,210,310,"STELE  (inside)","lbl",{"text-anchor":"middle"});
+  el("rect",{x:52,y:70,width:150,height:180,fill:"var(--endo)",opacity:".45",
+    stroke:"var(--endo)","stroke-width":1.5},s);
+  el("rect",{x:218,y:70,width:150,height:180,fill:"var(--endo)",opacity:".45",
+    stroke:"var(--endo)","stroke-width":1.5},s);
+  txt(s,127,266,"endodermal cell","lbl-sm",{"text-anchor":"middle"});
+  txt(s,293,266,"its neighbour","lbl-sm",{"text-anchor":"middle"});
+  el("rect",{x:202,y:44,width:16,height:232,fill:"var(--cortex-line)",opacity:".85"},s);
+  txt(s,210,292,"anticlinal wall","lbl-sm",{"text-anchor":"middle"});
+  el("rect",{x:198,y:140,width:24,height:46,fill:"var(--dye)"},s);
+  el("line",{x1:202,y1:140,x2:202,y2:186,stroke:"var(--xylem)","stroke-width":3.5},s);
+  el("line",{x1:218,y1:140,x2:218,y2:186,stroke:"var(--xylem)","stroke-width":3.5},s);
+  txt(s,236,158,"lignin band","lbl",{fill:"var(--dye)"});
+  txt(s,236,174,"membrane welded to it","lbl-sm");
+  el("line",{x1:210,y1:46,x2:210,y2:100,stroke:"var(--c2)","stroke-width":2.5,
+    "marker-end":"url(#arw2)"},s);
+  el("line",{x1:201,y1:104,x2:219,y2:122,stroke:"var(--dye)","stroke-width":3},s);
+  el("line",{x1:219,y1:104,x2:201,y2:122,stroke:"var(--dye)","stroke-width":3},s);
+  txt(s,196,74,"apoplast","lbl",{"text-anchor":"end",fill:"var(--c2)"});
+  el("line",{x1:100,y1:46,x2:100,y2:268,stroke:"var(--c3)","stroke-width":2.5,
+    "marker-end":"url(#arw3)","stroke-dasharray":"6 4"},s);
+  el("circle",{cx:100,cy:70,r:5.5,fill:"var(--c3)"},s);
+  el("circle",{cx:100,cy:250,r:5.5,fill:"var(--c3)"},s);
+  txt(s,112,208,"in through one membrane,","lbl",{fill:"var(--c3)"});
+  txt(s,112,224,"out through another","lbl",{fill:"var(--c3)"});
+})();
+
+/* ---- narration ---- */
+(function(){
+  var NARR={
+    brief:"Beneath a single maize plant, in complete darkness, an organ is being built to a specification no engineer would accept. It must drink, feed, hold fast, store, and listen — all at once, and all in the same body.",
+    lenses:"To understand it, you have to look twice. Once from far enough away to see where it has gone. And once from close enough to see what it is made of.",
+    profile:"Here, in the top fifteen centimetres, lies phosphorus — bound to the soil, immobile, going nowhere at all. And far below, carried down by every rain that falls, nitrate. Two prizes. Two depths. And a root that cannot have both.",
+    axis:"At the very tip, cells divide. A millimetre behind them, they begin to stretch — and in the space of a few hours a single cell will grow twenty times longer, doing almost nothing but filling with water. This is how a root travels.",
+    tip: "The tip is blind. And yet it knows, precisely, which way is down. Inside the columella, grains of starch — heavier than the fluid around them — are quietly falling. The root has built itself a spirit level.",
+    layers:"Ring upon ring upon ring. From the outside in: a skin, then the great bulk of the cortex, then a single unbroken layer of cells. And beyond that, the vessels that lead all the way to the leaves.",
+    pathways:"Three routes lead inward. Two of them pass through living cells, and are watched. The third slips between them, through the walls, entirely unexamined — and it runs all the way to the vessels.",
+    next:"And so the root does the only thing it can. Along one layer, and one layer alone, it fills the space between its cells with lignin. And seals the way in."
+  };
+  var synth = window.speechSynthesis || null;
+  var voice = null;
+  function pickVoice(){
+    if(!synth) return null;
+    var vs=synth.getVoices()||[];
+    var pref=["Daniel","Arthur","Oliver","Google UK English Male","Serena"];
+    for(var i=0;i<pref.length;i++){
+      for(var j=0;j<vs.length;j++){ if(vs[j].name.indexOf(pref[i])>=0) return vs[j]; } }
+    for(var k=0;k<vs.length;k++){ if((vs[k].lang||"").indexOf("en-GB")===0) return vs[k]; }
+    return null;
+  }
+  if(synth){ voice=pickVoice(); synth.onvoiceschanged=function(){ voice=pickVoice(); }; }
+
+  var nodes={};
+  Object.keys(NARR).forEach(function(id){
+    var sec=document.getElementById(id); if(!sec) return;
+    var head=sec.querySelector(".s-head"); if(!head) return;
+    var p=document.createElement("p"); p.className="narr"; p.id="narr-"+id;
+    p.appendChild(document.createTextNode(NARR[id]));
+    if(synth){
+      var b=document.createElement("button");
+      b.type="button"; b.textContent="▶ read";
+      b.addEventListener("click",function(){ stopAll(); speakOne(id); });
+      p.appendChild(b);
+    }
+    head.appendChild(p); nodes[id]=p;
+  });
+
+  function speakOne(id,after){
+    if(!synth) { if(after) after(); return; }
+    var u=new SpeechSynthesisUtterance(NARR[id]);
+    if(voice) u.voice=voice;
+    u.rate=0.84; u.pitch=0.9;
+    nodes[id].classList.add("speaking");
+    u.onend=function(){ nodes[id].classList.remove("speaking"); if(after) after(); };
+    u.onerror=function(){ nodes[id].classList.remove("speaking"); if(after) after(); };
+    synth.speak(u);
+  }
+  function stopAll(){
+    if(synth) synth.cancel();
+    Object.keys(nodes).forEach(function(k){ nodes[k].classList.remove("speaking"); });
+  }
+
+  var bar=document.createElement("div");
+  bar.className="narrbar";
+  var lab=document.createElement("span"); lab.className="lab"; lab.textContent="Narration";
+  var bShow=document.createElement("button"); bShow.type="button";
+  bShow.textContent="Show narration"; bShow.setAttribute("aria-pressed","false");
+  bShow.addEventListener("click",function(){
+    var onNow=!document.body.classList.contains("narrate");
+    document.body.classList.toggle("narrate",onNow);
+    bShow.setAttribute("aria-pressed",onNow);
+    bShow.textContent=onNow?"Hide narration":"Show narration";
+    if(!onNow) stopAll();
+  });
+  bar.appendChild(lab); bar.appendChild(bShow);
+  if(synth){
+    var bPlay=document.createElement("button"); bPlay.type="button";
+    bPlay.textContent="▶ Play the whole thing";
+    bPlay.addEventListener("click",function(){
+      document.body.classList.add("narrate");
+      bShow.setAttribute("aria-pressed","true"); bShow.textContent="Hide narration";
+      stopAll();
+      var ids=Object.keys(NARR), i=0;
+      (function step(){
+        if(i>=ids.length) return;
+        var id=ids[i++];
+        document.getElementById(id).scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+        setTimeout(function(){ speakOne(id,function(){ setTimeout(step,900); }); },reduce?60:700);
+      })();
+    });
+    var bStop=document.createElement("button"); bStop.type="button";
+    bStop.textContent="■ Stop"; bStop.addEventListener("click",stopAll);
+    bar.appendChild(bPlay); bar.appendChild(bStop);
+    var note=document.createElement("span");
+    note.textContent="Your browser's own speech voice — not a real narrator. Better: put it on the screen and read it yourself.";
+    bar.appendChild(note);
+  } else {
+    var note2=document.createElement("span");
+    note2.textContent="Read these aloud over the animations.";
+    bar.appendChild(note2);
+  }
+  var rail=document.querySelector(".rail");
+  rail.parentNode.insertBefore(bar,rail.nextSibling);
+})();
+
+})();
+</script>
