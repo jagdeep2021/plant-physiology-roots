@@ -231,6 +231,7 @@ and which one you left behind.</p>
   <div id="modelText"></div></div>
 </div>
 </div>
+<script src="config.js" onerror="void 0"></script>
 <script>
 (function(){
 "use strict";
@@ -717,13 +718,28 @@ function drawBoard(){
     var t=E("text",{x:PX(r.topsoil),y:PY(r.depth)-12,"font-size":10,fill:"var(--ink2)",
       "text-anchor":"middle","font-family":"IBM Plex Mono, monospace"}); t.textContent=r.who;});
 }
+var ROOM=(location.hash.match(/room=([A-Za-z0-9_-]+)/)||[])[1]
+       || (window.CLASS_ROOM||"sidhulab-4320-roots-a7f3");
+var RELAY=(window.CLASS_RELAY||"https://ntfy.sh").replace(/\/$/,"");
 $("#submit").addEventListener("click",function(){
-  var who=($("#who").value||"anon").trim().slice(0,16).replace(/[:\n]/g,"");
+  if(dirty){ $("#submitNote").hidden=false;
+    $("#submitNote").textContent="Run the season first — then lock it in."; return; }
+  var who=($("#who").value||"anon").trim().slice(0,16).replace(/[:|\n]/g,"");
   var code=who+":"+enc();
   $("#codeTxt").textContent=code; $("#codeBox").hidden=false;
-  var n=$("#submitNote"); n.hidden=false;
-  n.textContent="Paste that into the class chat. It encodes all eight traits and the season.";
+  var note=$("#submitNote"); note.hidden=false;
+  note.textContent="Sending to the class board…";
   addRows([code]); saveBoard();
+  fetch(RELAY+"/"+ROOM,{method:"POST",
+    body:who+"|"+enc()+"|"+$("#scoreBig").textContent})
+   .then(function(r){
+     note.innerHTML = r.ok
+       ? "<strong style='color:var(--good)'>On the board.</strong> Your design is up on the screen."
+       : "Could not reach the board — read your code out instead.";
+   })
+   .catch(function(){
+     note.textContent="No connection to the board. Send this code to your instructor instead.";
+   });
 });
 $("#copyBtn").addEventListener("click",function(){
   navigator.clipboard&&navigator.clipboard.writeText($("#codeTxt").textContent);

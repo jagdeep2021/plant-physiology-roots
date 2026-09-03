@@ -62,6 +62,7 @@ textarea{font-family:"IBM Plex Mono",monospace;font-size:.8rem;width:100%;min-he
   <button id="sortTime" aria-pressed="false">sort by arrival</button>
   <button id="btnClear">clear the board</button>
   <button id="btnPaste">paste codes instead</button>
+  <span id="roomTxt" style="font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--ink3);align-self:center"></span>
 </div>
 <div id="pasteBox" hidden style="margin-bottom:16px">
   <textarea id="paste" placeholder="JS:1-8k3p2f9m4&#10;AB:2-4d7q1s5x2"></textarea>
@@ -74,7 +75,11 @@ textarea{font-family:"IBM Plex Mono",monospace;font-size:.8rem;width:100%;min-he
 <script>
 (function(){
 "use strict";
-var API=(window.CLASS_API||"").trim();
+var ROOM=(location.hash.match(/room=([A-Za-z0-9_-]+)/)||[])[1]
+        || (window.CLASS_ROOM||"sidhulab-4320-roots").trim();
+var RELAY=(window.CLASS_RELAY||"https://ntfy.sh").replace(/\/$/,"");
+var CUT=0;
+try{ CUT=parseInt(localStorage.getItem("boardCut_"+ROOM)||"0",10)||0; }catch(e){}
 var TR=[["ang",10,80],["nax",3,22],["lat",0,10],["hair",0,1.5],["dia",.4,1.8],
         ["aer",0,50],["ccs",15,60],["cpw",.5,4]];
 var SC=[["dry","Dry summer","var(--water)",{w:1,p:0,n:0}],
@@ -212,14 +217,31 @@ function render(){
 /* ---------------- live polling ---------------- */
 var live=document.getElementById("liveTxt");
 function poll(){
-  if(!API){ live.textContent="offline — paste codes"; return; }
-  fetch(API,{cache:"no-store"}).then(function(r){return r.json();})
-   .then(function(j){ ingest(j); live.textContent=ROWS.length+" in · live";
-     setTimeout(poll,4000); })
+  fetch(RELAY+"/"+ROOM+"/json?poll=1&since=12h",{cache:"no-store"})
+   .then(function(r){return r.text();})
+   .then(function(txt){
+     var seen={},list=[];
+     txt.split("\n").forEach(function(line){
+       if(!line.trim()) return;
+       var msg; try{ msg=JSON.parse(line); }catch(e){ return; }
+       if(msg.event!=="message"||!msg.message) return;
+       if((msg.time||0)*1000 < CUT) return;
+       var parts=String(msg.message).split("|");
+       if(parts.length<2) return;
+       var who=parts[0].slice(0,24)||"anon", code=parts[1].trim();
+       seen[who.toLowerCase()]={who:who,code:code,t:(msg.time||0)*1000};   // latest wins
+     });
+     for(var k in seen) list.push(seen[k]);
+     ingest(list);
+     live.textContent=ROWS.length+(ROWS.length===1?" design":" designs")+" · live";
+     setTimeout(poll,4000);
+   })
    .catch(function(){ live.textContent="reconnecting…"; setTimeout(poll,6000); });
 }
 var base=location.href.replace(/board\.html.*$/,"")+"root-architect.html";
-document.getElementById("join").textContent=base.replace(/^https?:\/\//,"");
+document.getElementById("join").innerHTML=
+  '<span style="color:var(--ink3)">students go to</span><br><strong>'+
+  base.replace(/^https?:\/\//,"")+'</strong>';
 document.getElementById("sortScore").addEventListener("click",function(){
   sortBy="score";this.setAttribute("aria-pressed","true");
   document.getElementById("sortTime").setAttribute("aria-pressed","false");render();});
@@ -235,11 +257,12 @@ document.getElementById("addBtn").addEventListener("click",function(){
   }).filter(function(x){return x.code;});
   ingest(list); document.getElementById("paste").value="";});
 document.getElementById("btnClear").addEventListener("click",function(){
-  if(!confirm("Clear every design from the board?")) return;
-  if(API) fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify({action:"reset"})}).then(function(){ROWS=[];render();});
-  else { ROWS=[]; render(); }
+  if(!confirm("Clear the board? Designs submitted from now on will still appear.")) return;
+  CUT=Date.now();
+  try{ localStorage.setItem("boardCut_"+ROOM,String(CUT)); }catch(e){}
+  ROWS=[]; render();
 });
+document.getElementById("roomTxt").textContent="room "+ROOM;
 render(); poll();
 })();
 </script></body></html>
