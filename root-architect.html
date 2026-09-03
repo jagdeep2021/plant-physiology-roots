@@ -325,6 +325,7 @@ function season(s,sk){
   var R={w:R0.w.slice(),p:R0.p.slice(),n:R0.n.slice()};
   var hairF=1+1.9*s.hair;
   var cap={w:0,p:0,n:0},series=[],hist=[];
+  var frac={w:[],p:[],n:[]};
   for(var d=1;d<=DAYS;d++){
     var depth=m.depth*Math.min(1,d/85), Ltot=m.length*Math.min(1,d/95);
     var ld=[],tot=0;
@@ -337,19 +338,44 @@ function season(s,sk){
     var vN=C.leach/DZ, nn=R.n.slice();
     for(i=NL-1;i>0;i--) nn[i]=R.n[i]*(1-vN)+R.n[i-1]*vN;
     nn[0]=R.n[0]*(1-vN); R.n=nn;
+    var fw=new Array(NL),fp=new Array(NL),fn=new Array(NL);
     for(i=0;i<NL;i++){
-      var L=ld[i];
-      if(L<=0) continue;
-      var up;
-      up=0.00062*L*hairF*R.p[i]/(R.p[i]+22); up=Math.min(up,R.p[i]); R.p[i]-=up; cap.p+=up;
-      up=0.00150*L*R.n[i]/(R.n[i]+14);       up=Math.min(up,R.n[i]); R.n[i]-=up; cap.n+=up;
-      up=0.00135*L*m.radial*R.w[i]/(R.w[i]+16); up=Math.min(up,R.w[i]); R.w[i]-=up; cap.w+=up;
+      var L=ld[i],up;
+      fw[i]=0; fp[i]=0; fn[i]=0;
+      if(L>0){
+        up=Math.min(0.00062*L*hairF*R.p[i]/(R.p[i]+22),R.p[i]);
+        if(R.p[i]>0) fp[i]=up/R.p[i];
+        R.p[i]-=up; cap.p+=up;
+        up=Math.min(0.00150*L*R.n[i]/(R.n[i]+14),R.n[i]);
+        if(R.n[i]>0) fn[i]=up/R.n[i];
+        R.n[i]-=up; cap.n+=up;
+        up=Math.min(0.00135*L*m.radial*R.w[i]/(R.w[i]+16),R.w[i]);
+        if(R.w[i]>0) fw[i]=up/R.w[i];
+        R.w[i]-=up; cap.w+=up;
+      }
     }
+    frac.w.push(fw); frac.p.push(fp); frac.n.push(fn);
     series.push({w:cap.w,p:cap.p,n:cap.n});
     if(d%2===0) hist.push({w:R.w.slice(),p:R.p.slice(),n:R.n.slice()});
   }
+  // survival of a packet that STARTED in each layer — uptake only, never leaching
+  var surv={w:[],p:[],n:[]};
+  for(i=0;i<NL;i++){
+    ["w","p"].forEach(function(k){
+      var sv=1,arr=[];
+      for(var d2=0;d2<DAYS;d2++){ sv*=(1-frac[k][d2][i]); if(d2%2===1) arr.push(sv); }
+      surv[k].push(arr);
+    });
+    var svn=1,arrn=[],z=(i+0.5)*DZ;
+    for(var d3=0;d3<DAYS;d3++){
+      var li=Math.max(0,Math.min(NL-1,Math.floor(z/DZ)));
+      svn*=(1-frac.n[d3][li]); z+=C.leach;
+      if(d3%2===1) arrn.push(svn);
+    }
+    surv.n.push(arrn);
+  }
   var sc=function(v,tot){return Math.max(0,Math.min(100,v/tot*100*1.35));};
-  return {m:m,R0:R0,hist:hist,series:series,tot:C,
+  return {m:m,R0:R0,hist:hist,series:series,tot:C,surv:surv,leach:C.leach,
           water:sc(cap.w,C.wTot),phos:sc(cap.p,C.pTot),nitro:sc(cap.n,C.nTot)};
 }
 function score(r,sk){
@@ -429,7 +455,7 @@ function makeParticles(R0){
       var k=Math.round(R0[t][i]/tot*300);
       N0[t].push(k); PART[t].push([]);
       for(var j=0;j<k;j++)
-        PART[t][i].push({x:X0+14+rnd()*(X1-X0-28), z:(i+rnd())*DZ});
+        PART[t][i].push({x:X0+14+rnd()*(X1-X0-28), z:(i+rnd())*DZ, u:rnd()});
     }
   });
 }
@@ -448,18 +474,26 @@ function draw(){
   }
   X.fillText("cm", X0-10, TOP-14); X.textAlign="left";
   // resources
-  var Rn=RES? (RES.frame||RES.R0) : null;
+  var fi=null, days=0;
+  if(RES && RES.surv && RES.prog!==undefined){
+    var nF=RES.surv.w[0]?RES.surv.w[0].length:0;
+    fi=Math.max(0,Math.min(nF-1,Math.round(RES.prog*nF)-1));
+    days=(fi+1)*2;
+  }
   [["w",CO.water],["p",CO.phos],["n",CO.nitro]].forEach(function(t){
-    if(shown!=="all" && shown!==({w:"water",p:"p",n:"n"})[t[0]]) return;
+    var key=t[0];
+    if(shown!=="all" && shown!==({w:"water",p:"p",n:"n"})[key]) return;
     X.fillStyle=t[1];
+    var drift=(key==="n"&&RES&&RES.leach)?RES.leach*days:0;
     for(var i=0;i<NL;i++){
-      var keep=N0[t[0]][i];
-      if(Rn && RES.R0[t[0]][i]>0)
-        keep=Math.round(N0[t[0]][i]*Math.max(0,Rn[t[0]][i]/RES.R0[t[0]][i]));
-      var arr=PART[t[0]][i];
-      for(var j=0;j<Math.min(keep,arr.length);j++){
+      var arr=PART[key][i];
+      var sv=(fi!==null&&RES.surv[key][i])?RES.surv[key][i][fi]:1;
+      for(var j=0;j<arr.length;j++){
+        if(arr[j].u>sv) continue;                 // this packet was taken up
+        var zz=arr[j].z+drift;                    // nitrate keeps sinking
+        if(zz>160) continue;                      // washed below the profile
         X.globalAlpha=.88;
-        X.beginPath(); X.arc(arr[j].x, Z(arr[j].z), 3.6, 0, 6.3); X.fill();
+        X.beginPath(); X.arc(arr[j].x, Z(zz), 3.6, 0, 6.3); X.fill();
       }
     }
   });
@@ -532,8 +566,8 @@ function drawCurves(frac){
     "font-family":"IBM Plex Mono, monospace"}); t2.textContent="% of the pool captured";
   var t3=E("text",{x:x1,y:166,"font-size":9,fill:"var(--ink3)","text-anchor":"end",
     "font-family":"IBM Plex Mono, monospace"}); t3.textContent="day 120";
-  if(!RES) return;
-  var mx=Math.max(1,RES.series.length-1), upto=Math.round(frac*mx);
+  if(!RES||!RES.series||!RES.series.length) return;   // nothing run yet
+  var mx=Math.max(1,RES.series.length-1), upto=Math.max(0,Math.min(RES.series.length-1,Math.round(frac*mx)));
   [["w","var(--water)","water"],["p","var(--phos)","P"],["n","var(--nitro)","N"]]
    .forEach(function(c,ci){
     var d="";
@@ -710,6 +744,9 @@ Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(
     Array.prototype.forEach.call(document.querySelectorAll(".pane"),function(p){
       p.classList.toggle("on",p.id==="p-"+b.dataset.p);});});
 });
+var ROOM=(location.hash.match(/room=([A-Za-z0-9_-]+)/)||[])[1]
+       || (window.CLASS_ROOM||"sidhulab-4320-roots-a7f3");
+var RELAY=(window.CLASS_RELAY||"https://ntfy.sh").replace(/\/$/,"");
 /* ===================== live class board ================================== */
 var BROWS=[], bSort="score";
 function drawMini(cv,st,m,sim){
@@ -719,17 +756,21 @@ function drawMini(cv,st,m,sim){
   X2.fillStyle=g;X2.fillRect(0,0,W2,H2);
   var PZ=H2/165, sd=7;
   function r2(){sd=(sd*1664525+1013904223)&0x7fffffff;return sd/0x7fffffff;}
-  if(sim&&sim.R0&&sim.last){
+  if(sim&&sim.R0&&sim.surv){
     var cols={w:co("--water"),p:co("--phos"),n:co("--nitro")};
+    var last=sim.surv.w[0]?sim.surv.w[0].length-1:0;
     ["w","p","n"].forEach(function(k){
       var tot=sim.R0[k].reduce(function(a,b){return a+b;},0);
+      var drift=(k==="n")?sim.leach*DAYS:0;
       X2.fillStyle=cols[k];
       for(var i=0;i<NL;i++){
         var n0=Math.round(sim.R0[k][i]/tot*90);
-        var keep=sim.R0[k][i]>0?Math.round(n0*Math.max(0,sim.last[k][i]/sim.R0[k][i])):0;
+        var sv=sim.surv[k][i]?sim.surv[k][i][last]:1;
         for(var j=0;j<n0;j++){
-          var x=6+r2()*(W2-12), y=(i+r2())*DZ*PZ;
-          if(j<keep){ X2.globalAlpha=.85; X2.beginPath(); X2.arc(x,y,2.0,0,6.3); X2.fill(); }
+          var x=6+r2()*(W2-12), zz=(i+r2())*DZ+drift;
+          if(j/n0<sv && zz<=160){
+            X2.globalAlpha=.85; X2.beginPath(); X2.arc(x,zz*PZ,2.0,0,6.3); X2.fill();
+          }
         }
       }
     });
@@ -807,7 +848,6 @@ function pollBoard(){
      for(var k in seen){
        var d=dec(seen[k].code); if(!d) continue;
        var sim=season(d.s,d.scen);
-       sim.last=sim.hist.length?sim.hist[sim.hist.length-1]:null;
        BROWS.push({who:seen[k].who,t:seen[k].t,scen:d.scen,s:d.s,sim:sim,m:sim.m,
                    score:score(sim,d.scen),water:sim.water,phos:sim.phos,nitro:sim.nitro});
      }
