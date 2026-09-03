@@ -10,7 +10,7 @@ no accounts — students open a link. The only external request is Google Fonts.
 | file | tool |
 |---|---|
 | `index.html` | landing page |
-| `root-architect.html` | trait-allocation design tool; transparent cost model on its own tab |
+| `root-optimizer.html` | trait-allocation design tool; transparent cost model on its own tab |
 | `calcium.html` | animated scenario simulator (calcium uptake, blossom-end rot) |
 | `recap.html` | interactive recap of the root anatomy lecture |
 
@@ -20,7 +20,7 @@ no accounts — students open a link. The only external request is Google Fonts.
   editing source**; this repo is the public mirror — copy from there, don't diverge.
 - Everything must stay self-contained: no local assets, no relative imports, no
   server calls. A student on a phone with a flaky connection has to get a working page.
-- The Root Architect class board deliberately uses pasted codes rather than shared
+- The Root Optimizer class board deliberately uses pasted codes rather than shared
   server state, because students are not in the Mizzou Claude organisation.
 
 ## Drill

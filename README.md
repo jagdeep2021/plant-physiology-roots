@@ -5,7 +5,7 @@ file with no build step and no backend; the only external request is Google Font
 
 | file | what it is |
 |---|---|
-| `root-architect.html` | trait-allocation design tool with a transparent cost model |
+| `root-optimizer.html` | trait-allocation design tool with a transparent cost model |
 | `calcium.html` | animated scenario simulator: calcium uptake and blossom-end rot |
 | `recap.html` | interactive recap of the root anatomy lecture |
 
