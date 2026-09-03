@@ -110,6 +110,18 @@ td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;t
 .dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;align-items:start}
 @media(max-width:900px){.dash{grid-template-columns:1fr}}
 .note{font-size:.8rem;color:var(--ink3);margin-top:10px;line-height:1.45}
+.bp{background:var(--panel);border:1px solid var(--rule);border-radius:7px;overflow:hidden;
+ display:flex;flex-direction:column}
+.bp .top{display:flex;align-items:baseline;justify-content:space-between;padding:.55rem .75rem .3rem}
+.bp .who{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1rem}
+.bp .sc{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.55rem;line-height:1}
+.bp .chip{font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.1em;
+ text-transform:uppercase;padding:0 .75rem .3rem}
+.bp canvas{display:block;width:100%;height:auto;background:var(--sunk)}
+.bp .foot{display:flex;justify-content:space-between;padding:.4rem .75rem .55rem;
+ font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--ink3)}
+.bempty{grid-column:1/-1;text-align:center;color:var(--ink3);padding:54px 20px;
+ font-family:"IBM Plex Mono",monospace;font-size:.85rem}
 button.go.dirty{animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 .stale{opacity:.35}
@@ -126,6 +138,7 @@ and which one you left behind.</p>
 
 <div class="tabs" role="tablist">
   <button role="tab" aria-selected="true" data-p="build">Build a root</button>
+  <button role="tab" aria-selected="false" data-p="class">Class board</button>
   <button role="tab" aria-selected="false" data-p="model">The model</button>
 </div>
 
@@ -198,6 +211,26 @@ and which one you left behind.</p>
       <p class="note" id="submitNote" hidden></p>
     </div>
   </div>
+</div>
+
+<div class="pane" id="p-class">
+  <header style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin:6px 0 16px">
+    <div><h1 style="font-size:clamp(1.5rem,3vw,2.2rem)">Class board</h1>
+    <p class="lede" style="margin-top:.35rem">Designs appear the moment a student locks one in.</p></div>
+    <div id="joinBox" style="background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+      padding:.55rem .85rem;font-family:'IBM Plex Mono',monospace;font-size:.8rem"></div>
+    <div style="display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',monospace;
+      font-size:.74rem;color:var(--ink3);margin-left:auto">
+      <span id="dot" style="width:9px;height:9px;border-radius:50%;background:var(--good)"></span>
+      <span id="liveTxt">connecting…</span></div>
+  </header>
+  <div class="ctl">
+    <button class="mini" id="sortScore" aria-pressed="true">sort by score</button>
+    <button class="mini" id="sortTime" aria-pressed="false">sort by arrival</button>
+    <button class="mini" id="bClear">clear the board</button>
+  </div>
+  <div class="readouts" id="bStats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:0 0 14px"></div>
+  <div id="bGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:13px"></div>
 </div>
 
 <div class="pane" id="p-model">
@@ -641,7 +674,7 @@ function enc(){
     o+=A36[Math.max(0,Math.min(35,Math.round((S[t.k]-t.lo)/(t.hi-t.lo)*35)))];});
   return (SCEN.map(function(x){return x.k;}).indexOf(scen)+1)+"-"+o;
 }
-function _unusedDec(code){
+function dec(code){
   var m=/^([1-4])-([0-9a-z]{8})$/.exec(code.trim().toLowerCase());
   if(!m) return null;
   var s={};
@@ -677,6 +710,126 @@ Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(
     Array.prototype.forEach.call(document.querySelectorAll(".pane"),function(p){
       p.classList.toggle("on",p.id==="p-"+b.dataset.p);});});
 });
+/* ===================== live class board ================================== */
+var BROWS=[], bSort="score";
+function drawMini(cv,st,m,sim){
+  var X2=cv.getContext("2d"),W2=cv.width,H2=cv.height;
+  var g=X2.createLinearGradient(0,0,0,H2);
+  g.addColorStop(0,co("--soil1"));g.addColorStop(.4,co("--soil2"));g.addColorStop(1,co("--soil3"));
+  X2.fillStyle=g;X2.fillRect(0,0,W2,H2);
+  var PZ=H2/165, sd=7;
+  function r2(){sd=(sd*1664525+1013904223)&0x7fffffff;return sd/0x7fffffff;}
+  if(sim&&sim.R0&&sim.last){
+    var cols={w:co("--water"),p:co("--phos"),n:co("--nitro")};
+    ["w","p","n"].forEach(function(k){
+      var tot=sim.R0[k].reduce(function(a,b){return a+b;},0);
+      X2.fillStyle=cols[k];
+      for(var i=0;i<NL;i++){
+        var n0=Math.round(sim.R0[k][i]/tot*90);
+        var keep=sim.R0[k][i]>0?Math.round(n0*Math.max(0,sim.last[k][i]/sim.R0[k][i])):0;
+        for(var j=0;j<n0;j++){
+          var x=6+r2()*(W2-12), y=(i+r2())*DZ*PZ;
+          if(j<keep){ X2.globalAlpha=.85; X2.beginPath(); X2.arc(x,y,2.0,0,6.3); X2.fill(); }
+        }
+      }
+    });
+    X2.globalAlpha=1;
+  }
+  var bx=W2/2, by=4, a=st.ang*Math.PI/180, nn=Math.round(st.nax);
+  var lenPx=m.depth*PZ/Math.max(.25,Math.cos(a));
+  X2.lineCap="round"; X2.strokeStyle=co("--root");
+  for(var i2=0;i2<nn;i2++){
+    var side=(i2%2)?1:-1,k2=Math.floor(i2/2);
+    var ai=a*(0.55+0.45*(k2+1)/Math.ceil(nn/2))+(r2()-.5)*.3;
+    var ex=bx+Math.sin(ai)*lenPx*side, ey=by+Math.cos(ai)*lenPx;
+    var cx=bx+Math.sin(ai)*lenPx*.62*side, cy=by+Math.cos(ai)*lenPx*.17;
+    X2.lineWidth=Math.max(.9,.8+(st.dia-.4)*1.5);
+    X2.beginPath();X2.moveTo(bx,by);X2.quadraticCurveTo(cx,cy,ex,ey);X2.stroke();
+    var nl=Math.round(lenPx/22*Math.max(.6,st.lat/2.2));
+    for(var j2=1;j2<nl;j2++){
+      var t2=j2/nl,mt=1-t2;
+      var px=mt*mt*bx+2*mt*t2*cx+t2*t2*ex, py=mt*mt*by+2*mt*t2*cy+t2*t2*ey;
+      var dx=2*mt*(cx-bx)+2*t2*(ex-cx), dy=2*mt*(cy-by)+2*t2*(ey-cy);
+      var mm=Math.hypot(dx,dy)||1, ln=(3+r2()*6)*(0.5+st.lat/9), sg=(j2%2)?1:-1;
+      X2.lineWidth=.8; X2.globalAlpha=.8;
+      X2.beginPath();X2.moveTo(px,py);X2.lineTo(px-dy/mm*ln*sg,py+dx/mm*ln*sg);X2.stroke();
+      X2.globalAlpha=1;
+    }
+  }
+  X2.setLineDash([4,4]);X2.globalAlpha=.5;X2.strokeStyle=co("--ink");X2.lineWidth=1;
+  X2.beginPath();X2.moveTo(0,m.depth*PZ);X2.lineTo(W2,m.depth*PZ);X2.stroke();
+  X2.setLineDash([]);X2.globalAlpha=1;
+}
+function renderBoard(){
+  var G=$("#bGrid"), ST=$("#bStats"); G.innerHTML=""; ST.innerHTML="";
+  var rows=BROWS.slice().sort(bSort==="score"
+    ? function(a,b){return b.score-a.score;}
+    : function(a,b){return a.t-b.t;});
+  if(!rows.length){ G.innerHTML='<div class="bempty">waiting for the first design…</div>'; return; }
+  var dep=rows.map(function(r){return r.m.depth;}).sort(function(a,b){return a-b;});
+  var shallow=rows.filter(function(r){return r.s.ang>50;}).length;
+  [["designs in",rows.length],["median depth",dep[Math.floor(dep.length/2)].toFixed(0)+" cm"],
+   ["shallowest / deepest",dep[0].toFixed(0)+" – "+dep[dep.length-1].toFixed(0)+" cm"],
+   ["chose shallow",shallow+" of "+rows.length],
+   ["best topsoil density",Math.max.apply(null,rows.map(function(r){return r.m.topsoil;})).toFixed(2)]]
+   .forEach(function(p){var d=document.createElement("div");
+     d.innerHTML='<div class="k">'+p[0]+'</div><div class="v">'+p[1]+'</div>'; ST.appendChild(d);});
+  rows.forEach(function(r){
+    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
+    var d=document.createElement("div"); d.className="bp";
+    d.innerHTML='<div class="top"><span class="who"></span><span class="sc">'+r.score+'</span></div>'+
+      '<div class="chip" style="color:'+c.c+'">'+c.n+'</div>'+
+      '<canvas width="360" height="290"></canvas>'+
+      '<div class="foot"><span>'+r.m.depth.toFixed(0)+' cm</span><span>'+
+      r.m.length.toFixed(0)+' m</span><span>W'+Math.round(r.water)+' P'+Math.round(r.phos)+
+      ' N'+Math.round(r.nitro)+'</span></div>';
+    d.querySelector(".who").textContent=r.who;
+    G.appendChild(d);
+    drawMini(d.querySelector("canvas"),r.s,r.m,r.sim);
+  });
+}
+var BCUT=0; try{ BCUT=parseInt(localStorage.getItem("bcut_"+ROOM)||"0",10)||0; }catch(e){}
+function pollBoard(){
+  fetch(RELAY+"/"+ROOM+"/json?poll=1&since=12h",{cache:"no-store"})
+   .then(function(r){return r.text();})
+   .then(function(txt){
+     var seen={};
+     txt.split("\n").forEach(function(line){
+       if(!line.trim()) return;
+       var msg; try{ msg=JSON.parse(line); }catch(e){ return; }
+       if(msg.event!=="message"||!msg.message) return;
+       var tms=(msg.time||0)*1000; if(tms<BCUT) return;
+       var parts=String(msg.message).split("|"); if(parts.length<2) return;
+       var who=parts[0].split(/[:&]/)[0].replace(/[^\w \-']/g,"").trim().slice(0,20)||"anon";
+       seen[who.toLowerCase()]={who:who,code:parts[1].trim(),t:tms};
+     });
+     BROWS=[];
+     for(var k in seen){
+       var d=dec(seen[k].code); if(!d) continue;
+       var sim=season(d.s,d.scen);
+       sim.last=sim.hist.length?sim.hist[sim.hist.length-1]:null;
+       BROWS.push({who:seen[k].who,t:seen[k].t,scen:d.scen,s:d.s,sim:sim,m:sim.m,
+                   score:score(sim,d.scen),water:sim.water,phos:sim.phos,nitro:sim.nitro});
+     }
+     $("#liveTxt").textContent=BROWS.length+(BROWS.length===1?" design":" designs")+" · live";
+     renderBoard(); setTimeout(pollBoard,4000);
+   })
+   .catch(function(){ $("#liveTxt").textContent="reconnecting…"; setTimeout(pollBoard,6000); });
+}
+$("#sortScore").addEventListener("click",function(){ bSort="score";
+  this.setAttribute("aria-pressed","true"); $("#sortTime").setAttribute("aria-pressed","false");
+  renderBoard(); });
+$("#sortTime").addEventListener("click",function(){ bSort="time";
+  this.setAttribute("aria-pressed","true"); $("#sortScore").setAttribute("aria-pressed","false");
+  renderBoard(); });
+$("#bClear").addEventListener("click",function(){
+  if(!confirm("Clear the board? Designs submitted from now on still appear.")) return;
+  BCUT=Date.now(); try{ localStorage.setItem("bcut_"+ROOM,String(BCUT)); }catch(e){}
+  BROWS=[]; renderBoard(); });
+$("#joinBox").innerHTML='<span style="color:var(--ink3)">students go to</span><br><strong>'+
+  location.href.split("#")[0].replace(/^https?:\/\//,"")+'</strong>';
+pollBoard();
+
 $("#modelText").innerHTML=
  '<h2 style="margin-top:1.1rem">1 · What a centimetre of root costs</h2>'+
  '<p style="font-family:IBM Plex Mono,monospace;font-size:.8rem;background:var(--sunk);'+
