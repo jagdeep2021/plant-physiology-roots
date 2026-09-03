@@ -126,7 +126,6 @@ and which one you left behind.</p>
 
 <div class="tabs" role="tablist">
   <button role="tab" aria-selected="true" data-p="build">Build a root</button>
-  <button role="tab" aria-selected="false" data-p="class">Class board</button>
   <button role="tab" aria-selected="false" data-p="model">The model</button>
 </div>
 
@@ -197,29 +196,6 @@ and which one you left behind.</p>
       <div class="codebox" id="codeBox" hidden><span id="codeTxt"></span>
         <button class="mini" id="copyBtn">copy</button></div>
       <p class="note" id="submitNote" hidden></p>
-    </div>
-  </div>
-</div>
-
-<div class="pane" id="p-class">
-  <div class="dash">
-    <div>
-      <figure>
-        <svg id="scatter" viewBox="0 0 640 460" role="img" aria-label="Every submitted design plotted by rooting depth against topsoil root length density"></svg>
-        <figcaption>Each dot is one design. Up = deeper. Right = more length in the top 15 cm.
-        No single root system can be at both extremes.</figcaption>
-      </figure>
-      <table id="board"><thead><tr><th>who</th><th>season</th><th class="num">depth</th>
-        <th class="num">topsoil</th><th class="num">score</th></tr></thead><tbody></tbody></table>
-    </div>
-    <div class="card">
-      <span class="tag">Collect the class</span>
-      <p style="font-size:.85rem;color:var(--ink2);margin:0 0 8px">Students paste their code into
-      chat; paste the whole lot in here — one per line, any order.</p>
-      <textarea id="paste" placeholder="JS:1-8k3p2f9m4&#10;AB:2-4d7q1s5x2"></textarea>
-      <button class="act" id="addBtn">Add to the board</button>
-      <button class="mini" id="clearBtn" style="width:100%;margin-top:8px">Clear the board</button>
-      <p class="note">Codes stay in this browser only.</p>
     </div>
   </div>
 </div>
@@ -665,77 +641,13 @@ function enc(){
     o+=A36[Math.max(0,Math.min(35,Math.round((S[t.k]-t.lo)/(t.hi-t.lo)*35)))];});
   return (SCEN.map(function(x){return x.k;}).indexOf(scen)+1)+"-"+o;
 }
-function dec(code){
+function _unusedDec(code){
   var m=/^([1-4])-([0-9a-z]{8})$/.exec(code.trim().toLowerCase());
   if(!m) return null;
   var s={};
   TRAITS.forEach(function(t,i){ s[t.k]=t.lo+A36.indexOf(m[2][i])/35*(t.hi-t.lo); });
   return {s:s,scen:SCEN[+m[1]-1].k};
 }
-var BOARD=[];
-function addRows(lines){
-  lines.forEach(function(ln){
-    ln=ln.trim(); if(!ln) return;
-    var i=ln.lastIndexOf(":"), who=i>0?ln.slice(0,i):"anon", code=i>0?ln.slice(i+1):ln;
-    var d=dec(code); if(!d) return;
-    var r=season(d.s,d.scen);
-    BOARD=BOARD.filter(function(x){return !(x.who===who&&x.code===code);});
-    BOARD.push({who:who,code:code,scen:d.scen,depth:r.m.depth,topsoil:r.m.topsoil,
-                score:score(r,d.scen)});
-  });
-  drawBoard();
-}
-function saveBoard(){ try{localStorage.setItem("rootArchitectBoard",
-  JSON.stringify(BOARD.map(function(r){return r.who+":"+r.code;})));}catch(e){} }
-function loadBoard(){ try{var v=JSON.parse(localStorage.getItem("rootArchitectBoard")||"[]");
-  if(v.length) addRows(v);}catch(e){} }
-function drawBoard(){
-  var tb=$("#board").querySelector("tbody"); tb.innerHTML="";
-  BOARD.slice().sort(function(a,b){return b.score-a.score;}).forEach(function(r){
-    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
-    var tr=document.createElement("tr");
-    tr.innerHTML="<td>"+r.who+"</td><td style='color:"+c.c+"'>"+c.n+"</td>"+
-      "<td class='num'>"+r.depth.toFixed(0)+" cm</td><td class='num'>"+r.topsoil.toFixed(2)+
-      "</td><td class='num'>"+r.score+"</td>";
-    tb.appendChild(tr);
-  });
-  var sv=$("#scatter"); while(sv.firstChild) sv.removeChild(sv.firstChild);
-  var NSNS="http://www.w3.org/2000/svg";
-  function E(t,a){var n=document.createElementNS(NSNS,t);for(var k in a)n.setAttribute(k,a[k]);
-    sv.appendChild(n);return n;}
-  var PX=function(v){return 70+Math.min(1,v/7)*520;},
-      PY=function(v){return 400-Math.min(1,v/160)*350;};
-  E("line",{x1:70,y1:400,x2:600,y2:400,stroke:"var(--rule)"});
-  E("line",{x1:70,y1:50,x2:70,y2:400,stroke:"var(--rule)"});
-  [0,40,80,120,160].forEach(function(v){
-    E("line",{x1:70,y1:PY(v),x2:600,y2:PY(v),stroke:"var(--rule)","stroke-dasharray":"2 5",opacity:.7});
-    var t=E("text",{x:62,y:PY(v)+4,"font-size":10,fill:"var(--ink3)","text-anchor":"end",
-      "font-family":"IBM Plex Mono, monospace"}); t.textContent=v;});
-  [0,2,4,6].forEach(function(v){
-    var t=E("text",{x:PX(v),y:420,"font-size":10,fill:"var(--ink3)","text-anchor":"middle",
-      "font-family":"IBM Plex Mono, monospace"}); t.textContent=v;});
-  var yl=E("text",{x:70,y:38,"font-size":11,fill:"var(--ink2)",
-    "font-family":"IBM Plex Mono, monospace"}); yl.textContent="rooting depth (cm)";
-  var xl=E("text",{x:600,y:442,"font-size":11,fill:"var(--ink2)","text-anchor":"end",
-    "font-family":"IBM Plex Mono, monospace"}); xl.textContent="topsoil root density (cm/cm³) →";
-  SCEN.forEach(function(c,i){
-    E("circle",{cx:80+i*140,cy:452,r:5,fill:c.c});
-    var t=E("text",{x:92+i*140,y:456,"font-size":10,fill:"var(--ink2)",
-      "font-family":"IBM Plex Mono, monospace"}); t.textContent=c.n;});
-  if(!BOARD.length){
-    var e=E("text",{x:335,y:225,"font-size":13,fill:"var(--ink3)","text-anchor":"middle",
-      "font-family":"IBM Plex Mono, monospace"});
-    e.textContent="no designs yet — lock one in, or paste the class codes"; return;
-  }
-  BOARD.forEach(function(r){
-    var c=SCEN.filter(function(x){return x.k===r.scen;})[0];
-    E("circle",{cx:PX(r.topsoil),cy:PY(r.depth),r:7,fill:c.c,stroke:"var(--panel)","stroke-width":2});
-    var t=E("text",{x:PX(r.topsoil),y:PY(r.depth)-12,"font-size":10,fill:"var(--ink2)",
-      "text-anchor":"middle","font-family":"IBM Plex Mono, monospace"}); t.textContent=r.who;});
-}
-var ROOM=(location.hash.match(/room=([A-Za-z0-9_-]+)/)||[])[1]
-       || (window.CLASS_ROOM||"sidhulab-4320-roots-a7f3");
-var RELAY=(window.CLASS_RELAY||"https://ntfy.sh").replace(/\/$/,"");
 $("#submit").addEventListener("click",function(){
   if(dirty){ $("#submitNote").hidden=false;
     $("#submitNote").textContent="Run the season first — then lock it in."; return; }
@@ -744,7 +656,6 @@ $("#submit").addEventListener("click",function(){
   $("#codeTxt").textContent=code; $("#codeBox").hidden=false;
   var note=$("#submitNote"); note.hidden=false;
   note.textContent="Sending to the class board…";
-  addRows([code]); saveBoard();
   fetch(RELAY+"/"+ROOM,{method:"POST",
     body:who+"|"+enc()+"|"+$("#scoreBig").textContent})
    .then(function(r){
@@ -759,9 +670,6 @@ $("#submit").addEventListener("click",function(){
 $("#copyBtn").addEventListener("click",function(){
   navigator.clipboard&&navigator.clipboard.writeText($("#codeTxt").textContent);
   this.textContent="copied"; var b=this; setTimeout(function(){b.textContent="copy";},1400);});
-$("#addBtn").addEventListener("click",function(){
-  addRows($("#paste").value.split("\n")); saveBoard(); $("#paste").value="";});
-$("#clearBtn").addEventListener("click",function(){BOARD=[];saveBoard();drawBoard();});
 Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(b){
   b.addEventListener("click",function(){
     Array.prototype.forEach.call(document.querySelectorAll(".tabs button"),function(x){
@@ -801,6 +709,6 @@ $("#modelText").innerHTML=
  '<p style="color:var(--ink3);font-size:.83rem;margin-top:1rem">Shapes after: Lynch 2013; '+
  'Lynch 2019; Chimungu et al. 2014; Colombi et al. 2019; Sidhu et al. 2024; Postma &amp; Lynch 2011.</p>';
 
-loadBoard(); updateDesign();
+updateDesign();
 })();
 </script>

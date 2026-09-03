@@ -259,7 +259,8 @@ function poll(){
        if((msg.time||0)*1000 < CUT) return;
        var parts=String(msg.message).split("|");
        if(parts.length<2) return;
-       var who=parts[0].slice(0,24)||"anon", code=parts[1].trim();
+       var who=parts[0].split(/[:&]/)[0].replace(/[^\w \-'À-ſ]/g,"").trim().slice(0,20)||"anon";
+       var code=parts[1].trim();
        seen[who.toLowerCase()]={who:who,code:code,t:(msg.time||0)*1000};   // latest wins
      });
      for(var k in seen) list.push(seen[k]);
