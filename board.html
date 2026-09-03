@@ -1,0 +1,245 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Class board — Root Architect</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#EFEDE5;--panel:#FBFAF6;--sunk:#E2DFD3;--ink:#191C18;--ink2:#4E544A;--ink3:#7D8378;
+ --rule:#D3D2C4;--water:#2E7FB8;--phos:#C2662A;--nitro:#3F7A46;--carbon:#8A5CB8;
+ --soil1:#C3AA84;--soil2:#A08757;--soil3:#7F6941;--root:#B5842F;--live:#2F7D4F}
+@media(prefers-color-scheme:dark){:root{--bg:#121410;--panel:#1A1D18;--sunk:#0E100C;--ink:#EAEDE5;
+ --ink2:#AAB2A5;--ink3:#79806F;--rule:#2B2F27;--water:#66AEE0;--phos:#E58F4E;--nitro:#6EBE78;
+ --carbon:#B48BE0;--soil1:#3E3524;--soil2:#31291B;--soil3:#241E14;--root:#DCAE55;--live:#5CC07E}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;
+ line-height:1.5;font-size:15px}
+.wrap{max-width:1720px;margin:0 auto;padding:20px 22px 60px}
+header{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+h1{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;letter-spacing:-.028em;
+ font-size:clamp(1.5rem,3vw,2.3rem);line-height:1;margin:0}
+.sub{color:var(--ink2);font-size:.9rem;margin:.4rem 0 0}
+.live{display:flex;align-items:center;gap:7px;font-family:"IBM Plex Mono",monospace;
+ font-size:.74rem;color:var(--ink3);margin-left:auto}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--live);animation:p 2s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.25}}
+.join{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:.6rem .9rem;
+ font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.p{background:var(--panel);border:1px solid var(--rule);border-radius:7px;overflow:hidden;
+ display:flex;flex-direction:column}
+.p .top{display:flex;align-items:baseline;justify-content:space-between;padding:.6rem .8rem .4rem}
+.p .who{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:1.02rem}
+.p .sc{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.6rem;
+ letter-spacing:-.02em;line-height:1}
+.p .chip{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.1em;
+ text-transform:uppercase;padding:0 .8rem .35rem}
+.p canvas{display:block;width:100%;height:auto;background:var(--sunk)}
+.p .foot{display:flex;justify-content:space-between;padding:.45rem .8rem .6rem;
+ font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--ink3)}
+.empty{grid-column:1/-1;text-align:center;color:var(--ink3);padding:60px 20px;
+ font-family:"IBM Plex Mono",monospace;font-size:.86rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+button{font:inherit;font-size:.8rem;background:transparent;border:1px solid var(--rule);
+ border-radius:4px;padding:.36rem .8rem;cursor:pointer;color:var(--ink2)}
+button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button:focus-visible{outline:2px solid var(--carbon);outline-offset:2px}
+textarea{font-family:"IBM Plex Mono",monospace;font-size:.8rem;width:100%;min-height:90px;
+ background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:.5rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+ background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden;margin-bottom:16px}
+.stats div{background:var(--panel);padding:.6rem .85rem}
+.stats .k{font-family:"IBM Plex Mono",monospace;font-size:.63rem;letter-spacing:.1em;
+ text-transform:uppercase;color:var(--ink3)}
+.stats .v{font-family:"IBM Plex Mono",monospace;font-size:1.05rem;font-variant-numeric:tabular-nums}
+</style></head><body><div class="wrap">
+<header>
+  <div><h1>Class board</h1>
+  <p class="sub" id="sub">Designs appear here the moment a student locks one in.</p></div>
+  <div class="join" id="join"></div>
+  <div class="live"><span class="dot"></span><span id="liveTxt">connecting…</span></div>
+</header>
+<div class="bar">
+  <button id="sortScore" aria-pressed="true">sort by score</button>
+  <button id="sortTime" aria-pressed="false">sort by arrival</button>
+  <button id="btnClear">clear the board</button>
+  <button id="btnPaste">paste codes instead</button>
+</div>
+<div id="pasteBox" hidden style="margin-bottom:16px">
+  <textarea id="paste" placeholder="JS:1-8k3p2f9m4&#10;AB:2-4d7q1s5x2"></textarea>
+  <button id="addBtn" style="margin-top:8px">add to the board</button>
+</div>
+<div class="stats" id="stats"></div>
+<div class="grid" id="grid"></div>
+</div>
+<script src="config.js"></script>
+<script>
+(function(){
+"use strict";
+var API=(window.CLASS_API||"").trim();
+var TR=[["ang",10,80],["nax",3,22],["lat",0,10],["hair",0,1.5],["dia",.4,1.8],
+        ["aer",0,50],["ccs",15,60],["cpw",.5,4]];
+var SC=[["dry","Dry summer","var(--water)",{w:1,p:0,n:0}],
+        ["lowP","Low phosphorus","var(--phos)",{w:0,p:1,n:0}],
+        ["lowN","Leaching nitrate","var(--nitro)",{w:0,p:0,n:1}],
+        ["mix","A real field","var(--carbon)",{w:.4,p:.35,n:.25}]];
+var A36="0123456789abcdefghijklmnopqrstuvwxyz";
+function dec(code){
+  var m=/^([1-4])-([0-9a-z]{8})$/.exec(String(code).trim().toLowerCase());
+  if(!m) return null;
+  var s={};
+  TR.forEach(function(t,i){ s[t[0]]=t[1]+A36.indexOf(m[2][i])/35*(t[2]-t[1]); });
+  return {s:s,scen:SC[+m[1]-1][0]};
+}
+function cost(s){
+  var living=1-s.aer/100,cp=Math.pow(28/s.ccs,.55),wp=Math.pow(1.2/s.cpw,.30),
+      area=Math.PI*Math.pow(s.dia/2,2),
+      c=0.62*area*(0.30+0.70*living*cp*wp)+0.030*s.lat+0.052*s.hair+0.10,
+      L=100/c,a=s.ang*Math.PI/180,af=0.16/(1+0.16*s.lat),pa=L*af/s.nax,
+      th=1+0.30*(s.dia-.4)/1.4,d=Math.min(160,pa*100*Math.cos(a)*th),
+      sf=0.16+0.62*Math.pow(Math.sin(a),1.25),
+      rad=Math.max(.35,1-Math.pow(s.aer/100,1.4)*1.25);
+  return {costCm:c,length:L,depth:d,topsoil:L*sf/34,radial:rad,lambda:12+58*Math.cos(a)};
+}
+var NL=40,DZ=4,DAYS=120;
+function season(s){
+  var m=cost(s),R={w:[],p:[],n:[]},R0={w:[],p:[],n:[]},i;
+  for(i=0;i<NL;i++){var z=(i+.5)*DZ;
+    R0.p.push(100*Math.exp(-z/9));
+    R0.n.push(100*Math.exp(-Math.pow(z-42,2)/800));
+    R0.w.push(100/(1+Math.exp(-(z-38)/13)));}
+  ["w","p","n"].forEach(function(k){
+    var t=R0[k].reduce(function(a,b){return a+b;},0);
+    R0[k]=R0[k].map(function(v){return v/t*1000;}); R[k]=R0[k].slice();});
+  var hairF=1+1.9*s.hair,cap={w:0,p:0,n:0};
+  for(var d=1;d<=DAYS;d++){
+    var depth=m.depth*Math.min(1,d/85),Lt=m.length*Math.min(1,d/95),ld=[],tot=0;
+    for(i=0;i<NL;i++){var z2=(i+.5)*DZ,v=(z2<=depth)?Math.exp(-z2/m.lambda):0;ld.push(v);tot+=v;}
+    for(i=0;i<NL;i++) ld[i]=tot>0?ld[i]/tot*Lt*100:0;
+    var vN=.55/DZ,nn=R.n.slice();
+    for(i=NL-1;i>0;i--) nn[i]=R.n[i]*(1-vN)+R.n[i-1]*vN;
+    nn[0]=R.n[0]*(1-vN); R.n=nn;
+    for(i=0;i<NL;i++){
+      var L=ld[i]; if(L<=0) continue; var u;
+      u=Math.min(0.00062*L*hairF*R.p[i]/(R.p[i]+22),R.p[i]); R.p[i]-=u; cap.p+=u;
+      u=Math.min(0.00150*L*R.n[i]/(R.n[i]+14),R.n[i]);       R.n[i]-=u; cap.n+=u;
+      u=Math.min(0.00135*L*m.radial*R.w[i]/(R.w[i]+16),R.w[i]); R.w[i]-=u; cap.w+=u;
+    }
+  }
+  var f=function(v){return Math.max(0,Math.min(100,v/1000*100*1.35));};
+  return {m:m,water:f(cap.w),phos:f(cap.p),nitro:f(cap.n)};
+}
+function scoreOf(r,sk){
+  var w=SC.filter(function(x){return x[0]===sk;})[0][3];
+  return Math.round(r.water*w.w+r.phos*w.p+r.nitro*w.n);
+}
+function drawMini(cv,s,m){
+  var X=cv.getContext("2d"),W=cv.width,H=cv.height;
+  function co(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  var g=X.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,co("--soil1"));g.addColorStop(.4,co("--soil2"));g.addColorStop(1,co("--soil3"));
+  X.fillStyle=g;X.fillRect(0,0,W,H);
+  var PZ=H/165,bx=W/2,by=4,seed=7;
+  function rnd(){seed=(seed*1664525+1013904223)&0x7fffffff;return seed/0x7fffffff;}
+  var a=s.ang*Math.PI/180,n=Math.round(s.nax),
+      lenPx=m.depth*PZ/Math.max(.25,Math.cos(a));
+  X.lineCap="round";X.strokeStyle=co("--root");
+  for(var i=0;i<n;i++){
+    var side=(i%2)?1:-1,k=Math.floor(i/2),
+        ai=a*(0.55+0.45*(k+1)/Math.ceil(n/2))+(rnd()-.5)*.3,
+        ex=bx+Math.sin(ai)*lenPx*side,ey=by+Math.cos(ai)*lenPx,
+        cx=bx+Math.sin(ai)*lenPx*.62*side,cy=by+Math.cos(ai)*lenPx*.17;
+    X.lineWidth=Math.max(.9,.8+(s.dia-.4)*1.5);
+    X.beginPath();X.moveTo(bx,by);X.quadraticCurveTo(cx,cy,ex,ey);X.stroke();
+    var nl=Math.round(lenPx/22*Math.max(.6,s.lat/2.2));
+    for(var j=1;j<nl;j++){
+      var t=j/nl,mt=1-t,
+          px=mt*mt*bx+2*mt*t*cx+t*t*ex,py=mt*mt*by+2*mt*t*cy+t*t*ey,
+          dx=2*mt*(cx-bx)+2*t*(ex-cx),dy=2*mt*(cy-by)+2*t*(ey-cy),
+          mm=Math.hypot(dx,dy)||1,ln=(3+rnd()*6)*(0.5+s.lat/9),sd=(j%2)?1:-1;
+      X.lineWidth=.8;X.globalAlpha=.8;
+      X.beginPath();X.moveTo(px,py);X.lineTo(px-dy/mm*ln*sd,py+dx/mm*ln*sd);X.stroke();
+      X.globalAlpha=1;
+    }
+  }
+  X.setLineDash([4,4]);X.globalAlpha=.55;X.strokeStyle=co("--ink");X.lineWidth=1;
+  X.beginPath();X.moveTo(0,m.depth*PZ);X.lineTo(W,m.depth*PZ);X.stroke();
+  X.setLineDash([]);X.globalAlpha=1;
+}
+/* ---------------- data ---------------- */
+var ROWS=[],sortBy="score";
+function ingest(list){
+  ROWS=[];
+  list.forEach(function(r){
+    var d=dec(r.code); if(!d) return;
+    var sim=season(d.s);
+    ROWS.push({who:String(r.who||"anon"),code:r.code,t:r.t||0,scen:d.scen,s:d.s,
+               m:sim.m,score:scoreOf(sim,d.scen),water:sim.water,phos:sim.phos,nitro:sim.nitro});
+  });
+  render();
+}
+function render(){
+  var g=document.getElementById("grid"); g.innerHTML="";
+  var rows=ROWS.slice().sort(sortBy==="score"
+    ? function(a,b){return b.score-a.score;}
+    : function(a,b){return new Date(a.t)-new Date(b.t);});
+  var st=document.getElementById("stats");
+  if(!rows.length){
+    st.innerHTML="";
+    g.innerHTML='<div class="empty">waiting for the first design…</div>'; return;
+  }
+  var dep=rows.map(function(r){return r.m.depth;}).sort(function(a,b){return a-b;});
+  var tops=rows.map(function(r){return r.m.topsoil;});
+  var shallow=rows.filter(function(r){return r.s.ang>50;}).length;
+  st.innerHTML=
+   '<div><div class="k">designs in</div><div class="v">'+rows.length+'</div></div>'+
+   '<div><div class="k">median depth</div><div class="v">'+dep[Math.floor(dep.length/2)].toFixed(0)+' cm</div></div>'+
+   '<div><div class="k">shallowest / deepest</div><div class="v">'+dep[0].toFixed(0)+' – '+dep[dep.length-1].toFixed(0)+' cm</div></div>'+
+   '<div><div class="k">chose shallow</div><div class="v">'+shallow+' of '+rows.length+'</div></div>'+
+   '<div><div class="k">best topsoil density</div><div class="v">'+Math.max.apply(null,tops).toFixed(2)+'</div></div>';
+  rows.forEach(function(r){
+    var c=SC.filter(function(x){return x[0]===r.scen;})[0];
+    var d=document.createElement("div"); d.className="p";
+    d.innerHTML='<div class="top"><span class="who"></span><span class="sc">'+r.score+'</span></div>'+
+      '<div class="chip" style="color:'+c[2]+'">'+c[1]+'</div>'+
+      '<canvas width="380" height="300"></canvas>'+
+      '<div class="foot"><span>'+r.m.depth.toFixed(0)+' cm deep</span>'+
+      '<span>'+r.m.length.toFixed(0)+' m root</span>'+
+      '<span>W'+Math.round(r.water)+' P'+Math.round(r.phos)+' N'+Math.round(r.nitro)+'</span></div>';
+    d.querySelector(".who").textContent=r.who;
+    g.appendChild(d);
+    drawMini(d.querySelector("canvas"),r.s,r.m);
+  });
+}
+/* ---------------- live polling ---------------- */
+var live=document.getElementById("liveTxt");
+function poll(){
+  if(!API){ live.textContent="offline — paste codes"; return; }
+  fetch(API,{cache:"no-store"}).then(function(r){return r.json();})
+   .then(function(j){ ingest(j); live.textContent=ROWS.length+" in · live";
+     setTimeout(poll,4000); })
+   .catch(function(){ live.textContent="reconnecting…"; setTimeout(poll,6000); });
+}
+var base=location.href.replace(/board\.html.*$/,"")+"root-architect.html";
+document.getElementById("join").textContent=base.replace(/^https?:\/\//,"");
+document.getElementById("sortScore").addEventListener("click",function(){
+  sortBy="score";this.setAttribute("aria-pressed","true");
+  document.getElementById("sortTime").setAttribute("aria-pressed","false");render();});
+document.getElementById("sortTime").addEventListener("click",function(){
+  sortBy="time";this.setAttribute("aria-pressed","true");
+  document.getElementById("sortScore").setAttribute("aria-pressed","false");render();});
+document.getElementById("btnPaste").addEventListener("click",function(){
+  var b=document.getElementById("pasteBox"); b.hidden=!b.hidden;});
+document.getElementById("addBtn").addEventListener("click",function(){
+  var list=document.getElementById("paste").value.split("\n").map(function(ln){
+    var i=ln.lastIndexOf(":");
+    return {who:i>0?ln.slice(0,i).trim():"anon",code:i>0?ln.slice(i+1).trim():ln.trim(),t:Date.now()};
+  }).filter(function(x){return x.code;});
+  ingest(list); document.getElementById("paste").value="";});
+document.getElementById("btnClear").addEventListener("click",function(){
+  if(!confirm("Clear every design from the board?")) return;
+  if(API) fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify({action:"reset"})}).then(function(){ROWS=[];render();});
+  else { ROWS=[]; render(); }
+});
+render(); poll();
+})();
+</script></body></html>

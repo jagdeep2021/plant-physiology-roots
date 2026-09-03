@@ -110,6 +110,10 @@ td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;t
 .dash{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;align-items:start}
 @media(max-width:900px){.dash{grid-template-columns:1fr}}
 .note{font-size:.8rem;color:var(--ink3);margin-top:10px;line-height:1.45}
+button.go.dirty{animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+.stale{opacity:.35}
+.pr[aria-pressed="true"]{background:var(--carbon);color:#fff;border-color:var(--carbon)}
 </style>
 
 <div class="wrap">
@@ -173,7 +177,17 @@ and which one you left behind.</p>
 
     <div class="card">
       <span class="tag" id="scoreTag">Score</span>
-      <div class="score"><span class="big" id="scoreBig">0</span><span class="of">/ 100</span></div>
+      <div id="predict">
+        <p style="font-size:.84rem;color:var(--ink2);margin:0 0 .5rem">Before you run it —
+        which pool will this root system take the most of?</p>
+        <div class="ctl" style="margin-bottom:.6rem">
+          <button class="mini pr" data-g="water">water</button>
+          <button class="mini pr" data-g="p">phosphorus</button>
+          <button class="mini pr" data-g="n">nitrate</button>
+        </div>
+      </div>
+      <div class="score"><span class="big" id="scoreBig">—</span><span class="of">/ 100</span></div>
+      <p id="verdict" class="note" style="margin-top:0"></p>
       <svg id="curves" viewBox="0 0 300 190" role="img" aria-label="Cumulative capture of water, phosphorus and nitrate over the growing season"></svg>
       <ul class="fb" id="fb"></ul>
       <label style="display:block;margin-top:14px;font-size:.79rem;color:var(--ink2)">Your name or initials
@@ -353,7 +367,7 @@ TRAITS.forEach(function(t){
     '<div class="hint">'+t.h+'</div>';
   slHost.appendChild(d);
   d.querySelector("input").addEventListener("input",function(e){
-    S[t.k]=parseFloat(e.target.value); recompute(); });
+    S[t.k]=parseFloat(e.target.value); updateDesign(); });
 });
 var scHost=$("#scen");
 SCEN.forEach(function(x){
@@ -366,7 +380,7 @@ SCEN.forEach(function(x){
   b.addEventListener("click",function(){ scen=x.k;
     Array.prototype.forEach.call(scHost.children,function(c,i){
       c.setAttribute("aria-pressed",SCEN[i].k===scen);});
-    recompute(); });
+    updateDesign(); });
   scHost.appendChild(b);
 });
 
@@ -550,18 +564,31 @@ function drawXS(m){
       "font-family":"IBM Plex Mono, monospace"}); b.textContent=l[1];
   });
 }
-/* ===================== recompute ========================================= */
-var deb=null;
-function recompute(){
+/* ===================== design vs season =================================== */
+var deb=null, dirty=true, guess=null;
+function markDirty(){
+  dirty=true; guess=null;
+  $("#btnRun").classList.add("dirty");
+  $("#btnRun").textContent="▶ Run the season";
+  $("#scoreBig").textContent="—";
+  $("#verdict").textContent="";
+  $("#predict").style.display="";
+  Array.prototype.forEach.call(document.querySelectorAll(".pr"),function(b){
+    b.setAttribute("aria-pressed","false");});
+  $("#curves").classList.add("stale");
+  $("#fb").innerHTML="";
+  $("#dayTxt").textContent="not run yet";
+}
+function updateDesign(){
   TRAITS.forEach(function(t){
     var v=S[t.k];
     document.getElementById("v_"+t.k).textContent=
       (t.st<1? v.toFixed(t.st<0.1?2:1) : Math.round(v))+t.u;
   });
   clearTimeout(deb); deb=setTimeout(function(){
-    RES=season(S); RES.frame=null; RES.prog=1;
+    var m=cost(S);
+    RES={m:m,R0:initial(),hist:[],series:[],frame:null,prog:1};
     if(!PART.w.length) makeParticles(RES.R0);
-    var m=RES.m,sc=score(RES,scen);
     $("#budTxt").textContent="100 C buys "+m.length.toFixed(0)+" m of root";
     $("#budBar").style.width=Math.max(5,Math.min(100,m.length/240*100))+"%";
     var R=$("#reads"); R.innerHTML="";
@@ -569,16 +596,43 @@ function recompute(){
      ["topsoil density",m.topsoil.toFixed(2)+" cm/cm³"],["cost per cm",m.costCm.toFixed(3)+" C"]]
      .forEach(function(p){var d=document.createElement("div");
       d.innerHTML='<div class="k">'+p[0]+'</div><div class="v">'+p[1]+'</div>'; R.appendChild(d);});
-    $("#scoreBig").textContent=sc;
     $("#scoreTag").textContent="Score · "+SCEN.filter(function(x){return x.k===scen;})[0].n;
-    var F=$("#fb"); F.innerHTML="";
-    feedback(S,RES,scen).forEach(function(f){
-      var li=document.createElement("li"); li.className=f[0];
-      li.innerHTML='<span class="m">'+f[1]+'</span><span>'+f[2]+'</span>'; F.appendChild(li);});
-    drawXS(m); runSeason();
-  },140);
+    drawXS(m); markDirty(); draw(); drawCurves(0);
+  },120);
 }
-$("#btnRun").addEventListener("click",function(){ if(RES) runSeason(); });
+function commit(){
+  RES=season(S); RES.frame=null; RES.prog=1;
+  dirty=false;
+  $("#btnRun").classList.remove("dirty");
+  $("#btnRun").textContent="↻ Run again";
+  $("#predict").style.display="none";
+  $("#curves").classList.remove("stale");
+  var sc=score(RES,scen);
+  $("#scoreBig").textContent=sc;
+  var best=[["water",RES.water],["p",RES.phos],["n",RES.nitro]]
+    .sort(function(a,b){return b[1]-a[1];})[0][0];
+  var nm={water:"water",p:"phosphorus",n:"nitrate"}[best];
+  $("#verdict").innerHTML = guess
+    ? (guess===best
+        ? "<strong style='color:var(--good)'>You called it.</strong> This root system took most of the "+nm+"."
+        : "<strong style='color:var(--warn)'>Not quite.</strong> You said "+
+          {water:"water",p:"phosphorus",n:"nitrate"}[guess]+"; it actually took most of the "+nm+
+          ". Look at where the dots are still sitting.")
+    : "It took most of the "+nm+".";
+  var F=$("#fb"); F.innerHTML="";
+  feedback(S,RES,scen).forEach(function(f){
+    var li=document.createElement("li"); li.className=f[0];
+    li.innerHTML='<span class="m">'+f[1]+'</span><span>'+f[2]+'</span>'; F.appendChild(li);});
+  runSeason();
+}
+Array.prototype.forEach.call(document.querySelectorAll(".pr"),function(b){
+  b.addEventListener("click",function(){
+    guess=b.dataset.g;
+    Array.prototype.forEach.call(document.querySelectorAll(".pr"),function(x){
+      x.setAttribute("aria-pressed",x===b);});
+  });
+});
+$("#btnRun").addEventListener("click",commit);
 Array.prototype.forEach.call(document.querySelectorAll(".res"),function(b){
   b.addEventListener("click",function(){
     shown=b.dataset.r;
@@ -716,6 +770,6 @@ $("#modelText").innerHTML=
  '<p style="color:var(--ink3);font-size:.83rem;margin-top:1rem">Shapes after: Lynch 2013; '+
  'Lynch 2019; Chimungu et al. 2014; Colombi et al. 2019; Sidhu et al. 2024; Postma &amp; Lynch 2011.</p>';
 
-loadBoard(); recompute();
+loadBoard(); updateDesign();
 })();
 </script>
