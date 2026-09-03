@@ -105,21 +105,28 @@ function cost(s){
   return {costCm:c,length:L,depth:d,topsoil:L*sf/34,radial:rad,lambda:12+58*Math.cos(a)};
 }
 var NL=40,DZ=4,DAYS=120;
-function season(s){
+var SOIL={
+  dry:  {wMid:74,wK:9,  wTot:620, pK:9, pTot:1000, nMid:42,nSd:20,nTot:1000, leach:0.45},
+  lowP: {wMid:38,wK:13, wTot:1000,pK:6.5,pTot:430, nMid:42,nSd:20,nTot:1000, leach:0.55},
+  lowN: {wMid:38,wK:13, wTot:1000,pK:9, pTot:1000, nMid:64,nSd:22,nTot:820,  leach:0.95},
+  mix:  {wMid:52,wK:12, wTot:820, pK:8, pTot:760,  nMid:52,nSd:22,nTot:880,  leach:0.70}};
+function season(s,sk){
+  var C=SOIL[sk||"dry"];
   var m=cost(s),R={w:[],p:[],n:[]},R0={w:[],p:[],n:[]},i;
   for(i=0;i<NL;i++){var z=(i+.5)*DZ;
-    R0.p.push(100*Math.exp(-z/9));
-    R0.n.push(100*Math.exp(-Math.pow(z-42,2)/800));
-    R0.w.push(100/(1+Math.exp(-(z-38)/13)));}
+    R0.p.push(100*Math.exp(-z/C.pK));
+    R0.n.push(100*Math.exp(-Math.pow(z-C.nMid,2)/(2*C.nSd*C.nSd)));
+    R0.w.push(100/(1+Math.exp(-(z-C.wMid)/C.wK)));}
+  var TOT={w:C.wTot,p:C.pTot,n:C.nTot};
   ["w","p","n"].forEach(function(k){
     var t=R0[k].reduce(function(a,b){return a+b;},0);
-    R0[k]=R0[k].map(function(v){return v/t*1000;}); R[k]=R0[k].slice();});
+    R0[k]=R0[k].map(function(v){return v/t*TOT[k];}); R[k]=R0[k].slice();});
   var hairF=1+1.9*s.hair,cap={w:0,p:0,n:0};
   for(var d=1;d<=DAYS;d++){
     var depth=m.depth*Math.min(1,d/85),Lt=m.length*Math.min(1,d/95),ld=[],tot=0;
     for(i=0;i<NL;i++){var z2=(i+.5)*DZ,v=(z2<=depth)?Math.exp(-z2/m.lambda):0;ld.push(v);tot+=v;}
     for(i=0;i<NL;i++) ld[i]=tot>0?ld[i]/tot*Lt*100:0;
-    var vN=.55/DZ,nn=R.n.slice();
+    var vN=C.leach/DZ,nn=R.n.slice();
     for(i=NL-1;i>0;i--) nn[i]=R.n[i]*(1-vN)+R.n[i-1]*vN;
     nn[0]=R.n[0]*(1-vN); R.n=nn;
     for(i=0;i<NL;i++){
@@ -129,8 +136,8 @@ function season(s){
       u=Math.min(0.00135*L*m.radial*R.w[i]/(R.w[i]+16),R.w[i]); R.w[i]-=u; cap.w+=u;
     }
   }
-  var f=function(v){return Math.max(0,Math.min(100,v/1000*100*1.35));};
-  return {m:m,water:f(cap.w),phos:f(cap.p),nitro:f(cap.n)};
+  var f=function(v,t){return Math.max(0,Math.min(100,v/t*100*1.35));};
+  return {m:m,water:f(cap.w,C.wTot),phos:f(cap.p,C.pTot),nitro:f(cap.n,C.nTot)};
 }
 function scoreOf(r,sk){
   var w=SC.filter(function(x){return x[0]===sk;})[0][3];
@@ -175,7 +182,7 @@ function ingest(list){
   ROWS=[];
   list.forEach(function(r){
     var d=dec(r.code); if(!d) return;
-    var sim=season(d.s);
+    var sim=season(d.s,d.scen);
     ROWS.push({who:String(r.who||"anon"),code:r.code,t:r.t||0,scen:d.scen,s:d.s,
                m:sim.m,score:scoreOf(sim,d.scen),water:sim.water,phos:sim.phos,nitro:sim.nitro});
   });

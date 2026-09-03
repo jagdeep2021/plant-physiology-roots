@@ -157,6 +157,7 @@ and which one you left behind.</p>
           <span class="day" id="dayTxt">day 0 / 120</span>
         </div>
         <canvas id="field" width="1120" height="760"></canvas>
+        <p id="soilSay" style="margin:8px 0 0;font-size:.82rem;color:var(--ink2)"></p>
         <div class="legend">
           <span><i style="background:var(--water)"></i>water</span>
           <span><i style="background:var(--phos)"></i>phosphate — immobile, topsoil</span>
@@ -286,20 +287,32 @@ function cost(s){
 }
 /* ===================== the season ======================================== */
 var NL=40,DZ=4,DAYS=120;
-function initial(){
-  var w=[],p=[],n=[];
+// each season puts different things in the ground, in different places
+var SOIL={
+  dry:  {wMid:74,wK:9,  wTot:620, pK:9, pTot:1000, nMid:42,nSd:20,nTot:1000, leach:0.45,
+         say:"The top 50 cm is baked dry. What water is left has drained deep."},
+  lowP: {wMid:38,wK:13, wTot:1000,pK:6.5,pTot:430, nMid:42,nSd:20,nTot:1000, leach:0.55,
+         say:"Phosphate is scarce and fixed hard into the very top of the profile."},
+  lowN: {wMid:38,wK:13, wTot:1000,pK:9, pTot:1000, nMid:64,nSd:22,nTot:820,  leach:0.95,
+         say:"A wet spring has already washed the nitrate past 60 cm, and it is still moving."},
+  mix:  {wMid:52,wK:12, wTot:820, pK:8, pTot:760,  nMid:52,nSd:22,nTot:880,  leach:0.70,
+         say:"Nothing is extreme and nothing is generous. Every trait has to earn its carbon."}
+};
+function initial(sk){
+  var C=SOIL[sk||scen], w=[],p=[],n=[];
   for(var i=0;i<NL;i++){
     var z=(i+0.5)*DZ;
-    p.push(100*Math.exp(-z/9));
-    n.push(100*Math.exp(-Math.pow(z-42,2)/(2*400)));
-    w.push(100/(1+Math.exp(-(z-38)/13)));
+    p.push(100*Math.exp(-z/C.pK));
+    n.push(100*Math.exp(-Math.pow(z-C.nMid,2)/(2*C.nSd*C.nSd)));
+    w.push(100/(1+Math.exp(-(z-C.wMid)/C.wK)));
   }
-  var norm=function(a){var t=a.reduce(function(x,y){return x+y;},0);
-    return a.map(function(v){return v/t*1000;});};
-  return {w:norm(w),p:norm(p),n:norm(n)};
+  var norm=function(a,tot){var t=a.reduce(function(x,y){return x+y;},0);
+    return a.map(function(v){return v/t*tot;});};
+  return {w:norm(w,C.wTot),p:norm(p,C.pTot),n:norm(n,C.nTot),tot:C};
 }
-function season(s){
-  var m=cost(s),R0=initial();
+function season(s,sk){
+  sk=sk||scen;
+  var m=cost(s),R0=initial(sk),C=SOIL[sk];
   var R={w:R0.w.slice(),p:R0.p.slice(),n:R0.n.slice()};
   var hairF=1+1.9*s.hair;
   var cap={w:0,p:0,n:0},series=[],hist=[];
@@ -311,8 +324,8 @@ function season(s){
       var v=(z<=depth)?Math.exp(-z/m.lambda):0; ld.push(v); tot+=v;
     }
     for(i=0;i<NL;i++) ld[i]=tot>0?ld[i]/tot*Ltot*100:0;      // cm of root in layer
-    // nitrate leaches downward
-    var vN=0.55/DZ, nn=R.n.slice();
+    // nitrate leaches downward, faster in a wet year
+    var vN=C.leach/DZ, nn=R.n.slice();
     for(i=NL-1;i>0;i--) nn[i]=R.n[i]*(1-vN)+R.n[i-1]*vN;
     nn[0]=R.n[0]*(1-vN); R.n=nn;
     for(i=0;i<NL;i++){
@@ -326,9 +339,9 @@ function season(s){
     series.push({w:cap.w,p:cap.p,n:cap.n});
     if(d%2===0) hist.push({w:R.w.slice(),p:R.p.slice(),n:R.n.slice()});
   }
-  var sc=function(v){return Math.max(0,Math.min(100,v/1000*100*1.35));};
-  return {m:m,R0:R0,hist:hist,series:series,
-          water:sc(cap.w),phos:sc(cap.p),nitro:sc(cap.n)};
+  var sc=function(v,tot){return Math.max(0,Math.min(100,v/tot*100*1.35));};
+  return {m:m,R0:R0,hist:hist,series:series,tot:C,
+          water:sc(cap.w,C.wTot),phos:sc(cap.p,C.pTot),nitro:sc(cap.n,C.nTot)};
 }
 function score(r,sk){
   var w=SCEN.filter(function(x){return x.k===sk;})[0].w;
@@ -375,7 +388,7 @@ SCEN.forEach(function(x){
   var b=document.createElement("button");
   b.setAttribute("aria-pressed",x.k===scen);
   b.innerHTML='<span class="n">'+x.n+'</span><span class="d">'+x.d+'</span>'+
-    '<span class="w" style="color:'+x.c+'">optimises '+
+    '<span class="w" style="color:'+x.c+'">optimise this for '+
     (x.k==="mix"?"40% water · 35% P · 25% N":x.k==="dry"?"water capture":
      x.k==="lowP"?"P capture":"N capture")+'</span>';
   b.addEventListener("click",function(){ scen=x.k;
@@ -515,13 +528,14 @@ function drawCurves(frac){
   [["w","var(--water)","water"],["p","var(--phos)","P"],["n","var(--nitro)","N"]]
    .forEach(function(c,ci){
     var d="";
+    var TT={w:RES.tot?RES.tot.wTot:1000,p:RES.tot?RES.tot.pTot:1000,n:RES.tot?RES.tot.nTot:1000};
     for(var i=0;i<=upto;i++){
-      var v=RES.series[i][c[0]]/1000*100*1.35;
+      var v=RES.series[i][c[0]]/TT[c[0]]*100*1.35;
       d+=(i?" L ":"M ")+(x0+i/mx*(x1-x0)).toFixed(1)+" "+
          (y1-Math.min(100,v)/100*(y1-y0)).toFixed(1);
     }
     if(d) E("path",{d:d,fill:"none",stroke:c[1],"stroke-width":2.2,"stroke-linecap":"round"});
-    var last=RES.series[upto][c[0]]/1000*100*1.35;
+    var last=RES.series[upto][c[0]]/TT[c[0]]*100*1.35;
     var ty=y1-Math.min(100,last)/100*(y1-y0);
     var lb=E("text",{x:x1+2,y:Math.max(y0+8,Math.min(y1,ty))+3,"font-size":10,fill:c[1],
       "text-anchor":"end","font-family":"IBM Plex Mono, monospace"});
@@ -566,7 +580,7 @@ function drawXS(m){
   });
 }
 /* ===================== design vs season =================================== */
-var deb=null, dirty=true, guess=null;
+var deb=null, dirty=true, guess=null, lastSoil=null;
 function markDirty(){
   dirty=true; guess=null;
   $("#btnRun").classList.add("dirty");
@@ -588,8 +602,9 @@ function updateDesign(){
   });
   clearTimeout(deb); deb=setTimeout(function(){
     var m=cost(S);
-    RES={m:m,R0:initial(),hist:[],series:[],frame:null,prog:1};
-    if(!PART.w.length) makeParticles(RES.R0);
+    RES={m:m,R0:initial(scen),hist:[],series:[],frame:null,prog:1,tot:SOIL[scen]};
+    if(lastSoil!==scen){ makeParticles(RES.R0); lastSoil=scen; }
+    $("#soilSay").textContent=SOIL[scen].say;
     $("#budTxt").textContent="100 C buys "+m.length.toFixed(0)+" m of root";
     $("#budBar").style.width=Math.max(5,Math.min(100,m.length/240*100))+"%";
     var R=$("#reads"); R.innerHTML="";
@@ -663,7 +678,7 @@ function addRows(lines){
     ln=ln.trim(); if(!ln) return;
     var i=ln.lastIndexOf(":"), who=i>0?ln.slice(0,i):"anon", code=i>0?ln.slice(i+1):ln;
     var d=dec(code); if(!d) return;
-    var r=season(d.s);
+    var r=season(d.s,d.scen);
     BOARD=BOARD.filter(function(x){return !(x.who===who&&x.code===code);});
     BOARD.push({who:who,code:code,scen:d.scen,depth:r.m.depth,topsoil:r.m.topsoil,
                 score:score(r,d.scen)});
